@@ -47,7 +47,7 @@ export const saveGame = async () => {
 /**
  * Map of properties on the Player object to adapt
  */
- const toAdapt = new Map<keyof Player, (data: Player) => unknown>([
+ /*const toAdapt = new Map<keyof Player, (data: Player) => unknown>([
     ['coins', data => new Coins(Number(data.coins.amount))],
     ['barFragments', data => new ProgressFragment(Number(data.barFragments.amount))]
 ]);
@@ -57,11 +57,11 @@ export const saveGame = async () => {
  */
 const loadSavefile = async () => {
     console.log('load attempted')
-    const save = await localforage.getItem<string>('UPBSave');
+    //const save = await localforage.getItem<string>('UPBSave');
 
-    const data = save ? JSON.parse(atob(save)) as Player & Record<string, unknown> : null
-    
-    if (data) {
+    //const data = save ? JSON.parse(atob(save)) as Player & Record<string, unknown> : null
+    return
+    /*if (data) {
         Object.keys(data).forEach((stringProp) => {
             const prop = stringProp as keyof Player
             if (!(prop in player)) {
@@ -75,7 +75,7 @@ const loadSavefile = async () => {
     )
     player.coinUpgrades.barSpeed = new CoinBarSpeed(data.coinUpgrades.barSpeed.level, coinUpgradeCosts.barSpeed);
     player.coinUpgrades.barMomentum = new CoinBarMomentum(data.coinUpgrades.barMomentum.level, coinUpgradeCosts.barMomentum);
-}
+}*/
 }
 
 
