@@ -1,13 +1,13 @@
 :root {
     --bronze: #cd7f32;
     --side-nav-width: 20%;
-    --mainBG: #111111
+    --main-bg: #111;
 }
 
 body {
     overflow: hidden;
     height: 100vh;
-    background-color: var(--mainBG);
+    background-color: var(--main-bg);
     color: #fff;
     margin: 0;
     padding: 0;
@@ -80,7 +80,7 @@ li {
     width: 100px;
 }
 
-#EXP {
+#exp {
     right: 400px;
     width: 150px;
 }
@@ -128,7 +128,7 @@ aside {
     }
 }
 
-.wrapper_inner {
+.wrapperInner {
     position: relative;
     margin: 50px;
     height: 400px;
@@ -151,17 +151,23 @@ aside {
     justify-content: space-between;
 }
 
+.tab:hover {
+    background-color: gray;
+    transition-duration: 0.15s;
+    cursor: pointer;
+}
+
 .tabs {
     text-align: center;
 }
 
-#coin-upgrades {
+#coinUpgrades {
     display: flex;
     flex-direction: row;
     justify-content: center;
 }
 
-.coin-upgrade {
+.coinUpgrade {
     display: flex;
     flex-direction: column;
     text-align: center;
@@ -172,15 +178,15 @@ aside {
     margin-right: 10px;
 }
 
-.coin-upgrade-txt {
+.coinUpgradeText {
     height: auto;
     margin: auto;
 }
 
-.coin-upgrade > button {
+.coinUpgrade > button {
     height: 20px;
     width: 150px;
     cursor: pointer;
-    background-color: var(--mainBG);
-    color: white
+    background-color: var(--main-bg);
+    color: white;
 }
