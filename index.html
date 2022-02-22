@@ -22,7 +22,7 @@
             <div class="progressBarBig" id="progressBarTest2">
                 <div id="progression"></div>
                 <div class="progressBarBigText" id="level"></div>
-                <div class="progressBarBigText" id="EXP"></div>
+                <div class="progressBarBigText" id="exp"></div>
                 <div class="progressBarBigText" id="perSecCurr"></div>
                 <div class="progressBarBigText" id="perSecPrev"></div>
                 <div class="progressBarBigText" id="coinWorth"></div>
@@ -41,7 +41,7 @@
                 </ul>
             </aside>
             <main>
-                <div class="wrapper_inner" id="inner-testing">
+                <div class="wrapperInner" id="inner-testing">
                     <div class="tabs" id="mainTab"> 
                         <h1>How did we get here?</h1>
                         <p>You're powerless, but you weren't at one point. Ant God must have reduced you to mere atoms!</p>
@@ -53,21 +53,21 @@
                     <div class="tabs" id="upgradeTab">
                         <h3 style="color: gold">Spend your coins here!</h3>
                         <p>You have <span id="gold-amount"></span> coins</p>
-                        <div id="coin-upgrades">
-                            <div class="coin-upgrade" id="coin-bar-speed">
-                                <p class="coin-upgrade-txt" id="coin-bar-speed-name">Bar Fill Speed</p>
-                                <p class="coin-upgrade-txt" id="coin-bar-speed-effect">+0.1 Progress Per Second</p>
-                                <button class="coin-upgrade-btn" id="buy-coin-bar-speed">Buy 0.1 for 1 Coin</button>
+                        <div id="coinUpgrades">
+                            <div class="coinUpgrade" id="coin-bar-speed">
+                                <p class="coinUpgradeText" id="coin-bar-speed-name">Bar Fill Speed</p>
+                                <p class="coinUpgradeText" id="coin-bar-speed-effect">+0.1 Progress Per Second</p>
+                                <button class="coinUpgradeBtn" id="buy-coin-bar-speed">Buy 0.1 for 1 Coin</button>
                             </div>
-                            <div class="coin-upgrade" id="coin-momentum">
-                                <p class="coin-upgrade-txt" id="coin-bar-momentum-name">Bar Momentum</p>
-                                <p class="coin-upgrade-txt" id="coin-bar-momentum-effect">+0.00% Progress Per 1% Bar Filled</p>
-                                <button class="coin-upgrade-btn" id="buy-coin-bar-momentum">Buy 0.01% for 3 Coin</button>
+                            <div class="coinUpgrade" id="coin-momentum">
+                                <p class="coinUpgradeText" id="coin-bar-momentum-name">Bar Momentum</p>
+                                <p class="coinUpgradeText" id="coin-bar-momentum-effect">+0.00% Progress Per 1% Bar Filled</p>
+                                <button class="coinUpgradeBtn" id="buy-coin-bar-momentum">Buy 0.01% for 3 Coin</button>
                             </div>
-                            <div class="coin-upgrade" id="reset">
-                                <p class="coin-upgrade-txt" id="reset-name">RESET</p>
-                                <p class="coin-upgrade-txt">Go back to level 0, pronto!</p>
-                                <button class="coin-upgrade-btn" id="buy-reset">~Refresh~</button>
+                            <div class="coinUpgrade" id="reset">
+                                <p class="coinUpgradeText" id="reset-name">RESET</p>
+                                <p class="coinUpgradeText">Go back to level 0, pronto!</p>
+                                <button class="coinUpgradeBtn" id="buy-reset">~Refresh~</button>
                             </div>
                         </div>
                         <p>You have <span id="fragment-amount" style="color:cyan"></span> Bar Fragments [+<span id="fragment-bonus" style="color: cyan"></span>% Progress Speed].</p>

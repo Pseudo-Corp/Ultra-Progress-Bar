@@ -105,7 +105,7 @@ export const levelUpBar = () => {
 
 export const updateMainBarInformation = () => {
     document.getElementById("level").textContent = `Level: ${player.barLevel}`
-    document.getElementById("EXP").textContent = `EXP: ${format(player.barEXP)}/${format(player.barTNL)}`
+    document.getElementById("exp").textContent = `EXP: ${format(player.barEXP)}/${format(player.barTNL)}`
 }
 
 export const updateDPS = () => {

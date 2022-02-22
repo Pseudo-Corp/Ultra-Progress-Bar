@@ -80,7 +80,7 @@ li {
     width: 100px;
 }
 
-#EXP {
+#exp {
     right: 400px;
     width: 150px;
 }
@@ -128,7 +128,7 @@ aside {
     }
 }
 
-.wrapper_inner {
+.wrapperInner {
     position: relative;
     margin: 50px;
     height: 400px;
@@ -161,13 +161,13 @@ aside {
     text-align: center;
 }
 
-#coin-upgrades {
+#coinUpgrades {
     display: flex;
     flex-direction: row;
     justify-content: center;
 }
 
-.coin-upgrade {
+.coinUpgrade {
     display: flex;
     flex-direction: column;
     text-align: center;
@@ -178,12 +178,12 @@ aside {
     margin-right: 10px;
 }
 
-.coin-upgrade-txt {
+.coinUpgradeText {
     height: auto;
     margin: auto;
 }
 
-.coin-upgrade > button {
+.coinUpgrade > button {
     height: 20px;
     width: 150px;
     cursor: pointer;
