@@ -44,7 +44,7 @@ export const computeBarArmor = () => {
 
 export const computeArmorMultiplier = () => {
     const armor = computeBarArmor();
-    return 1 - (armor * (1 - player.barEXP / player.barTNL))
+    return 1 - Math.max(0, (armor * (1 - player.barEXP / player.barTNL)))
 }
 
 export const incrementMainBarEXP = (delta: number) => {
@@ -54,7 +54,7 @@ export const incrementMainBarEXP = (delta: number) => {
     let baseAmountPerSecond = 1
     baseAmountPerSecond += player.coinUpgrades.barSpeed.upgradeEffect();
     baseAmountPerSecond *= player.barFragments.unspentBonus();
-    baseAmountPerSecond *= 1 + 100 * Math.min(1, player.barEXP / player.barTNL) * player.coinUpgrades.barMomentum.upgradeEffect();
+    baseAmountPerSecond *= Math.pow(1 + player.coinUpgrades.barMomentum.upgradeEffect(), 100 * Math.min(1, player.barEXP / player.barTNL));
     baseAmountPerSecond *= computeArmorMultiplier();
     const actualAmount = baseAmountPerSecond * delta
     player.barEXP += actualAmount

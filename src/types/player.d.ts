@@ -15,4 +15,6 @@ export interface Player {
         barMomentum: CoinBarMomentum
     }
     barFragments: ProgressFragment
+    refreshCount: number
+    refreshTime: number
 }

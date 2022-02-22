@@ -18,7 +18,9 @@ export const player: Player = {
         barSpeed: new CoinBarSpeed(0, coinUpgradeCosts.barSpeed),
         barMomentum: new CoinBarMomentum(0, coinUpgradeCosts.barMomentum)
     },
-    barFragments: new ProgressFragment(), 
+    barFragments: new ProgressFragment(),
+    refreshCount: 0,
+    refreshTime: 0,
 }
 
 /**
@@ -47,7 +49,7 @@ export const saveGame = async () => {
 /**
  * Map of properties on the Player object to adapt
  */
- /*const toAdapt = new Map<keyof Player, (data: Player) => unknown>([
+ const toAdapt = new Map<keyof Player, (data: Player) => unknown>([
     ['coins', data => new Coins(Number(data.coins.amount))],
     ['barFragments', data => new ProgressFragment(Number(data.barFragments.amount))]
 ]);
@@ -57,11 +59,10 @@ export const saveGame = async () => {
  */
 const loadSavefile = async () => {
     console.log('load attempted')
-    //const save = await localforage.getItem<string>('UPBSave');
+    const save = await localforage.getItem<string>('UPBSave');
 
-    //const data = save ? JSON.parse(atob(save)) as Player & Record<string, unknown> : null
-    return
-    /*if (data) {
+    const data = save ? JSON.parse(atob(save)) as Player & Record<string, unknown> : null
+    if (data) {
         Object.keys(data).forEach((stringProp) => {
             const prop = stringProp as keyof Player
             if (!(prop in player)) {
@@ -75,7 +76,7 @@ const loadSavefile = async () => {
     )
     player.coinUpgrades.barSpeed = new CoinBarSpeed(data.coinUpgrades.barSpeed.level, coinUpgradeCosts.barSpeed);
     player.coinUpgrades.barMomentum = new CoinBarMomentum(data.coinUpgrades.barMomentum.level, coinUpgradeCosts.barMomentum);
-}*/
+}
 }
 
 
@@ -172,6 +173,15 @@ export const loadGame = async () => {
     interval(saveGame, saveRate)
 }
 
+export const resetGame = async () => {
+
+    await localforage.removeItem("UPBSave");
+    const emptySave = btoa(JSON.stringify(blankSave))
+
+    await localforage.setItem("UPBSave", emptySave)
+    await loadGame();
+}
+
 export const tick = () => {
     const now = performance.now();
     const delta = now - lastUpdate;
@@ -188,6 +198,11 @@ export const tick = () => {
 export const tock = (delta: number) => {
 
     incrementMainBarEXP(delta);
+    player.refreshTime += delta;
+    updateElement(
+        getElementById("refresh-timer"),
+        {textContent: `${format(player.refreshTime, 2)}s`}
+    )
     const width = getBarWidth(player.barEXP, player.barTNL);
 
     if (width < 100)

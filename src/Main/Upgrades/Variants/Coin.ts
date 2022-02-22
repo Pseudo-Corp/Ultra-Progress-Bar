@@ -33,7 +33,7 @@ export abstract class CoinUpgrade extends Upgrade {
 
 export const coinUpgradeCosts = {
     barSpeed: 1,
-    barMomentum: 3,
+    barMomentum: 10,
 }
 
 export class CoinBarSpeed extends CoinUpgrade {
@@ -42,7 +42,7 @@ export class CoinBarSpeed extends CoinUpgrade {
      * @returns Bar Speed to add on top of the base amount. Additive!
      */
     upgradeEffect(): number {
-        return this.level / 10
+        return this.level / 5
     }
 
     updateHTML(): void {
@@ -57,14 +57,14 @@ export class CoinBarSpeed extends CoinUpgrade {
 
 export class CoinBarMomentum extends CoinUpgrade {
     upgradeEffect(): number {
-        return this.level / 1000   
+        return 4/100 * (1 - Math.pow(Math.E, -this.level/100))
     }
 
     updateHTML(): void {
         updateElement(
             getElementById("coin-bar-momentum-effect"),
             {
-                textContent: `+${format(100 * this.upgradeEffect(), 2)}% Progress Per 1% Bar Filled`
+                textContent: `+${format(100 * this.upgradeEffect(), 3)}% Progress Per 1% Bar Filled`
             }
         );
     }

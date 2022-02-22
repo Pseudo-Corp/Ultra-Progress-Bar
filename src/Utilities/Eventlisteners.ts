@@ -1,4 +1,4 @@
-import { player } from "../Game";
+import { player, resetGame } from "../Game";
 import { reset } from "../Main/Reset/Refresh";
 import { getElementById, hideStuff } from "./UpdateHTML";
 
@@ -15,5 +15,6 @@ export const generateEventHandlers = () => {
         (event) => player.coinUpgrades.barMomentum.purchaseLevels(1, event)
     );
     getElementById("buy-reset").addEventListener('click', () => reset('Refresh'));
+    getElementById("reset-game").addEventListener('click', () => void resetGame());
 
 }
