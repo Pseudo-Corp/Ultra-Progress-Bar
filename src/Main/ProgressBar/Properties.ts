@@ -2,6 +2,7 @@
 
 import { player } from "../../Game";
 import { format } from "../../Utilities/Format";
+import { getElementById } from "../../Utilities/UpdateHTML";
 
 /**
  * Basic Bar Stats
@@ -55,7 +56,7 @@ export const incrementMainBarEXP = (delta: number) => {
     player.barEXP += actualAmount
     currentPerSec += actualAmount
 
-    document.getElementById("perSecCurr").textContent = `+${format(currentPerSec,2)} this sec`
+    getElementById("perSecCurr").textContent = `+${format(currentPerSec,2)} this sec`
 }
 
 /**
@@ -70,7 +71,7 @@ export const getBarWidth = (currScore: number, targetScore: number) => {
 }
 
 export const updateMainBar = (width: number) => {
-    document.getElementById("progression").style.width = width + "%";
+    getElementById("progression").style.width = width + "%";
 }
 
 export function backgroundColorCreation() {
@@ -93,25 +94,24 @@ export const levelUpBar = () => {
         player.highestBarLevel = player.barLevel
     }
 
-    console.log(backgroundColorCreation())
-    document.getElementById('progression').style.backgroundColor = backgroundColorCreation();
+    getElementById('progression').style.backgroundColor = backgroundColorCreation();
     player.barTNL = computeMainBarTNL()
     const width = getBarWidth(player.barEXP, player.barTNL);
     updateMainBar(width);
     
-    document.getElementById("coinWorth").textContent =  `Worth ${format(computeMainBarCoinWorth())} coins`;
+    getElementById("coinWorth").textContent =  `Worth ${format(computeMainBarCoinWorth())} coins`;
     player.barFragments.updateHTML();
 }
 
 export const updateMainBarInformation = () => {
-    document.getElementById("level").textContent = `Level: ${player.barLevel}`
-    document.getElementById("exp").textContent = `EXP: ${format(player.barEXP)}/${format(player.barTNL)}`
+    getElementById("level").textContent = `Level: ${player.barLevel}`
+    getElementById("exp").textContent = `EXP: ${format(player.barEXP)}/${format(player.barTNL)}`
 }
 
 export const updateDPS = () => {
     previousPerSec = currentPerSec;
     currentPerSec = 0;
-    document.getElementById("perSecPrev").textContent = `+${format(previousPerSec,2)} prev sec`
+    getElementById("perSecPrev").textContent = `+${format(previousPerSec,2)} prev sec`
 }
 
 export const computeMainBarCoinWorth = () => {

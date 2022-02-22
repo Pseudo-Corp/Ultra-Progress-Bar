@@ -1,5 +1,6 @@
 import { player } from "../../../Game";
 import { format } from "../../../Utilities/Format";
+import { getElementById } from "../../../Utilities/UpdateHTML";
 import { Upgrade } from "../Upgrades";
 
 export abstract class CoinUpgrade extends Upgrade {
@@ -44,7 +45,7 @@ export class CoinBarSpeed extends CoinUpgrade {
     }
 
     updateHTML(): void {
-        document.getElementById("coin-bar-speed-effect").textContent = `+${format(this.upgradeEffect(), 2)} Progress Per Second`
+        getElementById("coin-bar-speed-effect").textContent = `+${format(this.upgradeEffect(), 2)} Progress Per Second`
     }
 }
 
@@ -54,6 +55,6 @@ export class CoinBarMomentum extends CoinUpgrade {
         return this.level / 1000   
     }
     updateHTML(): void {
-        document.getElementById("coin-bar-momentum-effect").textContent = `+${format(100 * this.upgradeEffect(), 2)}% Progress Per 1% Bar Filled`
+        getElementById("coin-bar-momentum-effect").textContent = `+${format(100 * this.upgradeEffect(), 2)}% Progress Per 1% Bar Filled`
     }
 }

@@ -68,7 +68,7 @@ const loadSavefile = async () => {
                 return;
             }
             else if (toAdapt.has(prop)) {
-                return ((player[prop] as unknown) = toAdapt.get(prop)(data));
+                return ((player[prop] as unknown) = toAdapt.get(prop)!(data));
             }
             return ((player[prop] as unknown) = data[prop])
         }
@@ -157,8 +157,8 @@ export const loadGame = async () => {
     interval(saveGame, saveRate)
 
     hideStuff("Main")
-    document.getElementById("progression").style.backgroundColor = backgroundColorCreation();
-    document.getElementById("coinWorth").textContent =  `Worth ${format(computeMainBarCoinWorth())} coins`;
+    document.getElementById("progression")!.style.backgroundColor = backgroundColorCreation();
+    document.getElementById("coinWorth")!.textContent =  `Worth ${format(computeMainBarCoinWorth())} coins`;
 }
 
 export const tick = () => {

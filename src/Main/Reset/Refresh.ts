@@ -1,5 +1,6 @@
 import { player } from "../../Game"
 import { format } from "../../Utilities/Format"
+import { getElementById } from "../../Utilities/UpdateHTML"
 import { computeMainBarCoinWorth, computeMainBarTNL, getBarWidth, updateMainBar } from "../ProgressBar/Properties"
 
 export type resetTypes = "Refresh" | "Transcend"
@@ -13,7 +14,7 @@ export const reset = (variant: resetTypes) => {
 
         player.barTNL = computeMainBarTNL();
         updateMainBar(getBarWidth(player.barEXP, player.barTNL))
-        document.getElementById("coinWorth").textContent =  `Worth ${format(computeMainBarCoinWorth())} coins`;
+        getElementById("coinWorth").textContent =  `Worth ${format(computeMainBarCoinWorth())} coins`;
         player.barFragments.updateHTML();
     }
     else {

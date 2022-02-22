@@ -1,8 +1,9 @@
 import { format } from "../../../Utilities/Format";
+import { getElementById } from "../../../Utilities/UpdateHTML";
 import { Currency } from "../Currency"
 
 export class Coins extends Currency {
     updateHTML(): void {
-        document.getElementById("gold-amount").textContent = format(this.amount);
+        getElementById("gold-amount").textContent = format(this.amount);
     }
 }
