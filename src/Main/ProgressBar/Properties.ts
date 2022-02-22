@@ -47,6 +47,9 @@ export const computeArmorMultiplier = () => {
 }
 
 export const incrementMainBarEXP = (delta: number) => {
+    if (delta === undefined || delta === null) {
+        return
+    }
     let baseAmountPerSecond = 1
     baseAmountPerSecond += player.coinUpgrades.barSpeed.upgradeEffect();
     baseAmountPerSecond *= player.barFragments.unspentBonus();

@@ -140,25 +140,24 @@ export const loadGame = async () => {
 
     intervalHold.clear();
 
-    lastUpdate = performance.now();
-    interval(tick, 1000 / FPS);
-    interval(updateDPS, 1000);
+    await loadSavefile();
+    player.barTNL = computeMainBarTNL();
 
     Object.defineProperty(window, 'player', {
         value: player
     });
-    await loadSavefile();
 
-    player.barTNL = computeMainBarTNL();
     updateMainBar(getBarWidth(player.barEXP, player.barTNL));
     player.barFragments.updateHTML();
-
-    /*Maintain Autosave*/
-    interval(saveGame, saveRate)
 
     hideStuff("Main")
     document.getElementById("progression")!.style.backgroundColor = backgroundColorCreation();
     document.getElementById("coinWorth")!.textContent =  `Worth ${format(computeMainBarCoinWorth())} coins`;
+
+    lastUpdate = performance.now();
+    interval(tick, 1000 / FPS);
+    interval(updateDPS, 1000);
+    interval(saveGame, saveRate)
 }
 
 export const tick = () => {
