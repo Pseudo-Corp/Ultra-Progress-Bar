@@ -147,9 +147,9 @@ export const computeMainBarCoinWorth = () => {
     baseWorth += Math.floor((nextLevel + 7) / 10)
     // Highest level bonus
     if (nextLevel > player.highestBarLevel)
-        baseWorth += 3;
+        baseWorth += Math.floor(nextLevel / 10) + 3;
     if (nextLevel % 10 === 0)
-        baseWorth += Math.floor(nextLevel / 10)
+        baseWorth += Math.floor(nextLevel / 5) + 3
 
     return baseWorth
 }
