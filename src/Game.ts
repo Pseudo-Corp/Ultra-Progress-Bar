@@ -1,4 +1,5 @@
 import localforage from 'localforage';
+import { hasProperty, setProperty } from 'dot-prop';
 import { Coins } from './Main/Currency/Variants/Coin';
 import { ProgressFragment } from './Main/Currency/Variants/ProgressFragment';
 import './Events/VisisbilityChange';
@@ -27,17 +28,13 @@ export const player: Player = {
 /**
  * A newly initiable save for later. 
  */
-export const blankSave = Object.assign({}, player, {
-});
+export const blankSave = Object.assign({}, player);
 
 /**
  * Saves your savefile to localstorage.
- * @param button Whether the save pulse was forced by button
  */
 export const saveGame = async () => {
-
     const saveString = Object.assign({}, player, {}); 
-
 
     await localforage.removeItem('UPBSave');
 
@@ -50,9 +47,11 @@ export const saveGame = async () => {
 /**
  * Map of properties on the Player object to adapt
  */
- const toAdapt = new Map<keyof Player, (data: Player) => unknown>([
+ const toAdapt = new Map<string, (data: Player) => unknown>([
     ['coins', data => new Coins(Number(data.coins.amount))],
-    ['barFragments', data => new ProgressFragment(Number(data.barFragments.amount))]
+    ['barFragments', data => new ProgressFragment(Number(data.barFragments.amount))],
+    ['coinUpgrades.barSpeed', data => new CoinBarSpeed(data.coinUpgrades.barSpeed.level, coinUpgradeCosts.barSpeed)],
+    ['coinUpgrades.barMomentum', data => new CoinBarMomentum(data.coinUpgrades.barMomentum.level, coinUpgradeCosts.barMomentum)]
 ]);
 
 /**
@@ -61,23 +60,27 @@ export const saveGame = async () => {
 const loadSavefile = async () => {
     console.log('load attempted')
     const save = await localforage.getItem<string>('UPBSave');
+    const data = save ? JSON.parse(atob(save)) as Player & Record<string, unknown> : null;
 
-    const data = save ? JSON.parse(atob(save)) as Player & Record<string, unknown> : null
-    if (data) {
-        Object.keys(data).forEach((stringProp) => {
-            const prop = stringProp as keyof Player
-            if (!(prop in player)) {
-                return;
-            }
-            else if (toAdapt.has(prop)) {
-                return ((player[prop] as unknown) = toAdapt.get(prop)!(data));
-            }
-            return ((player[prop] as unknown) = data[prop])
+    // TODO: better error message
+    if (!data) return;
+
+    const keys = Object.keys(data) as (keyof Player & string)[];
+
+    for (const key of keys) {
+        // If the property doesn't exist on the player object anymore, ignore
+        if (!(key in blankSave)) continue;
+        // If the property will be modified later, don't assign it here
+        if (toAdapt.has(key)) continue;
+
+        Object.defineProperty(player, key, { value: data[key] });
+    }
+
+    for (const [key, adapter] of toAdapt) {
+        if (hasProperty(player, key)) {
+            setProperty(player, key, adapter(data));
         }
-    )
-    player.coinUpgrades.barSpeed = new CoinBarSpeed(data.coinUpgrades.barSpeed.level, coinUpgradeCosts.barSpeed);
-    player.coinUpgrades.barMomentum = new CoinBarMomentum(data.coinUpgrades.barMomentum.level, coinUpgradeCosts.barMomentum);
-}
+    }
 }
 
 

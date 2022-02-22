@@ -5,10 +5,7 @@ export const updateElement = <
     element: T,
     keys: Record<R, T[R]>
 ) => {
-    if (document.visibilityState === 'hidden') {
-        console.log(`visibility ` + document.visibilityState);
-        return;
-    }
+    if (document.visibilityState === 'hidden') return;
 
     const entries = Object.entries(keys) as [R, T[R]][];
 

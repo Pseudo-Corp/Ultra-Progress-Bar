@@ -6,4 +6,5 @@ document.addEventListener('visibilitychange', () => {
     player.coins.updateHTML();
     player.coinUpgrades.barMomentum.updateHTML();
     player.coinUpgrades.barSpeed.updateHTML();
+    player.barFragments.updateHTML();
 });
