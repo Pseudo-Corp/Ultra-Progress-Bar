@@ -1,6 +1,7 @@
 import localforage from 'localforage';
 import { Coins } from './Main/Currency/Variants/Coin';
 import { ProgressFragment } from './Main/Currency/Variants/ProgressFragment';
+import './Events/VisisbilityChange';
 
 /*
 * This is the player variable, which is used throughout the game!
