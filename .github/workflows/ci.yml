@@ -42,3 +42,4 @@ jobs:
       - name: Run linter
         run: |
           npm run lint
+          npm run csslint

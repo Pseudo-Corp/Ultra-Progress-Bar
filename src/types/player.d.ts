@@ -1,6 +1,6 @@
-import { Coins } from "../Main/Currency/Variants/Coin";
-import { ProgressFragment } from "../Main/Currency/Variants/ProgressFragment";
-import { CoinBarSpeed } from "../Main/Upgrades/Variants/Coin";
+import type { Coins } from '../Main/Currency/Variants/Coin';
+import type { ProgressFragment } from '../Main/Currency/Variants/ProgressFragment';
+import type { CoinBarSpeed, CoinBarMomentum } from '../Main/Upgrades/Variants/Coin';
 
 export interface Player {
     firstPlayed: Date,
