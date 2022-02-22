@@ -22,6 +22,7 @@ jobs:
       - name: Lint
         run: |
           npm run lint
+          npm run csslint
       - name: Build
         run: |
           npm run-script build:esbuild
