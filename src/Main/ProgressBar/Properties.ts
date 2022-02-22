@@ -51,7 +51,7 @@ export const incrementMainBarEXP = (delta: number) => {
     baseAmountPerSecond *= player.barFragments.unspentBonus();
     baseAmountPerSecond *= 1 + 100 * Math.min(1, player.barEXP / player.barTNL) * player.coinUpgrades.barMomentum.upgradeEffect();
     baseAmountPerSecond *= computeArmorMultiplier();
-    let actualAmount = baseAmountPerSecond * delta
+    const actualAmount = baseAmountPerSecond * delta
     player.barEXP += actualAmount
     currentPerSec += actualAmount
 

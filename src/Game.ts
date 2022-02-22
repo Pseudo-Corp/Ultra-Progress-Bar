@@ -75,7 +75,7 @@ const loadSavefile = async () => {
     )
     player.coinUpgrades.barSpeed = new CoinBarSpeed(data.coinUpgrades.barSpeed.level, coinUpgradeCosts.barSpeed);
     player.coinUpgrades.barMomentum = new CoinBarMomentum(data.coinUpgrades.barMomentum.level, coinUpgradeCosts.barMomentum);
-};
+}
 }
 
 

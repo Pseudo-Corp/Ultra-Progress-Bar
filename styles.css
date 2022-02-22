@@ -151,6 +151,12 @@ aside {
     justify-content: space-between;
 }
 
+.tab:hover {
+    background-color: gray;
+    transition-duration: 0.15s;
+    cursor: pointer;
+}
+
 .tabs {
     text-align: center;
 }

@@ -1,8 +1,8 @@
 {
   "name": "ultimateprogressbar",
-  "version": "v0.0.0",
+  "version": "v0.0.1-beta.1",
   "description": "indev game idea",
-  "main": "/dist/bundle.js",
+  "main": "./dist/bundle.js",
   "eslintConfig": {
     "env": {
       "browser": true,
@@ -12,11 +12,11 @@
   "devDependencies": {
     "@types/assert": "^1.5.6",
     "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "husky": "^7.0.4",
     "stylelint-config-standard": "^25.0.0",
     "typescript": "^4.5.5"
   },
   "dependencies": {
-    "assert": "^2.0.0",
     "localforage": "^1.10.0"
   },
   "scripts": {
@@ -25,15 +25,21 @@
     "build:esbuild": "npx esbuild src/Game.ts --bundle --minify --sourcemap --target=\"chrome58,firefox57,safari11,edge29\" --outfile=\"./dist/out.js\"",
     "watch:esbuild": "npx esbuild src/Game.ts --bundle --minify --sourcemap --target=\"chrome58,firefox57,safari11,edge29\" --outfile=\"./dist/out.js\" --watch",
     "check:tsc": "npx -p typescript tsc",
-    "watch:tsc": "npx -p typescript tsc --watch"
+    "watch:tsc": "npx -p typescript tsc --watch",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Pseudonian/Ultra-Progress-Bar.git"
+    "url": "git+https://github.com/Pseudo-Corp/Ultra-Progress-Bar.git"
   },
-  "keywords": ["Ultimate Progress Bar", "Ultimate", "Progress", "Bar", "Platonic"],
+  "keywords": [
+    "Ultimate Progress Bar",
+    "Ultimate",
+    "Progress",
+    "Bar",
+    "Platonic"
+  ],
   "author": "Kevin Bunn",
   "license": "MIT",
-  "homepage": "https://github.com/Pseudonian/Ultra-Progress-Bar#readme"
-
+  "homepage": "https://github.com/Pseudo-Corp/Ultra-Progress-Bar#readme"
 }
