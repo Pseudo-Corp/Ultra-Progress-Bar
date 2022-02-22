@@ -89,7 +89,8 @@ import { CoinBarMomentum, CoinBarSpeed, coinUpgradeCosts } from './Main/Upgrades
 import { Player } from "./types/player";
 import { generateEventHandlers } from './Utilities/Eventlisteners';
 import { format } from './Utilities/Format';
-import { hideStuff } from './Utilities/UpdateHTML';
+import { updateElement } from './Utilities/Render';
+import { getElementById, hideStuff } from './Utilities/UpdateHTML';
 
 export const intervalHold = new Set<ReturnType<typeof setInterval>>();
 export const interval = new Proxy(setInterval, {
@@ -150,9 +151,20 @@ export const loadGame = async () => {
     updateMainBar(getBarWidth(player.barEXP, player.barTNL));
     player.barFragments.updateHTML();
 
-    hideStuff("Main")
-    document.getElementById("progression")!.style.backgroundColor = backgroundColorCreation();
-    document.getElementById("coinWorth")!.textContent =  `Worth ${format(computeMainBarCoinWorth())} coins`;
+    hideStuff("Main");
+    
+    updateElement(
+        getElementById("progression").style,
+        {
+            backgroundColor: backgroundColorCreation()
+        }
+    );
+    updateElement(
+        getElementById('coinWorth'),
+        {
+            textContent: `Worth ${format(computeMainBarCoinWorth())} coins`
+        }
+    );
 
     lastUpdate = performance.now();
     interval(tick, 1000 / FPS);

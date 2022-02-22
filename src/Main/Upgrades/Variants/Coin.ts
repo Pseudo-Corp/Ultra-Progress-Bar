@@ -1,5 +1,6 @@
 import { player } from "../../../Game";
 import { format } from "../../../Utilities/Format";
+import { updateElement } from "../../../Utilities/Render";
 import { getElementById } from "../../../Utilities/UpdateHTML";
 import { Upgrade } from "../Upgrades";
 
@@ -45,16 +46,26 @@ export class CoinBarSpeed extends CoinUpgrade {
     }
 
     updateHTML(): void {
-        getElementById("coin-bar-speed-effect").textContent = `+${format(this.upgradeEffect(), 2)} Progress Per Second`
+        updateElement(
+            getElementById("coin-bar-speed-effect"),
+            {
+                textContent: `+${format(this.upgradeEffect(), 2)} Progress Per Second`
+            }
+        );
     }
 }
 
 export class CoinBarMomentum extends CoinUpgrade {
-
     upgradeEffect(): number {
         return this.level / 1000   
     }
+
     updateHTML(): void {
-        getElementById("coin-bar-momentum-effect").textContent = `+${format(100 * this.upgradeEffect(), 2)}% Progress Per 1% Bar Filled`
+        updateElement(
+            getElementById("coin-bar-momentum-effect"),
+            {
+                textContent: `+${format(100 * this.upgradeEffect(), 2)}% Progress Per 1% Bar Filled`
+            }
+        );
     }
 }

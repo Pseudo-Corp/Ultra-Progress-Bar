@@ -2,6 +2,7 @@
 
 import { player } from "../../Game";
 import { format } from "../../Utilities/Format";
+import { updateElement } from "../../Utilities/Render";
 import { getElementById } from "../../Utilities/UpdateHTML";
 
 /**
@@ -59,7 +60,10 @@ export const incrementMainBarEXP = (delta: number) => {
     player.barEXP += actualAmount
     currentPerSec += actualAmount
 
-    getElementById("perSecCurr").textContent = `+${format(currentPerSec,2)} this sec`
+    updateElement(
+        getElementById("perSecCurr"),
+        { textContent: `+${format(currentPerSec,2)} this sec` }
+    );
 }
 
 /**
@@ -74,7 +78,10 @@ export const getBarWidth = (currScore: number, targetScore: number) => {
 }
 
 export const updateMainBar = (width: number) => {
-    getElementById("progression").style.width = width + "%";
+    updateElement(
+        getElementById("progression").style,
+        { width: `${width}%` }
+    );
 }
 
 export function backgroundColorCreation() {
@@ -97,24 +104,40 @@ export const levelUpBar = () => {
         player.highestBarLevel = player.barLevel
     }
 
-    getElementById('progression').style.backgroundColor = backgroundColorCreation();
+    updateElement(
+        getElementById('progression').style,
+        { backgroundColor: backgroundColorCreation() }
+    );
+
     player.barTNL = computeMainBarTNL()
     const width = getBarWidth(player.barEXP, player.barTNL);
     updateMainBar(width);
-    
-    getElementById("coinWorth").textContent =  `Worth ${format(computeMainBarCoinWorth())} coins`;
+
+    updateElement(
+        getElementById("coinWorth"),
+        { textContent: `Worth ${format(computeMainBarCoinWorth())} coins` }
+    );
     player.barFragments.updateHTML();
 }
 
 export const updateMainBarInformation = () => {
-    getElementById("level").textContent = `Level: ${player.barLevel}`
-    getElementById("exp").textContent = `EXP: ${format(player.barEXP)}/${format(player.barTNL)}`
+    updateElement(
+        getElementById('level'),
+        { textContent: `Level: ${player.barLevel}` }
+    );
+    updateElement(
+        getElementById('exp'),
+        { textContent: `EXP: ${format(player.barEXP)}/${format(player.barTNL)}` }
+    );
 }
 
 export const updateDPS = () => {
     previousPerSec = currentPerSec;
     currentPerSec = 0;
-    getElementById("perSecPrev").textContent = `+${format(previousPerSec,2)} prev sec`
+    updateElement(
+        getElementById('perSecPrev'),
+        { textContent: `+${format(previousPerSec,2)} prev sec` }
+    );
 }
 
 export const computeMainBarCoinWorth = () => {

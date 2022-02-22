@@ -1,14 +1,27 @@
+import { updateElement } from "./Render"
+
 export type Tabs = "Main" | "Upgrades"
 
 export const hideStuff = (tab: Tabs) => {
-    getElementById("mainTab").style.display = "none"
-    getElementById("upgradeTab").style.display = "none"
+    updateElement(
+        getElementById("mainTab").style,
+        { display: 'none' }
+    );
+    updateElement(
+        getElementById('upgradeTab').style,
+        { display: 'none' }
+    );
 
     if (tab === "Main") {
-        getElementById("mainTab").style.display = "block"
-    }
-    if (tab === "Upgrades") {
-        getElementById("upgradeTab").style.display = "block"
+        updateElement(
+            getElementById("mainTab").style,
+            { display: 'block' }
+        );
+    } else if (tab === "Upgrades") {
+        updateElement(
+            getElementById("upgradeTab").style,
+            { display: 'block' }
+        );
     }
 }
 
