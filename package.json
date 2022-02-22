@@ -10,7 +10,6 @@
     }
   },
   "devDependencies": {
-    "@types/assert": "^1.5.6",
     "@typescript-eslint/eslint-plugin": "^5.12.0",
     "husky": "^7.0.4",
     "stylelint-config-standard": "^25.0.0",
@@ -20,8 +19,10 @@
     "localforage": "^1.10.0"
   },
   "scripts": {
-    "lint": "npx eslint --fix . --ext .ts",
-    "csslint": "npx stylelint styles.css --fix",
+    "lint": "npx eslint . --ext .ts",
+    "lint:fix": "npm run lint -- --fix",
+    "csslint": "npx stylelint styles.css",
+    "csslint:fix": "npx stylelint styles.css --fix",
     "build:esbuild": "npx esbuild src/Game.ts --bundle --minify --sourcemap --target=\"chrome58,firefox57,safari11,edge29\" --outfile=\"./dist/out.js\"",
     "watch:esbuild": "npx esbuild src/Game.ts --bundle --minify --sourcemap --target=\"chrome58,firefox57,safari11,edge29\" --outfile=\"./dist/out.js\" --watch",
     "check:tsc": "npx -p typescript tsc",
