@@ -16,6 +16,7 @@ body {
 
 main {
     overflow-y: auto;
+    width: calc(100% - var(--side-nav-width) * 2);
 }
 
 ul {
@@ -132,7 +133,6 @@ aside {
     position: relative;
     margin: 50px;
     height: 400px;
-    width: 900px;
     border: 2px solid white;
 }
 
@@ -189,4 +189,21 @@ aside {
     cursor: pointer;
     background-color: var(--main-bg);
     color: white;
+}
+
+@media screen and (max-width: 1130px) {
+    #coinUpgrades {
+        flex-direction: column;
+        align-items: center;
+        min-height: auto;
+        overflow: hidden;
+    }
+
+    .coinUpgrade {
+        width: calc(100% / 3);
+    }
+
+    .wrapperInner {
+        height: auto;
+    }
 }
