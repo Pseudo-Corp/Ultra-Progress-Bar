@@ -68,6 +68,8 @@ li {
     background-color: black;
     z-index: 10;
     text-align: center;
+    word-break: break-all;
+    overflow: hidden;
 }
 
 #progression {
@@ -108,7 +110,6 @@ aside {
     border-right: 1px solid #ededed;
     flex: 1 0 0%;
     max-width: var(--side-nav-width);
-    left: 0;
 }
 
 .wrapper {
@@ -129,6 +130,7 @@ aside {
     }
 }
 
+#resourceIndicators,
 .wrapperInner {
     position: relative;
     margin: 50px;
@@ -191,6 +193,17 @@ aside {
     color: white;
 }
 
+#resourceIndicators {
+    margin-left: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+#resourceIndicators > div {
+    flex: 1 0 auto;
+    margin: 5% 10%;
+}
+
 @media screen and (max-width: 1130px) {
     #coinUpgrades {
         flex-direction: column;
@@ -205,5 +218,11 @@ aside {
 
     .wrapperInner {
         height: auto;
+    }
+
+    .coinUpgrade > button {
+        width: 80%;
+        word-break: break-all;
+        overflow: hidden;
     }
 }
