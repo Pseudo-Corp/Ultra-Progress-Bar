@@ -34,8 +34,8 @@ export abstract class CoinUpgrade extends Upgrade {
 export const coinUpgradeCosts = {
     barSpeed: 1,
     barMomentum: 10,
-    barReverberation: 40,
-    barVibration: 100
+    barReverberation: 25,
+    barVibration: 50
 }
 
 export class CoinBarSpeed extends CoinUpgrade {
@@ -74,7 +74,7 @@ export class CoinBarMomentum extends CoinUpgrade {
 
 export class CoinBarReverberation extends CoinUpgrade {
     upgradeEffect(): number {
-        return (1 - Math.pow(Math.E, -this.level / 250))
+        return (1 - Math.pow(Math.E, -this.level / 200))
     }
 
     updateHTML(): void {
