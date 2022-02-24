@@ -1,5 +1,5 @@
 import localforage from 'localforage';
-import { hasProperty, setProperty } from 'dot-prop';
+import { setProperty } from 'dot-prop';
 import { Coins } from './Main/Currency/Variants/Coin';
 import { ProgressFragment } from './Main/Currency/Variants/ProgressFragment';
 import './Events/VisisbilityChange';
@@ -54,8 +54,8 @@ export const saveGame = async () => {
     ['barFragments', data => new ProgressFragment(Number(data.barFragments.amount))],
     ['coinUpgrades.barSpeed', data => new CoinBarSpeed(data.coinUpgrades.barSpeed.level, coinUpgradeCosts.barSpeed)],
     ['coinUpgrades.barMomentum', data => new CoinBarMomentum(data.coinUpgrades.barMomentum.level, coinUpgradeCosts.barMomentum)],
-    ['coinUpgrades.barReverberation', data => new CoinBarReverberation(data.coinUpgrades.barReverberation.level, coinUpgradeCosts.barReverberation)],
-    ['coinUpgrades.barVibration', data => new CoinBarVibration(data.coinUpgrades.barVibration.level, coinUpgradeCosts.barVibration)]
+    ['coinUpgrades.barReverberation', data => new CoinBarReverberation(data.coinUpgrades.barReverberation?.level, coinUpgradeCosts.barReverberation)],
+    ['coinUpgrades.barVibration', data => new CoinBarVibration(data.coinUpgrades.barVibration?.level, coinUpgradeCosts.barVibration)]
 ]);
 
 /**
@@ -80,10 +80,8 @@ const loadSavefile = async () => {
         Object.defineProperty(player, key, { value: data[key] });
     }
 
-    for (const [key, adapter] of toAdapt) {
-        if (hasProperty(player, key)) {
-            setProperty(player, key, adapter(data));
-        }
+    for (const [key, adapter] of toAdapt) {    
+        setProperty(player, key, adapter(data));
     }
 }
 
