@@ -2,6 +2,7 @@ import localforage from 'localforage';
 import { setProperty } from 'dot-prop';
 import { Coins } from './Main/Currency/Variants/Coin';
 import { ProgressFragment } from './Main/Currency/Variants/ProgressFragment';
+import * as Transform from './Main/Transformations/index';
 import './Events/VisisbilityChange';
 
 /*
@@ -52,10 +53,10 @@ export const saveGame = async () => {
  const toAdapt = new Map<string, (data: Player) => unknown>([
     ['coins', data => new Coins(Number(data.coins.amount))],
     ['barFragments', data => new ProgressFragment(Number(data.barFragments.amount))],
-    ['coinUpgrades.barSpeed', data => new CoinBarSpeed(data.coinUpgrades.barSpeed.level, coinUpgradeCosts.barSpeed)],
-    ['coinUpgrades.barMomentum', data => new CoinBarMomentum(data.coinUpgrades.barMomentum.level, coinUpgradeCosts.barMomentum)],
-    ['coinUpgrades.barReverberation', data => new CoinBarReverberation(data.coinUpgrades.barReverberation?.level, coinUpgradeCosts.barReverberation)],
-    ['coinUpgrades.barVibration', data => new CoinBarVibration(data.coinUpgrades.barVibration?.level, coinUpgradeCosts.barVibration)]
+    ['coinUpgrades.barSpeed', Transform.transformBarSpeed],
+    ['coinUpgrades.barMomentum', Transform.transformBarMomentum],
+    ['coinUpgrades.barReverberation', Transform.transformReverberation],
+    ['coinUpgrades.barVibration', Transform.transformVibration]
 ]);
 
 /**
