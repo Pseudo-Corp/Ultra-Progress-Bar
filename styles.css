@@ -134,7 +134,7 @@ aside {
 .wrapperInner {
     position: relative;
     margin: 50px;
-    height: 400px;
+    height: 475px;
     border: 2px solid white;
 }
 
@@ -163,7 +163,7 @@ aside {
     text-align: center;
 }
 
-#coinUpgrades {
+.coinUpgrades {
     display: flex;
     flex-direction: row;
     justify-content: center;
