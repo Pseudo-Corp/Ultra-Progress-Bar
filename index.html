@@ -53,8 +53,9 @@
                     </div>
                     <div class="tabs" id="upgradeTab">
                         <h3 style="color: gold">Spend your coins here!</h3>
-                        <p>You have <span id="gold-amount"></span> coins</p>
-                        <div id="coinUpgrades">
+                        <h3 style="color: white">Protip: You can SHIFT while clicking to buy MAX!</h3>
+                        <p>You have <span id="gold-amount" style="color: gold; font-size: larger;"></span> coins</p>
+                        <div class="coinUpgrades">
                             <div class="coinUpgrade" id="coin-bar-speed">
                                 <p class="coinUpgradeText" id="coin-bar-speed-name">Bar Fill Speed</p>
                                 <p class="coinUpgradeText" id="coin-bar-speed-effect">+0.2 Progress Per Second</p>
@@ -64,6 +65,18 @@
                                 <p class="coinUpgradeText" id="coin-bar-momentum-name">Bar Momentum</p>
                                 <p class="coinUpgradeText" id="coin-bar-momentum-effect">+0.00% Progress Per 1% Bar Filled</p>
                                 <button class="coinUpgradeBtn" id="buy-coin-bar-momentum">Buy more for 10 Coin</button>
+                            </div>
+                        </div>
+                        <div class="coinUpgrades">
+                            <div class="coinUpgrade" id="coin-reverberation">
+                                <p class="coinUpgradeText" id="coin-bar-reverberation-name">Bar Reverberation</p>
+                                <p class="coinUpgradeText" id="coin-bar-reverberation-effect">0% Chance to have a CRITICAL Tick</p>
+                                <button class="coinUpgradeBtn" id="buy-coin-bar-reverberation">Buy more for 40 Coin</button>
+                            </div>
+                            <div class="coinUpgrade" id="coin-vibration">
+                                <p class="coinUpgradeText" id="coin-bar-vibration-name">Bar Vibration</p>
+                                <p class="coinUpgradeText" id="coin-bar-vibration-effect">CRITICAL Ticks fill up the bar 10x faster.</p>
+                                <button class="coinUpgradeBtn" id="buy-coin-bar-vibration">Buy more for 100 Coin</button>
                             </div>
                             <div class="coinUpgrade" id="reset">
                                 <p class="coinUpgradeText" id="reset-name">RESET</p>

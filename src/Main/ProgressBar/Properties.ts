@@ -18,13 +18,15 @@ export const computeMainBarTNL = () => {
     TNL += baseEXPReq * Math.pow(player.barLevel + 1, 2)
     // Nerf until level 20.
     TNL *= Math.min(1, (player.barLevel + 20) / 40)
-    // Multiplicative Component (Bumps at 50, 100, 200)
-    if (player.barLevel > 50)
-        TNL *= Math.pow(2, 1/10 * (player.barLevel - 50))
+    // Buff after level 20.
+    TNL *= Math.max(1, 1 + (player.barLevel - 20) / 10)
+    // Multiplicative Component (Bumps at 40, 100, 200)
+    if (player.barLevel > 40)
+        TNL *= Math.pow(2, 1/10 * (player.barLevel - 40))
     if (player.barLevel > 100)
-        TNL *= Math.pow(2, 1/50 * (player.barLevel - 100))
+        TNL *= Math.pow(2, 1/25 * (player.barLevel - 100))
     if (player.barLevel > 200)
-        TNL *= Math.pow(2, 1/200 * (player.barLevel - 200))
+        TNL *= Math.pow(2, 1/50 * (player.barLevel - 200))
     return TNL
 }
 
@@ -56,6 +58,12 @@ export const incrementMainBarEXP = (delta: number) => {
     baseAmountPerSecond *= player.barFragments.unspentBonus();
     baseAmountPerSecond *= Math.pow(1 + player.coinUpgrades.barMomentum.upgradeEffect(), 100 * Math.min(1, player.barEXP / player.barTNL));
     baseAmountPerSecond *= computeArmorMultiplier();
+
+    const criticalRoll = Math.random();
+    if (criticalRoll < player.coinUpgrades.barReverberation.upgradeEffect()) {
+        baseAmountPerSecond *= player.coinUpgrades.barVibration.upgradeEffect();
+    }
+    
     const actualAmount = baseAmountPerSecond * delta
     player.barEXP += actualAmount
     currentPerSec += actualAmount

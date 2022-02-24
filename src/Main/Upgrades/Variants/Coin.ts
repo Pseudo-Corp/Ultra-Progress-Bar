@@ -34,6 +34,8 @@ export abstract class CoinUpgrade extends Upgrade {
 export const coinUpgradeCosts = {
     barSpeed: 1,
     barMomentum: 10,
+    barReverberation: 40,
+    barVibration: 100
 }
 
 export class CoinBarSpeed extends CoinUpgrade {
@@ -67,5 +69,35 @@ export class CoinBarMomentum extends CoinUpgrade {
                 textContent: `+${format(100 * this.upgradeEffect(), 3)}% Progress Per 1% Bar Filled`
             }
         );
+    }
+}
+
+export class CoinBarReverberation extends CoinUpgrade {
+    upgradeEffect(): number {
+        return (1 - Math.pow(Math.E, -this.level / 250))
+    }
+
+    updateHTML(): void {
+        updateElement(
+            getElementById("coin-bar-reverberation-effect"),
+            {
+                textContent: `+${format(100 * this.upgradeEffect(), 2)}% chance to have a CRITICAL TICK`
+            }
+        )
+    }
+}
+
+export class CoinBarVibration extends CoinUpgrade {
+    upgradeEffect(): number {
+        return 10 + 90 * (1 - Math.pow(Math.E, -this.level / 250))
+    }
+
+    updateHTML(): void {
+        updateElement(
+            getElementById("coin-bar-vibration-effect"),
+            {
+                textContent: `CRITICAL TICKS fill up the bar ${format(this.upgradeEffect(), 2)}x faster`
+            }
+        )
     }
 }

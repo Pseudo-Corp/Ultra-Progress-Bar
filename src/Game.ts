@@ -18,7 +18,9 @@ export const player: Player = {
     coins: new Coins(),
     coinUpgrades: {
         barSpeed: new CoinBarSpeed(0, coinUpgradeCosts.barSpeed),
-        barMomentum: new CoinBarMomentum(0, coinUpgradeCosts.barMomentum)
+        barMomentum: new CoinBarMomentum(0, coinUpgradeCosts.barMomentum),
+        barReverberation: new CoinBarReverberation(0, coinUpgradeCosts.barReverberation),
+        barVibration: new CoinBarVibration(0, coinUpgradeCosts.barVibration)
     },
     barFragments: new ProgressFragment(),
     refreshCount: 0,
@@ -51,7 +53,9 @@ export const saveGame = async () => {
     ['coins', data => new Coins(Number(data.coins.amount))],
     ['barFragments', data => new ProgressFragment(Number(data.barFragments.amount))],
     ['coinUpgrades.barSpeed', data => new CoinBarSpeed(data.coinUpgrades.barSpeed.level, coinUpgradeCosts.barSpeed)],
-    ['coinUpgrades.barMomentum', data => new CoinBarMomentum(data.coinUpgrades.barMomentum.level, coinUpgradeCosts.barMomentum)]
+    ['coinUpgrades.barMomentum', data => new CoinBarMomentum(data.coinUpgrades.barMomentum.level, coinUpgradeCosts.barMomentum)],
+    ['coinUpgrades.barReverberation', data => new CoinBarReverberation(data.coinUpgrades.barReverberation.level, coinUpgradeCosts.barReverberation)],
+    ['coinUpgrades.barVibration', data => new CoinBarVibration(data.coinUpgrades.barVibration.level, coinUpgradeCosts.barVibration)]
 ]);
 
 /**
@@ -90,7 +94,7 @@ const loadSavefile = async () => {
 */
 
 import { backgroundColorCreation, computeMainBarCoinWorth, computeMainBarTNL, getBarWidth, incrementMainBarEXP, levelUpBar, updateDPS, updateMainBar, updateMainBarInformation } from "./Main/ProgressBar/Properties";
-import { CoinBarMomentum, CoinBarSpeed, coinUpgradeCosts } from './Main/Upgrades/Variants/Coin';
+import { CoinBarMomentum, CoinBarReverberation, CoinBarSpeed, CoinBarVibration, coinUpgradeCosts } from './Main/Upgrades/Variants/Coin';
 import { Player } from "./types/player";
 import { generateEventHandlers } from './Utilities/Eventlisteners';
 import { format } from './Utilities/Format';

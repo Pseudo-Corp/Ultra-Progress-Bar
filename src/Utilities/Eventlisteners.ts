@@ -14,6 +14,14 @@ export const generateEventHandlers = () => {
         'click',
         (event) => player.coinUpgrades.barMomentum.purchaseLevels(1, event)
     );
+    getElementById("buy-coin-bar-reverberation").addEventListener(
+        'click',
+        (event) => player.coinUpgrades.barReverberation.purchaseLevels(1, event)
+    )
+    getElementById("buy-coin-bar-vibration").addEventListener(
+        'click',
+        (event) => player.coinUpgrades.barVibration.purchaseLevels(1, event)
+    )
     getElementById("buy-reset").addEventListener('click', () => reset('Refresh'));
     getElementById("reset-game").addEventListener('click', () => void resetGame());
 
