@@ -73,10 +73,6 @@ export class CoinBarMomentum extends CoinUpgrade {
 }
 
 export class CoinBarReverberation extends CoinUpgrade {
-    public constructor (level: number | undefined, cost: number) {
-        super(level ?? 0, cost);
-    }
-
     upgradeEffect(): number {
         return (1 - Math.pow(Math.E, -this.level / 250))
     }
@@ -92,10 +88,6 @@ export class CoinBarReverberation extends CoinUpgrade {
 }
 
 export class CoinBarVibration extends CoinUpgrade {
-    public constructor (level: number | undefined, cost: number) {
-        super(level ?? 0, cost);
-    }
-
     upgradeEffect(): number {
         return 10 + 90 * (1 - Math.pow(Math.E, -this.level / 250))
     }
