@@ -1,7 +1,6 @@
 import { player } from "../../Game"
 import { format } from "../../Utilities/Format"
-import { updateElement } from "../../Utilities/Render"
-import { getElementById } from "../../Utilities/UpdateHTML"
+import { updateElementById } from "../../Utilities/Render"
 import { computeMainBarCoinWorth, computeMainBarTNL, getBarWidth, updateMainBar } from "../ProgressBar/Properties"
 
 export type resetTypes = "Refresh" | "Transcend"
@@ -20,18 +19,18 @@ export const reset = (variant: resetTypes) => {
 
         player.barTNL = computeMainBarTNL();
         updateMainBar(getBarWidth(player.barEXP, player.barTNL));
-        updateElement(
-            getElementById('coinWorth'),
+        updateElementById(
+            'coinWorth',
             { textContent: `Worth ${format(computeMainBarCoinWorth())} coins` }
         );
         player.barFragments.updateHTML();
         player.refreshCount += 1
         player.refreshTime = 0;
 
-        updateElement(
-            getElementById("refresh-counter"),
+        updateElementById(
+            "refresh-counter",
             { textContent: format(player.refreshCount)}
-        )
+        );
     }
     else {
         alert("You cannot refresh yet. Get to level 5 lol")

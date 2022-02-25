@@ -1,8 +1,6 @@
-//import assert from 'assert'
-
 import { player } from "../../Game";
 import { format } from "../../Utilities/Format";
-import { updateElement } from "../../Utilities/Render";
+import { updateElementById, updateStyleById } from "../../Utilities/Render";
 import { getElementById } from "../../Utilities/UpdateHTML";
 
 /**
@@ -68,8 +66,8 @@ export const incrementMainBarEXP = (delta: number) => {
     player.barEXP += actualAmount
     currentPerSec += actualAmount
 
-    updateElement(
-        getElementById("perSecCurr"),
+    updateElementById(
+        "perSecCurr",
         { textContent: `+${format(currentPerSec,2)} this sec` }
     );
 }
@@ -86,8 +84,8 @@ export const getBarWidth = (currScore: number, targetScore: number) => {
 }
 
 export const updateMainBar = (width: number) => {
-    updateElement(
-        getElementById("progression").style,
+    updateStyleById(
+        "progression",
         { width: `${width}%` }
     );
 }
@@ -112,8 +110,8 @@ export const levelUpBar = () => {
         player.highestBarLevel = player.barLevel
     }
 
-    updateElement(
-        getElementById('progression').style,
+    updateStyleById(
+        'progression',
         { backgroundColor: backgroundColorCreation() }
     );
 
@@ -125,20 +123,20 @@ export const levelUpBar = () => {
     const width = getBarWidth(player.barEXP, player.barTNL);
     updateMainBar(width);
 
-    updateElement(
-        getElementById("coinWorth"),
+    updateElementById(
+        "coinWorth",
         { textContent: `Worth ${format(computeMainBarCoinWorth())} coins` }
     );
     player.barFragments.updateHTML();
 }
 
 export const updateMainBarInformation = () => {
-    updateElement(
-        getElementById('level'),
+    updateElementById(
+        'level',
         { textContent: `Level: ${player.barLevel}` }
     );
-    updateElement(
-        getElementById('exp'),
+    updateElementById(
+        'exp',
         { textContent: `EXP: ${format(player.barEXP)}/${format(player.barTNL)}` }
     );
 }
@@ -146,8 +144,8 @@ export const updateMainBarInformation = () => {
 export const updateDPS = () => {
     previousPerSec = currentPerSec;
     currentPerSec = 0;
-    updateElement(
-        getElementById('perSecPrev'),
+    updateElementById(
+        'perSecPrev',
         { textContent: `+${format(previousPerSec,2)} prev sec` }
     );
 }

@@ -97,8 +97,8 @@ import { CoinBarMomentum, CoinBarReverberation, CoinBarSpeed, CoinBarVibration, 
 import { Player } from "./types/player";
 import { generateEventHandlers } from './Utilities/Eventlisteners';
 import { format } from './Utilities/Format';
-import { updateElement } from './Utilities/Render';
-import { getElementById, hideStuff } from './Utilities/UpdateHTML';
+import { updateElementById, updateStyleById } from './Utilities/Render';
+import { hideStuff } from './Utilities/UpdateHTML';
 
 export const intervalHold = new Set<ReturnType<typeof setInterval>>();
 export const interval = new Proxy(setInterval, {
@@ -161,14 +161,14 @@ export const loadGame = async () => {
 
     hideStuff("Main");
     
-    updateElement(
-        getElementById("progression").style,
+    updateStyleById(
+        "progression",
         {
             backgroundColor: backgroundColorCreation()
         }
     );
-    updateElement(
-        getElementById('coinWorth'),
+    updateElementById(
+        'coinWorth',
         {
             textContent: `Worth ${format(computeMainBarCoinWorth())} coins`
         }
@@ -203,13 +203,12 @@ export const tick = () => {
  * @param delta how many seconds have elapsed since the previous tick
  */
 export const tock = (delta: number) => {
-
     incrementMainBarEXP(delta);
     player.refreshTime += delta;
-    updateElement(
-        getElementById("refresh-timer"),
-        {textContent: `${format(player.refreshTime, 2)}s`}
-    )
+    updateElementById(
+        "refresh-timer",
+        { textContent: `${format(player.refreshTime, 2)}s` }
+    );
     const width = getBarWidth(player.barEXP, player.barTNL);
 
     if (width < 100)

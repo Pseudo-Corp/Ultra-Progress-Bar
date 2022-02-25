@@ -6,10 +6,10 @@ import { CoinBarReverberation, coinUpgradeCosts } from '../../Upgrades/Variants/
 const path = 'coinUpgrades.barReverberation' as const;
 
 export const transform = (data: Partial<Player>) => {
-    const value = getProperty(data, path) ?? getProperty(player, path)!;
+    const value = getProperty(data, path) ?? getProperty(player, path);
 
     return new CoinBarReverberation(
-        value.level,
+        value?.level ?? 0,
         coinUpgradeCosts.barReverberation
     );
 }
