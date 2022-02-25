@@ -24,9 +24,9 @@ export const computeMainBarTNL = () => {
     if (player.barLevel > 40)
         TNL *= Math.pow(2, 1/10 * (player.barLevel - 40))
     if (player.barLevel > 100)
-        TNL *= Math.pow(2, 1/25 * (player.barLevel - 100))
+        TNL *= Math.pow(2, 1/10 * (player.barLevel - 100))
     if (player.barLevel > 200)
-        TNL *= Math.pow(2, 1/50 * (player.barLevel - 200))
+        TNL *= Math.pow(2, 1/10 * (player.barLevel - 200))
     return TNL
 }
 
@@ -56,7 +56,7 @@ export const incrementMainBarEXP = (delta: number) => {
     let baseAmountPerSecond = 1
     baseAmountPerSecond += player.coinUpgrades.barSpeed.upgradeEffect();
     baseAmountPerSecond *= player.barFragments.unspentBonus();
-    baseAmountPerSecond *= Math.pow(1 + player.coinUpgrades.barMomentum.upgradeEffect(), 100 * Math.min(1, player.barEXP / player.barTNL));
+    baseAmountPerSecond *= Math.pow(1 + player.coinUpgrades.barMomentum.upgradeEffect(), Math.sqrt(100 * Math.min(1, player.barEXP / player.barTNL)));
     baseAmountPerSecond *= computeArmorMultiplier();
 
     const criticalRoll = Math.random();
@@ -118,6 +118,10 @@ export const levelUpBar = () => {
     );
 
     player.barTNL = computeMainBarTNL()
+
+    // Adjust barEXP to prevent overleveling / snowball effect on levels
+    player.barEXP = Math.min(player.barEXP, Math.floor(player.barTNL / 10));
+    
     const width = getBarWidth(player.barEXP, player.barTNL);
     updateMainBar(width);
 
@@ -151,13 +155,22 @@ export const updateDPS = () => {
 export const computeMainBarCoinWorth = () => {
     let baseWorth = 0;
 
-    const nextLevel = player.barLevel + 1
-    baseWorth += Math.floor((nextLevel + 7) / 10)
+    const nextLevel = 1 + player.barLevel
     // Highest level bonus
     if (nextLevel > player.highestBarLevel)
-        baseWorth += Math.floor(nextLevel / 10) + 3;
-    if (nextLevel % 10 === 0)
+        baseWorth += 3;
+
+    // Every 5th bar
+    if (nextLevel % 5 === 0)
         baseWorth += Math.floor(nextLevel / 5) + 3
+
+    // Every 10th bar, adding to the previous
+    if (nextLevel % 10 === 0)
+        baseWorth += Math.floor(nextLevel / 2)
+
+    const coinHTML = getElementById("coinWorth");
+    coinHTML.style.color = (baseWorth > 0) ? "gold" : "grey"
+    
 
     return baseWorth
 }

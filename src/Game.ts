@@ -140,7 +140,7 @@ window.addEventListener('unload', () => {
  * FPS: How many times the game is to update (tick) per second.
  */
 let lastUpdate = 0;
-const FPS = 50; 
+const FPS = 8; 
 const saveRate = 5000
 
 export const loadGame = async () => {

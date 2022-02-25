@@ -59,14 +59,14 @@ export class CoinBarSpeed extends CoinUpgrade {
 
 export class CoinBarMomentum extends CoinUpgrade {
     upgradeEffect(): number {
-        return 4/100 * (1 - Math.pow(Math.E, -this.level/100))
+        return (1 - Math.pow(Math.E, -this.level/400))
     }
 
     updateHTML(): void {
         updateElement(
             getElementById("coin-bar-momentum-effect"),
             {
-                textContent: `+${format(100 * this.upgradeEffect(), 3)}% Progress Per 1% Bar Filled`
+                textContent: `Up to ${format(Math.pow(1 + this.upgradeEffect(), 10), 2)}x Progress Speed based on fill%`,
             }
         );
     }
