@@ -1,7 +1,7 @@
-import { player } from "../../Game";
-import { format } from "../../Utilities/Format";
-import { updateElementById, updateStyleById } from "../../Utilities/Render";
-import { getElementById, onCriticalHit } from "../../Utilities/UpdateHTML";
+import { player } from '../../Game';
+import { format } from '../../Utilities/Format';
+import { updateElementById, updateStyleById } from '../../Utilities/Render';
+import { getElementById, onCriticalHit } from '../../Utilities/UpdateHTML';
 
 /**
  * Basic Bar Stats
@@ -70,7 +70,7 @@ export const incrementMainBarEXP = (delta: number) => {
     currentPerSec += actualAmount
 
     updateElementById(
-        "perSecCurr",
+        'perSecCurr',
         { textContent: `+${format(currentPerSec,2)} this sec` }
     );
 }
@@ -88,12 +88,12 @@ export const getBarWidth = (currScore: number, targetScore: number) => {
 
 export const updateMainBar = (width: number) => {
     updateStyleById(
-        "progression",
+        'progression',
         { width: `${width}%` }
     );
 }
 
-export function backgroundColorCreation() {
+export const backgroundColorCreation = () => {
     const R = (128 + player.barLevel).toString(16)
     const G = (2 * player.barLevel).toString(16)
     const B = (128 + player.barLevel).toString(16)
@@ -101,7 +101,7 @@ export function backgroundColorCreation() {
     if (player.barLevel < 128)
         return `#${R}${G}${B}`
     else
-        return `#ffffff`
+        return '#ffffff'
 }
 
 export const levelUpBar = () => {
@@ -129,14 +129,14 @@ export const levelUpBar = () => {
     updateMainBar(width);
 
     updateElementById(
-        "coinWorth",
+        'coinWorth',
         { textContent: `Worth ${format(computeMainBarCoinWorth())} coins` }
     );
     player.barFragments.updateHTML();
 
     if (player.barLevel === 20) {
-        player.talents.barCriticalChance.updateHTML("Level20");
-        player.talents.barSpeed.updateHTML("Level20");
+        player.talents.barCriticalChance.updateHTML('Level20');
+        player.talents.barSpeed.updateHTML('Level20');
     }
 }
 
@@ -159,7 +159,7 @@ export const updateDPS = () => {
         { textContent: `+${format(previousPerSec,2)} prev sec` }
     );
 
-    player.talents.barCriticalChance.updateHTML("Time")
+    player.talents.barCriticalChance.updateHTML('Time')
     player.talents.barSpeed.gainEXP();
 }
 
@@ -185,8 +185,8 @@ export const computeMainBarCoinWorth = () => {
     if (nextLevel % 100 === 0)
         baseWorth += Math.floor(nextLevel)
 
-    const coinHTML = getElementById("coinWorth");
-    coinHTML.style.color = (baseWorth > 0) ? "gold" : "grey"
+    const coinHTML = getElementById('coinWorth');
+    coinHTML.style.color = (baseWorth > 0) ? 'gold' : 'grey'
     
 
     return baseWorth

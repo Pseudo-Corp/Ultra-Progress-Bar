@@ -1,7 +1,7 @@
-import { getProperty } from "dot-prop";
-import { player } from "../../../Game";
-import { Player } from "../../../types/player";
-import { talentBaseEXP, TalentCriticalChance } from "../../Upgrades/Variants/Talents";
+import { getProperty } from 'dot-prop';
+import { player } from '../../../Game';
+import { Player } from '../../../types/player';
+import { talentBaseEXP, TalentCriticalChance } from '../../Upgrades/Variants/Talents';
 
 const path = 'talents.barCriticalChance' as const;
 

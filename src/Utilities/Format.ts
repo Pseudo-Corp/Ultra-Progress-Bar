@@ -12,7 +12,7 @@
         const power = Math.floor(Math.log10(n))
         n /= Math.pow(10, power)
 
-        return format(n, 2) + "e" + format(power)
+        return format(n, 2) + 'e' + format(power)
     }
 
     const truncatedNumber = Math.floor(n);

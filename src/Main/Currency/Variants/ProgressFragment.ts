@@ -1,20 +1,20 @@
-import { player } from "../../../Game";
-import { format } from "../../../Utilities/Format";
-import { updateElementById } from "../../../Utilities/Render";
-import { Currency } from "../Currency";
+import { player } from '../../../Game';
+import { format } from '../../../Utilities/Format';
+import { updateElementById } from '../../../Utilities/Render';
+import { Currency } from '../Currency';
 
 export class ProgressFragment extends Currency {
     updateHTML(): void {
         updateElementById(
-            "fragment-amount",
+            'fragment-amount',
             { textContent: format(this.amount) }
         );
         updateElementById(
-            "fragment-bonus",
+            'fragment-bonus',
             { textContent: format(this.amount) }
         );
         updateElementById(
-            "fragment-gain",
+            'fragment-gain',
             { textContent: format(this.getAmountOnRefresh()) }
         );
     }

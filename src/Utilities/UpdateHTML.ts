@@ -1,11 +1,11 @@
-import { backgroundColorCreation } from "../Main/ProgressBar/Properties";
-import { updateStyleById } from "./Render"
+import { backgroundColorCreation } from '../Main/ProgressBar/Properties';
+import { updateStyleById } from './Render'
 
-export type Tabs = "Main" | "Upgrades" | "Talents"
+export type Tabs = 'Main' | 'Upgrades' | 'Talents'
 
 export const hideStuff = (tab: Tabs) => {
     updateStyleById(
-        "mainTab",
+        'mainTab',
         { display: 'none' }
     );
     updateStyleById(
@@ -15,23 +15,23 @@ export const hideStuff = (tab: Tabs) => {
     updateStyleById(
         'talentsTab',
         { display: 'none' }
-    )
+    );
 
-    if (tab === "Main") {
+    if (tab === 'Main') {
         updateStyleById(
-            "mainTab",
+            'mainTab',
             { display: 'block' }
         );
-    } else if (tab === "Upgrades") {
+    } else if (tab === 'Upgrades') {
         updateStyleById(
-            "upgradeTab",
+            'upgradeTab',
             { display: 'block' }
         );
-    } else if (tab === "Talents") {
+    } else if (tab === 'Talents') {
         updateStyleById(
-            "talentsTab",
+            'talentsTab',
             { display: 'block' }
-        )
+        );
     }
 }
 
@@ -40,14 +40,14 @@ export const getElementById = (id: string): HTMLElement =>
 
 export const onCriticalHit = () => {
     updateStyleById(
-        "progression",
-        { backgroundColor: "gold"}
-    )
+        'progression',
+        { backgroundColor: 'gold'}
+    );
 
-    setTimeout( function() {
+    setTimeout(() => {
         updateStyleById(
-            "progression",
+            'progression',
             {backgroundColor: backgroundColorCreation()}
         );
-    }, 250)
+    }, 250);
 }

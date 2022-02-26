@@ -1,7 +1,7 @@
-import { player } from "../../../Game";
-import { format } from "../../../Utilities/Format";
-import { updateElementById } from "../../../Utilities/Render";
-import { Upgrade } from "../Upgrades";
+import { player } from '../../../Game';
+import { format } from '../../../Utilities/Format';
+import { updateElementById } from '../../../Utilities/Render';
+import { Upgrade } from '../Upgrades';
 
 export abstract class CoinUpgrade extends Upgrade {
     
@@ -48,7 +48,7 @@ export class CoinBarSpeed extends CoinUpgrade {
 
     updateHTML(): void {
         updateElementById(
-            "coin-bar-speed-effect",
+            'coin-bar-speed-effect',
             {
                 textContent: `+${format(this.upgradeEffect(), 2)} Progress Per Second`
             }
@@ -63,7 +63,7 @@ export class CoinBarMomentum extends CoinUpgrade {
 
     updateHTML(): void {
         updateElementById(
-            "coin-bar-momentum-effect",
+            'coin-bar-momentum-effect',
             {
                 textContent: `Up to ${format(Math.pow(1 + this.upgradeEffect(), 10), 2)}x Progress Speed based on fill%`,
             }
@@ -78,7 +78,7 @@ export class CoinBarReverberation extends CoinUpgrade {
 
     updateHTML(): void {
         updateElementById(
-            "coin-bar-reverberation-effect",
+            'coin-bar-reverberation-effect',
             {
                 textContent: `+${format(100 * this.upgradeEffect(), 2)}% chance to have a CRITICAL TICK`
             }
@@ -93,7 +93,7 @@ export class CoinBarVibration extends CoinUpgrade {
 
     updateHTML(): void {
         updateElementById(
-            "coin-bar-vibration-effect",
+            'coin-bar-vibration-effect',
             {
                 textContent: `CRITICAL TICKS fill up the bar ${format(this.upgradeEffect(), 2)}x faster`
             }

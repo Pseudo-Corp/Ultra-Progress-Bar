@@ -1,16 +1,16 @@
-import { minimumRefreshCounter, player } from "../../../Game"
-import { format } from "../../../Utilities/Format"
-import { computePolyCost } from "../../../Utilities/HelperFunctions"
-import { updateElementById, updateStyleById } from "../../../Utilities/Render"
-import { previousPerSec } from "../../ProgressBar/Properties"
-import { reset } from "../../Reset/Refresh"
-import { Upgrade } from "../Upgrades"
+import { minimumRefreshCounter, player } from '../../../Game'
+import { format } from '../../../Utilities/Format'
+import { computePolyCost } from '../../../Utilities/HelperFunctions'
+import { updateElementById, updateStyleById } from '../../../Utilities/Render'
+import { previousPerSec } from '../../ProgressBar/Properties'
+import { reset } from '../../Reset/Refresh'
+import { Upgrade } from '../Upgrades'
 
 export const isLevel20 = () => {
     return (player.barLevel >= 20)
 }
 
-export type TalentHTMLType = "Initialize" | "GainEXP" | "LevelUp" | "PermLevelUp" | "Time" | "Level20"
+export type TalentHTMLType = 'Initialize' | 'GainEXP' | 'LevelUp' | 'PermLevelUp' | 'Time' | 'Level20'
 
 export abstract class Talent extends Upgrade {
     abstract idHTML: string
@@ -36,7 +36,7 @@ export abstract class Talent extends Upgrade {
 
     setEXP(amount: number): void {
         this.currEXP = amount
-        this.updateHTML("GainEXP")
+        this.updateHTML('GainEXP')
     }
 
     gainEXP(): void {
@@ -48,14 +48,14 @@ export abstract class Talent extends Upgrade {
         if (this.currEXP >= this.currTNL) {
             this.levelUp();
         }
-        this.updateHTML("GainEXP");
+        this.updateHTML('GainEXP');
     }
 
     levelUp(): void {
         this.level += 1
         this.setEXP(0)
         this.currTNL = this.calculateTNL();
-        this.updateHTML("LevelUp")
+        this.updateHTML('LevelUp')
     }
 
     computePermLevelGain(level: number): number {
@@ -75,7 +75,7 @@ export abstract class Talent extends Upgrade {
         this.level = 0;
         this.setEXP(0);
         this.currTNL = this.calculateTNL();
-        this.updateHTML("PermLevelUp");
+        this.updateHTML('PermLevelUp');
     }
 
     getBarWidth(): number {
@@ -85,7 +85,7 @@ export abstract class Talent extends Upgrade {
     sacrificeFragments(): void {
         if (player !== undefined) {
             if (player.barFragments.amount < 1000)
-                return alert("You cannot sacrifice your bar fragments until you have at least 1,000 of them.")
+                return alert('You cannot sacrifice your bar fragments until you have at least 1,000 of them.')
             if (player.barFragments.amount <= this.investedFragments)
                 return alert(`This bar needs more fragments than you can invest. You need ${format(this.investedFragments)}.`)
 
@@ -94,7 +94,7 @@ export abstract class Talent extends Upgrade {
                 if (confirmation) {
                     this.investedFragments = player.barFragments.amount
                     player.refreshTime += minimumRefreshCounter;
-                    reset("Refresh");
+                    reset('Refresh');
                     player.barFragments.set(0);
                 }
             }
@@ -103,7 +103,7 @@ export abstract class Talent extends Upgrade {
 
     updateHTML(reason: TalentHTMLType): void {
         if (this.idHTML === undefined) {return}
-        if (reason === "Initialize" || reason === "GainEXP" || reason === "LevelUp" || reason === "PermLevelUp") {
+        if (reason === 'Initialize' || reason === 'GainEXP' || reason === 'LevelUp' || reason === 'PermLevelUp') {
             updateElementById(
                 `talent${this.idHTML}EXP`,
                 { textContent: `EXP: ${format(this.currEXP)}/${format(this.currTNL)}` }
@@ -115,25 +115,25 @@ export abstract class Talent extends Upgrade {
             )
 
         }
-        if (reason === "Initialize" || reason === "LevelUp" || reason === "PermLevelUp") {
+        if (reason === 'Initialize' || reason === 'LevelUp' || reason === 'PermLevelUp') {
             updateElementById(
                 `talent${this.idHTML}TempLevel`,
                 { textContent: `Level this run: ${format(this.level)}`}
             )
         }
-        if (reason === "Initialize" || reason === "PermLevelUp") {
+        if (reason === 'Initialize' || reason === 'PermLevelUp') {
             updateElementById(
                 `talent${this.idHTML}PermLevel`,
                 { textContent: `Banked levels: ${format(this.permLevel)}`}
             )
         }
-        if (reason === "Initialize" || reason === "Time" || reason === "LevelUp") {
+        if (reason === 'Initialize' || reason === 'Time' || reason === 'LevelUp') {
             updateElementById(
                 `talent${this.idHTML}PermGain`,
                 { textContent: `Banked on reset: +${format(this.computePermLevelGain(this.level))}`}
             )
         }
-        if (reason === "Initialize" || reason === "LevelUp" || reason === "PermLevelUp" || reason === "Level20") {
+        if (reason === 'Initialize' || reason === 'LevelUp' || reason === 'PermLevelUp' || reason === 'Level20') {
             updateElementById(
                 `talent${this.idHTML}Effect`,
                 { textContent: this.displayEffect()}
@@ -152,12 +152,12 @@ export const talentBaseEXP = {
 }
 
 export class TalentCriticalChance extends Talent {
-    idHTML = "CriticalChance"
+    idHTML = 'CriticalChance'
     constructor(level: number, cost: number, 
         investedFragments: number, permLevel: number, 
         currEXP: number) {
         super(level, cost, investedFragments, permLevel, currEXP);
-        this.updateHTML("Initialize");
+        this.updateHTML('Initialize');
     }
 
     calculateEXPGain(): number {
@@ -189,12 +189,12 @@ export class TalentCriticalChance extends Talent {
 }
 
 export class TalentProgressSpeed extends Talent {
-    idHTML = "ProgressSpeed"
+    idHTML = 'ProgressSpeed'
     constructor(level: number, cost: number, 
         investedFragments: number, permLevel: number, 
         currEXP: number) {
         super(level, cost, investedFragments, permLevel, currEXP);
-        this.updateHTML("Initialize");
+        this.updateHTML('Initialize');
     }
 
     calculateEXPGain(): number {

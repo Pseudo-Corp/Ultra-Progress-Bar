@@ -1,4 +1,4 @@
-import { getElementById } from "./UpdateHTML";
+import { getElementById } from './UpdateHTML';
 
 export const updateElement = <
     T extends HTMLElement | CSSStyleDeclaration,

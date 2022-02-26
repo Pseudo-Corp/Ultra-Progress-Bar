@@ -98,9 +98,9 @@ const loadSavefile = async () => {
 * to create the basic game loop at 50fps without jarring effects.
 */
 
-import { backgroundColorCreation, computeMainBarCoinWorth, computeMainBarTNL, getBarWidth, incrementMainBarEXP, levelUpBar, updateDPS, updateMainBar, updateMainBarInformation } from "./Main/ProgressBar/Properties";
+import { backgroundColorCreation, computeMainBarCoinWorth, computeMainBarTNL, getBarWidth, incrementMainBarEXP, levelUpBar, updateDPS, updateMainBar, updateMainBarInformation } from './Main/ProgressBar/Properties';
 import { CoinBarMomentum, CoinBarReverberation, CoinBarSpeed, CoinBarVibration, coinUpgradeCosts } from './Main/Upgrades/Variants/Coin';
-import { Player } from "./types/player";
+import { Player } from './types/player';
 import { generateEventHandlers } from './Utilities/Eventlisteners';
 import { format } from './Utilities/Format';
 import { updateElementById, updateStyleById } from './Utilities/Render';
@@ -166,10 +166,10 @@ export const loadGame = async () => {
     updateMainBar(getBarWidth(player.barEXP, player.barTNL));
     player.barFragments.updateHTML();
 
-    hideStuff("Main");
+    hideStuff('Main');
     
     updateStyleById(
-        "progression",
+        'progression',
         {
             backgroundColor: backgroundColorCreation()
         }
@@ -189,10 +189,10 @@ export const loadGame = async () => {
 
 export const resetGame = async () => {
 
-    await localforage.removeItem("UPBSave");
+    await localforage.removeItem('UPBSave');
     const emptySave = btoa(JSON.stringify(blankSave))
 
-    await localforage.setItem("UPBSave", emptySave)
+    await localforage.setItem('UPBSave', emptySave)
     await loadGame();
 }
 
@@ -213,7 +213,7 @@ export const tock = (delta: number) => {
     incrementMainBarEXP(delta);
     player.refreshTime += delta;
     updateElementById(
-        "refresh-timer",
+        'refresh-timer',
         { textContent: `${format(player.refreshTime, 2)}s` }
     );
     const width = getBarWidth(player.barEXP, player.barTNL);

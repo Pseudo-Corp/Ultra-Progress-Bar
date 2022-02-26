@@ -1,4 +1,4 @@
-export type Currencies = "Coins"
+export type Currencies = 'Coins'
 
 export abstract class Currency {
     amount: number;
