@@ -1,25 +1,25 @@
-import { updateElement } from "./Render"
+import { updateStyleById } from "./Render"
 
 export type Tabs = "Main" | "Upgrades"
 
 export const hideStuff = (tab: Tabs) => {
-    updateElement(
-        getElementById("mainTab").style,
+    updateStyleById(
+        "mainTab",
         { display: 'none' }
     );
-    updateElement(
-        getElementById('upgradeTab').style,
+    updateStyleById(
+        'upgradeTab',
         { display: 'none' }
     );
 
     if (tab === "Main") {
-        updateElement(
-            getElementById("mainTab").style,
+        updateStyleById(
+            "mainTab",
             { display: 'block' }
         );
     } else if (tab === "Upgrades") {
-        updateElement(
-            getElementById("upgradeTab").style,
+        updateStyleById(
+            "upgradeTab",
             { display: 'block' }
         );
     }

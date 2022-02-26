@@ -1,8 +1,7 @@
 import { player } from '../Game';
 import { computeMainBarCoinWorth } from '../Main/ProgressBar/Properties';
 import { format } from '../Utilities/Format';
-import { updateElement } from '../Utilities/Render';
-import { getElementById } from '../Utilities/UpdateHTML';
+import { updateElementById } from '../Utilities/Render';
 
 document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'hidden') return;
@@ -12,8 +11,8 @@ document.addEventListener('visibilitychange', () => {
     player.coinUpgrades.barSpeed.updateHTML();
     player.barFragments.updateHTML();
 
-    updateElement(
-        getElementById('coinWorth'),
+    updateElementById(
+        'coinWorth',
         { textContent: `Worth ${format(computeMainBarCoinWorth())} coins` }
     );
 });
