@@ -204,6 +204,77 @@ aside {
     margin: 5% 10%;
 }
 
+.talentContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    border: 2px solid #da70d6;
+    padding: 12px;
+}
+
+.talentContainer > p {
+    height: auto;
+    margin: auto;
+}
+
+.talentBarContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 70%;
+}
+
+.talentProgressBar {
+    position: relative;
+    width: 100%;
+    height: 40px;
+    border: 2px solid white;
+    vertical-align: middle;
+}
+
+.talentBarText {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 150px;
+    height: 25px;
+    border: 2px solid white;
+    border-top-left-radius: 20%;
+    border-top-right-radius: 20%;
+    background-color: black;
+    z-index: 10;
+    text-align: center;
+    word-break: break-all;
+    overflow: hidden;
+}
+
+.talentProgression {
+    height: 100%;
+    background-color: cyan;
+    width: 5%;
+}
+
+.talentSacrifice {
+    width: 40%;
+    height: 40px;
+    cursor: pointer;
+    background-color: var(--main-bg);
+    color: orchid;
+}
+
+.talentInfo {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+}
+
+.talentInfoText {
+    height: auto;
+    margin: auto;
+    text-align: left;
+    width: 90%;
+}
+
 @media screen and (max-width: 1130px) {
     #coinUpgrades {
         flex-direction: column;

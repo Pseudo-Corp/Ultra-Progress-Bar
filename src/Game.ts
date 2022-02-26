@@ -23,6 +23,10 @@ export const player: Player = {
         barReverberation: new CoinBarReverberation(0, coinUpgradeCosts.barReverberation),
         barVibration: new CoinBarVibration(0, coinUpgradeCosts.barVibration)
     },
+    talents: {
+        barCriticalChance: new TalentCriticalChance(0, talentBaseEXP.talentCriticalChance, 0, 0, 0),
+        barSpeed: new TalentProgressSpeed(0, talentBaseEXP.talentProgressSpeed, 0, 0, 0)
+    },
     barFragments: new ProgressFragment(),
     refreshCount: 0,
     refreshTime: 0,
@@ -56,7 +60,9 @@ export const saveGame = async () => {
     ['coinUpgrades.barSpeed', Transform.transformBarSpeed],
     ['coinUpgrades.barMomentum', Transform.transformBarMomentum],
     ['coinUpgrades.barReverberation', Transform.transformReverberation],
-    ['coinUpgrades.barVibration', Transform.transformVibration]
+    ['coinUpgrades.barVibration', Transform.transformVibration],
+    ['talents.barCriticalChance', Transform.transformTalentBarCriticalChance],
+    ['talents.barSpeed', Transform.transformBarSpeedTalent],
 ]);
 
 /**
@@ -99,6 +105,7 @@ import { generateEventHandlers } from './Utilities/Eventlisteners';
 import { format } from './Utilities/Format';
 import { updateElementById, updateStyleById } from './Utilities/Render';
 import { hideStuff } from './Utilities/UpdateHTML';
+import { talentBaseEXP, TalentCriticalChance, TalentProgressSpeed } from './Main/Upgrades/Variants/Talents';
 
 export const intervalHold = new Set<ReturnType<typeof setInterval>>();
 export const interval = new Proxy(setInterval, {
@@ -219,3 +226,8 @@ export const tock = (delta: number) => {
 
     updateMainBarInformation();
 }
+
+/*
+* Miscellaneous Game Variables
+*/
+export const minimumRefreshCounter = 60

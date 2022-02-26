@@ -43,7 +43,7 @@ export class CoinBarSpeed extends CoinUpgrade {
      * @returns Bar Speed to add on top of the base amount. Additive!
      */
     upgradeEffect(): number {
-        return this.level / 100 + 0.09 * Math.min(40, this.level)
+        return 4 * this.level / 100 + 0.06 * Math.min(90, this.level)
     }
 
     updateHTML(): void {

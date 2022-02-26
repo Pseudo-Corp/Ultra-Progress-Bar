@@ -5,6 +5,7 @@ import { getElementById, hideStuff } from "./UpdateHTML";
 export const generateEventHandlers = () => {
     getElementById("main-tab-nav").addEventListener('click', () => hideStuff("Main"));
     getElementById("upgrade-tab-nav").addEventListener('click', () => hideStuff("Upgrades"));
+    getElementById("talent-tab-nav").addEventListener('click', () => hideStuff("Talents"))
 
     getElementById("buy-coin-bar-speed").addEventListener(
         'click',
@@ -25,4 +26,8 @@ export const generateEventHandlers = () => {
     getElementById("buy-reset").addEventListener('click', () => reset('Refresh'));
     getElementById("reset-game").addEventListener('click', () => void resetGame());
 
+    getElementById("talentCriticalChanceSacrifice").addEventListener(
+        'click',
+        () => player.talents.barCriticalChance.sacrificeFragments()
+    )
 }

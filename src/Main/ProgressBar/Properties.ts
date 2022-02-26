@@ -1,14 +1,14 @@
 import { player } from "../../Game";
 import { format } from "../../Utilities/Format";
 import { updateElementById, updateStyleById } from "../../Utilities/Render";
-import { getElementById } from "../../Utilities/UpdateHTML";
+import { getElementById, onCriticalHit } from "../../Utilities/UpdateHTML";
 
 /**
  * Basic Bar Stats
  */
 const baseEXPReq = 10;
 let currentPerSec = 0;
-let previousPerSec = 0;
+export let previousPerSec = 0;
 
 export const computeMainBarTNL = () => {
     let TNL = 0
@@ -56,10 +56,13 @@ export const incrementMainBarEXP = (delta: number) => {
     baseAmountPerSecond *= player.barFragments.unspentBonus();
     baseAmountPerSecond *= Math.pow(1 + player.coinUpgrades.barMomentum.upgradeEffect(), Math.sqrt(100 * Math.min(1, player.barEXP / player.barTNL)));
     baseAmountPerSecond *= computeArmorMultiplier();
+    baseAmountPerSecond *= player.talents.barSpeed.talentEffect();
 
     const criticalRoll = Math.random();
-    if (criticalRoll < player.coinUpgrades.barReverberation.upgradeEffect()) {
+    if (criticalRoll < player.coinUpgrades.barReverberation.upgradeEffect() + player.talents.barCriticalChance.talentEffect()) {
         baseAmountPerSecond *= player.coinUpgrades.barVibration.upgradeEffect();
+        onCriticalHit();
+        player.talents.barCriticalChance.gainEXP();
     }
     
     const actualAmount = baseAmountPerSecond * delta
@@ -110,9 +113,10 @@ export const levelUpBar = () => {
         player.highestBarLevel = player.barLevel
     }
 
+    const barColor = backgroundColorCreation();
     updateStyleById(
         'progression',
-        { backgroundColor: backgroundColorCreation() }
+        { backgroundColor: barColor }
     );
 
     player.barTNL = computeMainBarTNL()
@@ -129,6 +133,11 @@ export const levelUpBar = () => {
         { textContent: `Worth ${format(computeMainBarCoinWorth())} coins` }
     );
     player.barFragments.updateHTML();
+
+    if (player.barLevel === 20) {
+        player.talents.barCriticalChance.updateHTML("Level20");
+        player.talents.barSpeed.updateHTML("Level20");
+    }
 }
 
 export const updateMainBarInformation = () => {
@@ -149,6 +158,9 @@ export const updateDPS = () => {
         'perSecPrev',
         { textContent: `+${format(previousPerSec,2)} prev sec` }
     );
+
+    player.talents.barCriticalChance.updateHTML("Time")
+    player.talents.barSpeed.gainEXP();
 }
 
 export const computeMainBarCoinWorth = () => {
@@ -166,6 +178,12 @@ export const computeMainBarCoinWorth = () => {
     // Every 10th bar, adding to the previous
     if (nextLevel % 10 === 0)
         baseWorth += Math.floor(nextLevel / 2)
+
+    if (nextLevel % 50 === 0)
+        baseWorth += Math.floor(nextLevel / 2)
+
+    if (nextLevel % 100 === 0)
+        baseWorth += Math.floor(nextLevel)
 
     const coinHTML = getElementById("coinWorth");
     coinHTML.style.color = (baseWorth > 0) ? "gold" : "grey"
