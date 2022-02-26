@@ -118,6 +118,7 @@ export const levelUpBar = () => {
     player.barTNL = computeMainBarTNL()
 
     // Adjust barEXP to prevent overleveling / snowball effect on levels
+    player.barEXP /= 10;
     player.barEXP = Math.min(player.barEXP, Math.floor(player.barTNL / 10));
     
     const width = getBarWidth(player.barEXP, player.barTNL);

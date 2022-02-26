@@ -43,7 +43,7 @@ export class CoinBarSpeed extends CoinUpgrade {
      * @returns Bar Speed to add on top of the base amount. Additive!
      */
     upgradeEffect(): number {
-        return this.level / 5
+        return this.level / 100 + 0.09 * Math.min(40, this.level)
     }
 
     updateHTML(): void {
@@ -58,7 +58,7 @@ export class CoinBarSpeed extends CoinUpgrade {
 
 export class CoinBarMomentum extends CoinUpgrade {
     upgradeEffect(): number {
-        return (1 - Math.pow(Math.E, -this.level/400))
+        return 0.45 * (1 - Math.pow(Math.E, -this.level/400)) + 1/200 * Math.min(10, this.level) 
     }
 
     updateHTML(): void {
@@ -73,7 +73,7 @@ export class CoinBarMomentum extends CoinUpgrade {
 
 export class CoinBarReverberation extends CoinUpgrade {
     upgradeEffect(): number {
-        return (1 - Math.pow(Math.E, -this.level / 200))
+        return 0.09 * (1 - Math.pow(Math.E, -this.level / 100)) + 0.002 * Math.min(5, this.level)
     }
 
     updateHTML(): void {
@@ -88,7 +88,7 @@ export class CoinBarReverberation extends CoinUpgrade {
 
 export class CoinBarVibration extends CoinUpgrade {
     upgradeEffect(): number {
-        return 10 + 90 * (1 - Math.pow(Math.E, -this.level / 250))
+        return 20 + 960 * (1 - Math.pow(Math.E, -this.level / 980)) + Math.min(20, this.level)
     }
 
     updateHTML(): void {

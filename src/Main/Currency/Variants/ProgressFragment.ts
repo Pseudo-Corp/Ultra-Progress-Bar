@@ -23,7 +23,7 @@ export class ProgressFragment extends Currency {
         if (player !== undefined)
             level = player.barLevel
 
-        let baseAmount = 70;
+        let baseAmount = 100 * Math.pow(1.07, -5);
         baseAmount *= Math.pow(1.07, level);
         baseAmount *= Math.pow(1.07, Math.floor(level / 5));
 
