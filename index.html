@@ -18,7 +18,7 @@
 
     <body>
         <div class="mainProgressBarArea" id="progressTesting">
-            <div class="tabSeparator" id="progressBarTest1"><p>Ultimate Progress Bar v0.0.3-alpha</p></div>
+            <div class="tabSeparator" id="progressBarTest1"><p>Ultimate Progress Bar v0.0.4-alpha</p></div>
             <div class="progressBarBig" id="progressBarTest2">
                 <div id="progression"></div>
                 <div class="progressBarBigText" id="level"></div>
@@ -33,7 +33,7 @@
                 <ul class="tabColumn" id="test3">
                     <li class="tab" id="main-tab-nav">Main</li>
                     <li class="tab" id="upgrade-tab-nav">Upgrades</li>
-                    <li class="tab">???</li>
+                    <li class="tab" id="talent-tab-nav">Talents</li>
                     <li class="tab">???</li>
                     <li class="tab">???</li>
                     <li class="tab">???</li>
@@ -87,6 +87,42 @@
                         <p>You have <span id="fragment-amount" style="color:cyan"></span> Bar Fragments [+<span id="fragment-bonus" style="color: cyan"></span>% Progress Speed].</p>
                         <p>On refresh, you will have <span id="fragment-gain" style="color: orchid"></span> Bar Fragments [Replaces Current Amount!]</p>
                         <p>Refresh timer: <span id="refresh-timer" style="color:cyan"></span>. Times refreshed: <span id="refresh-counter" style="color:cyan">0</span></p>
+                    </div>
+                    <div class="tabs" id="talentsTab">
+                        <div class="talentContainer" id="talentCriticalChanceContainer">
+                            <div class="talentBarContainer">
+                                <p>Critical Chance</p>
+                                <div class="talentProgressBar">
+                                    <div class="talentProgression" id="talentCriticalChanceProgression"></div>
+                                    <div class="talentBarText" id="talentCriticalChanceEXP"></div>
+                                </div>
+                                <button class="talentSacrifice" id="talentCriticalChanceSacrifice">Sacrifice Bar Fragments</button>
+                            </div>
+                            <div class="talentInfo">
+                                <p class="talentInfoText" id="talentCriticalChanceTempLevel">Test 1</p>
+                                <p class="talentInfoText" id="talentCriticalChancePermLevel">Test 2</p>
+                                <p class="talentInfoText" id="talentCriticalChancePermGain">Test 3</p>
+                                <p class="talentInfoText" id="talentCriticalChanceEffect">Test 4</p>
+                                <p class="talentInfoText" id="talentCriticalChanceInfo">Gain EXP from CRIT Ticks!</p>
+                            </div>
+                        </div>
+                        <div class="talentContainer" id="talentProgressSpeedContainer">
+                            <div class="talentBarContainer">
+                                <p>Progress Speed</p>
+                                <div class="talentProgressBar">
+                                    <div class="talentProgression" id="talentProgressSpeedProgression"></div>
+                                    <div class="talentBarText" id="talentProgressSpeedEXP"></div>
+                                </div>
+                                <button class="talentSacrifice" id="talentProgressSpeedSacrifice">Sacrifice Bar Fragments</button>
+                            </div>
+                            <div class="talentInfo">
+                                <p class="talentInfoText" id="talentProgressSpeedTempLevel">Test 1</p>
+                                <p class="talentInfoText" id="talentProgressSpeedPermLevel">Test 2</p>
+                                <p class="talentInfoText" id="talentProgressSpeedPermGain">Test 3</p>
+                                <p class="talentInfoText" id="talentProgressSpeedEffect">Test 4</p>
+                                <p class="talentInfoText" id="talentProgressSpeedInfo">Gain EXP from higher EXP/sec!</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </main>
