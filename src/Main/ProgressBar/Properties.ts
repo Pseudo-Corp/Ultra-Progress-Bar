@@ -8,7 +8,7 @@ import { getElementById, onCriticalHit } from '../../Utilities/UpdateHTML';
  */
 const baseEXPReq = 10;
 let currentPerSec = 0;
-export let previousPerSec = 0;
+let previousPerSec = 0;
 
 export const computeMainBarTNL = () => {
     let TNL = 0
@@ -34,17 +34,21 @@ export const computeBarArmor = () => {
 
     let baseArmor = 0
     if (player.barLevel >= 5) {
-        baseArmor = 0.2
+        baseArmor = 0.1
     }
     if (player.barLevel >= 10) {
-        baseArmor += 0.8 * (1 - Math.pow(Math.E, -(player.barLevel - 10) / 90))
+        baseArmor += 0.9 * (1 - Math.pow(Math.E, -player.barLevel / 200))
     }
-    return baseArmor
+
+    if (baseArmor >= 0.9999)
+        return 10000
+        
+    return 1 / (1 - baseArmor)
 }
 
 export const computeArmorMultiplier = () => {
     const armor = computeBarArmor();
-    return 1 - Math.max(0, (armor * (1 - player.barEXP / player.barTNL)))
+    return armor * (1 - player.barEXP / player.barTNL)
 }
 
 export const incrementMainBarEXP = (delta: number) => {
@@ -55,14 +59,16 @@ export const incrementMainBarEXP = (delta: number) => {
     baseAmountPerSecond += player.coinUpgrades.barSpeed.upgradeEffect();
     baseAmountPerSecond *= player.barFragments.unspentBonus();
     baseAmountPerSecond *= Math.pow(1 + player.coinUpgrades.barMomentum.upgradeEffect(), Math.sqrt(100 * Math.min(1, player.barEXP / player.barTNL)));
-    baseAmountPerSecond *= computeArmorMultiplier();
+    baseAmountPerSecond /= computeArmorMultiplier();
     baseAmountPerSecond *= player.talents.barSpeed.talentEffect();
 
     const criticalRoll = Math.random();
     if (criticalRoll < player.coinUpgrades.barReverberation.upgradeEffect() + player.talents.barCriticalChance.talentEffect()) {
         baseAmountPerSecond *= player.coinUpgrades.barVibration.upgradeEffect();
+        player.talents.barCriticalChance.gainEXP(delta);
+        player.criticalHits += 1;
+        player.criticalHitsThisRefresh += 1;
         onCriticalHit();
-        player.talents.barCriticalChance.gainEXP();
     }
     
     const actualAmount = baseAmountPerSecond * delta
@@ -160,7 +166,7 @@ export const updateDPS = () => {
     );
 
     player.talents.barCriticalChance.updateHTML('Time')
-    player.talents.barSpeed.gainEXP();
+    player.talents.barSpeed.gainEXP(previousPerSec);
 }
 
 export const computeMainBarCoinWorth = () => {

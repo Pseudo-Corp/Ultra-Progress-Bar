@@ -21,7 +21,8 @@ export const player: Player = {
         barSpeed: new CoinBarSpeed(0, coinUpgradeCosts.barSpeed),
         barMomentum: new CoinBarMomentum(0, coinUpgradeCosts.barMomentum),
         barReverberation: new CoinBarReverberation(0, coinUpgradeCosts.barReverberation),
-        barVibration: new CoinBarVibration(0, coinUpgradeCosts.barVibration)
+        barVibration: new CoinBarVibration(0, coinUpgradeCosts.barVibration),
+        barAgitation: new CoinBarAgitation(0, coinUpgradeCosts.barAgitation)
     },
     talents: {
         barCriticalChance: new TalentCriticalChance(0, talentBaseEXP.talentCriticalChance, 0, 0, 0),
@@ -30,6 +31,8 @@ export const player: Player = {
     barFragments: new ProgressFragment(),
     refreshCount: 0,
     refreshTime: 0,
+    criticalHits: 0,
+    criticalHitsThisRefresh: 0,
 }
 
 /**
@@ -56,13 +59,14 @@ export const saveGame = async () => {
  */
  const toAdapt = new Map<string, (data: Player) => unknown>([
     ['coins', data => new Coins(Number(data.coins.amount))],
-    ['barFragments', data => new ProgressFragment(Number(data.barFragments.amount))],
     ['coinUpgrades.barSpeed', Transform.transformBarSpeed],
     ['coinUpgrades.barMomentum', Transform.transformBarMomentum],
     ['coinUpgrades.barReverberation', Transform.transformReverberation],
     ['coinUpgrades.barVibration', Transform.transformVibration],
+    ['coinUpgrades.barAgitation', Transform.transformAgitation],
     ['talents.barCriticalChance', Transform.transformTalentBarCriticalChance],
     ['talents.barSpeed', Transform.transformBarSpeedTalent],
+    ['barFragments', data => new ProgressFragment(Number(data.barFragments.amount))],
 ]);
 
 /**
@@ -99,7 +103,7 @@ const loadSavefile = async () => {
 */
 
 import { backgroundColorCreation, computeMainBarCoinWorth, computeMainBarTNL, getBarWidth, incrementMainBarEXP, levelUpBar, updateDPS, updateMainBar, updateMainBarInformation } from './Main/ProgressBar/Properties';
-import { CoinBarMomentum, CoinBarReverberation, CoinBarSpeed, CoinBarVibration, coinUpgradeCosts } from './Main/Upgrades/Variants/Coin';
+import { CoinBarAgitation, CoinBarMomentum, CoinBarReverberation, CoinBarSpeed, CoinBarVibration, coinUpgradeCosts } from './Main/Upgrades/Variants/Coin';
 import { Player } from './types/player';
 import { generateEventHandlers } from './Utilities/Eventlisteners';
 import { format } from './Utilities/Format';
@@ -147,7 +151,7 @@ window.addEventListener('pagehide', () => {
  * FPS: How many times the game is to update (tick) per second.
  */
 let lastUpdate = 0;
-const FPS = 24; 
+export const FPS = 24; 
 const saveRate = 5000
 
 export const loadGame = async () => {

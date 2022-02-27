@@ -1,5 +1,7 @@
-import { backgroundColorCreation } from '../Main/ProgressBar/Properties';
-import { updateStyleById } from './Render'
+import { player } from '../Game';
+import { backgroundColorCreation, computeMainBarCoinWorth } from '../Main/ProgressBar/Properties';
+import { format } from './Format';
+import { updateElementById, updateStyleById } from './Render'
 
 export type Tabs = 'Main' | 'Upgrades' | 'Talents'
 
@@ -50,4 +52,40 @@ export const onCriticalHit = () => {
             {backgroundColor: backgroundColorCreation()}
         );
     }, 250);
+
+    updateElementById(
+        'refresh-crit-counter',
+        { textContent: format(player.criticalHitsThisRefresh) }
+    )
+    player.barFragments.updateHTML();
+
+}
+
+export const onRefresh = () => {
+    updateStyleById(
+        'progression',
+         { backgroundColor: 'cyan' }
+    )
+
+    setTimeout(() => {
+        updateStyleById(
+            'progression',
+            {backgroundColor: backgroundColorCreation()}
+        );
+    }, 1000);
+
+    updateElementById(
+        'coinWorth',
+        { textContent: `Worth ${format(computeMainBarCoinWorth())} coins` }
+    );
+
+    updateElementById(
+        'refresh-crit-counter',
+        { textContent: format(player.criticalHitsThisRefresh) }
+    )
+
+    updateElementById(
+        'refresh-counter',
+        { textContent: format(player.refreshCount)}
+    );
 }

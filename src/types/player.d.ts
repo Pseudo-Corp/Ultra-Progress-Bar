@@ -1,6 +1,6 @@
 import type { Coins } from '../Main/Currency/Variants/Coin';
 import type { ProgressFragment } from '../Main/Currency/Variants/ProgressFragment';
-import type { CoinBarSpeed, CoinBarMomentum, CoinBarReverberation, CoinBarVibration } from '../Main/Upgrades/Variants/Coin';
+import type { CoinBarSpeed, CoinBarMomentum, CoinBarReverberation, CoinBarVibration, CoinBarAgitation } from '../Main/Upgrades/Variants/Coin';
 import { TalentCriticalChance, TalentProgressSpeed } from '../Main/Upgrades/Variants/Talents';
 
 export interface Player {
@@ -16,6 +16,7 @@ export interface Player {
         barMomentum: CoinBarMomentum
         barReverberation: CoinBarReverberation
         barVibration: CoinBarVibration
+        barAgitation: CoinBarAgitation
     }
     talents: {
         barCriticalChance: TalentCriticalChance
@@ -24,4 +25,6 @@ export interface Player {
     barFragments: ProgressFragment
     refreshCount: number
     refreshTime: number
+    criticalHits: number
+    criticalHitsThisRefresh: number
 }

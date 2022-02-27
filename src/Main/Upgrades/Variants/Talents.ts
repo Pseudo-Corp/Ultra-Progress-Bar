@@ -1,8 +1,7 @@
-import { minimumRefreshCounter, player } from '../../../Game'
+import { FPS, minimumRefreshCounter, player } from '../../../Game'
 import { format } from '../../../Utilities/Format'
 import { computePolyCost } from '../../../Utilities/HelperFunctions'
 import { updateElementById, updateStyleById } from '../../../Utilities/Render'
-import { previousPerSec } from '../../ProgressBar/Properties'
 import { reset } from '../../Reset/Refresh'
 import { Upgrade } from '../Upgrades'
 
@@ -39,11 +38,11 @@ export abstract class Talent extends Upgrade {
         this.updateHTML('GainEXP')
     }
 
-    gainEXP(): void {
+    gainEXP(dt?: number): void {
         if (!isLevel20())
             return
 
-        const amount = this.calculateEXPGain();
+        const amount = this.calculateEXPGain(dt);
         this.currEXP += amount
         if (this.currEXP >= this.currTNL) {
             this.levelUp();
@@ -142,7 +141,7 @@ export abstract class Talent extends Upgrade {
     }
 
     abstract displayEffect(): string
-    abstract calculateEXPGain(): number
+    abstract calculateEXPGain(dt?: number): number
     abstract talentEffect(): number
 }
 
@@ -160,9 +159,11 @@ export class TalentCriticalChance extends Talent {
         this.updateHTML('Initialize');
     }
 
-    calculateEXPGain(): number {
+    calculateEXPGain(dt: number): number {
         // Critical Hit by default adds 1 EXP
-        let expGain = 1 
+        let expGain = 1
+        // Adjust EXP based on tick rate relative to base FPS of 24
+        expGain *= (dt * 1000 / FPS)
         if (player !== undefined)
             expGain *= (player.barLevel / 10 - 1) // Is 1 at level 20
         expGain *= (1 + 1/9 * Math.pow(Math.log2(1 + this.investedFragments / 125), 2))
@@ -174,10 +175,10 @@ export class TalentCriticalChance extends Talent {
         if (player !== undefined) {
             if (!isLevel20())
                 return 0
-            return 0.1 * (1 - Math.pow(Math.E, - this.level / 500)) 
-                + 0.1 * Math.min(100, this.level) / 100
-                + 0.1 * (1 - Math.pow(Math.E, - this.permLevel / 1000))
-                + 0.1 * Math.min(200, this.level) / 200
+            return 0.025 * (1 - Math.pow(Math.E, - this.level / 2500)) 
+                + 0.025 * Math.min(250, this.level) / 250
+                + 0.025 * (1 - Math.pow(Math.E, - this.permLevel / 4000))
+                + 0.025 * Math.min(500, this.level) / 500
         }
         else
             return 0
@@ -197,9 +198,9 @@ export class TalentProgressSpeed extends Talent {
         this.updateHTML('Initialize');
     }
 
-    calculateEXPGain(): number {
+    calculateEXPGain(dt: number): number {
         // Based on PPS (progress per second)
-        let expGain = Math.log10(1 + previousPerSec)
+        let expGain = Math.log10(1 + dt)
         if (player !== undefined)
             expGain *= (player.barLevel / 10 - 1)
         expGain *= (1 + 1/9 * Math.pow(Math.log2(1 + this.investedFragments / 125), 2))

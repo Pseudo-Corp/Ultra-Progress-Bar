@@ -9,7 +9,12 @@ document.addEventListener('visibilitychange', () => {
     player.coins.updateHTML();
     player.coinUpgrades.barMomentum.updateHTML();
     player.coinUpgrades.barSpeed.updateHTML();
+    player.coinUpgrades.barReverberation.updateHTML();
+    player.coinUpgrades.barVibration.updateHTML();
+    player.coinUpgrades.barAgitation.updateHTML();
     player.barFragments.updateHTML();
+    player.talents.barCriticalChance.updateHTML('Initialize')
+    player.talents.barSpeed.updateHTML('Initialize')
 
     updateElementById(
         'coinWorth',
