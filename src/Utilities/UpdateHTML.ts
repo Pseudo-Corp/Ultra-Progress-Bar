@@ -65,7 +65,7 @@ export const onRefresh = () => {
     updateStyleById(
         'progression',
          { backgroundColor: 'cyan' }
-    )
+    );
 
     setTimeout(() => {
         updateStyleById(
@@ -82,7 +82,7 @@ export const onRefresh = () => {
     updateElementById(
         'refresh-crit-counter',
         { textContent: format(player.criticalHitsThisRefresh) }
-    )
+    );
 
     updateElementById(
         'refresh-counter',

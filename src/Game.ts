@@ -3,7 +3,9 @@ import { setProperty } from 'dot-prop';
 import { Coins } from './Main/Currency/Variants/Coin';
 import { ProgressFragment } from './Main/Currency/Variants/ProgressFragment';
 import * as Transform from './Main/Transformations/index';
+
 import './Events/VisisbilityChange';
+import './Events/Load';
 
 /*
 * This is the player variable, which is used throughout the game!
@@ -105,7 +107,6 @@ const loadSavefile = async () => {
 import { backgroundColorCreation, computeMainBarCoinWorth, computeMainBarTNL, getBarWidth, incrementMainBarEXP, levelUpBar, updateDPS, updateMainBar, updateMainBarInformation } from './Main/ProgressBar/Properties';
 import { CoinBarAgitation, CoinBarMomentum, CoinBarReverberation, CoinBarSpeed, CoinBarVibration, coinUpgradeCosts } from './Main/Upgrades/Variants/Coin';
 import { Player } from './types/player';
-import { generateEventHandlers } from './Utilities/Eventlisteners';
 import { format } from './Utilities/Format';
 import { updateElementById, updateStyleById } from './Utilities/Render';
 import { hideStuff } from './Utilities/UpdateHTML';
@@ -128,11 +129,6 @@ export const clearInt = new Proxy(clearInterval, {
 
         return target.apply(thisArg, args);
     }
-});
-
-window.addEventListener('load', () => {
-    generateEventHandlers();
-    void loadGame();
 });
 
 window.addEventListener('pagehide', () => {
