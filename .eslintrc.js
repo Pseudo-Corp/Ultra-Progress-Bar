@@ -20,6 +20,8 @@ module.exports = {
 
         'quotes': ['error', 'single'],
         'no-extra-semi': 'error',
+        'curly': ['error', 'multi-line', 'consistent'],
+
         'no-empty': 'off',
         'no-loss-of-precision': 'error',
         'no-promise-executor-return': 'off',
@@ -40,7 +42,7 @@ module.exports = {
         '@typescript-eslint/no-misused-new': 'error',
         '@typescript-eslint/no-misused-promises': 'error',
         '@typescript-eslint/no-non-null-asserted-optional-chain': 'error',
-        // '@typescript-eslint/no-non-null-assertion': 'error',
+        '@typescript-eslint/no-non-null-assertion': 'error',
         '@typescript-eslint/no-this-alias': 'error',
         '@typescript-eslint/no-unsafe-assignment': 'error',
         '@typescript-eslint/no-unsafe-call': 'error',

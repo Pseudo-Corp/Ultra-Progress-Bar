@@ -12,21 +12,20 @@ export abstract class CoinUpgrade extends Upgrade {
     }
 
     capLevel(): void {
-        if (this.maxLevel === -1)
-            return
+        if (this.maxLevel === -1) return;
+
         this.level = Math.min(this.maxLevel, this.level)
     }
 
     purchaseLevels(amount: number, event: MouseEvent){
-        if (event.shiftKey)
-            amount = -1 //BUYMAX
-
-        if (amount === -1) {
+        if (event.shiftKey) {
+            amount = -1;
             amount = Math.floor(player.coins.amount / this.cost);
         }
 
-        if (this.maxLevel !== -1)
+        if (this.maxLevel !== -1) {
             amount = Math.min(amount, this.maxLevel - this.level)
+        }
         
         if (this.cost * amount <= player.coins.amount) {
             player.coins.spend(this.cost * amount)
@@ -80,8 +79,8 @@ export class CoinBarMomentum extends CoinUpgrade {
     }
 
     upgradeEffect(): number {
-        if (this.maxLevel === this.level)
-            return 0.5
+        if (this.maxLevel === this.level) return 0.5;
+
         return 0.45 * (1 - Math.pow(Math.E, -this.level/this.expoDivisor)) + 1/200 * Math.min(10, this.level) 
     }
 
@@ -123,9 +122,9 @@ export class CoinBarReverberation extends CoinUpgrade {
     upgradeEffect(): number {
         if (this.level === this.maxLevel) {
             return 0.10
+        } else {
+            return 0.09 * (1 - Math.pow(Math.E, -this.level / this.expoDivisor)) + 0.002 * Math.min(5, this.level);
         }
-        else
-            return 0.09 * (1 - Math.pow(Math.E, -this.level / this.expoDivisor)) + 0.002 * Math.min(5, this.level)
     }
 
     updateHTML(): void {
@@ -163,10 +162,11 @@ export class CoinBarVibration extends CoinUpgrade {
     }
 
     upgradeEffect(): number {
-        if (this.level === this.maxLevel)
+        if (this.level === this.maxLevel) {
             return 200
-        else
+        } else {
             return 20 + 170 * (1 - Math.pow(Math.E, -this.level / this.expoDivisor)) + Math.min(10, this.level)
+        }
     }
 
     updateHTML(): void {

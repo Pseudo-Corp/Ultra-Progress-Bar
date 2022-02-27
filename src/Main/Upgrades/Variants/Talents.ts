@@ -5,9 +5,7 @@ import { updateElementById, updateStyleById } from '../../../Utilities/Render'
 import { reset } from '../../Reset/Refresh'
 import { Upgrade } from '../Upgrades'
 
-export const isLevel20 = () => {
-    return (player.barLevel >= 20)
-}
+export const isLevel20 = () => player.barLevel >= 20;
 
 export type TalentHTMLType = 'Initialize' | 'GainEXP' | 'LevelUp' | 'PermLevelUp' | 'Time' | 'Level20'
 
@@ -39,8 +37,7 @@ export abstract class Talent extends Upgrade {
     }
 
     gainEXP(dt?: number): void {
-        if (!isLevel20())
-            return
+        if (!isLevel20()) return;
 
         const amount = this.calculateEXPGain(dt);
         this.currEXP += amount
@@ -58,15 +55,11 @@ export abstract class Talent extends Upgrade {
     }
 
     computePermLevelGain(level: number): number {
-        if (player !== undefined) {
-            let levelsToGain = 0
-            levelsToGain += Math.sqrt(level);
-            levelsToGain *= Math.min(4, Math.pow(player.refreshTime / 300, 2))
-            levelsToGain = Math.min(level, levelsToGain)
-            return Math.floor(levelsToGain)
-        }
-        else
-            return 0
+        let levelsToGain = 0
+        levelsToGain += Math.sqrt(level);
+        levelsToGain *= Math.min(4, Math.pow(player.refreshTime / 300, 2))
+        levelsToGain = Math.min(level, levelsToGain)
+        return Math.floor(levelsToGain)
     }
 
     convertToPerm(): void {
@@ -82,26 +75,27 @@ export abstract class Talent extends Upgrade {
     }
 
     sacrificeFragments(): void {
-        if (player !== undefined) {
-            if (player.barFragments.amount < 1000)
-                return alert('You cannot sacrifice your bar fragments until you have at least 1,000 of them.')
-            if (player.barFragments.amount <= this.investedFragments)
-                return alert(`This bar needs more fragments than you can invest. You need ${format(this.investedFragments)}.`)
+        if (player.barFragments.amount < 1000) {
+            return alert('You cannot sacrifice your bar fragments until you have at least 1,000 of them.');
+        }
+        if (player.barFragments.amount <= this.investedFragments) {
+            return alert(`This bar needs more fragments than you can invest. You need ${format(this.investedFragments)}.`);
+        }
 
-            else {
-                const confirmation = confirm(`You will sacrifice ${format(player.barFragments.amount - this.investedFragments)} Bar Fragments to increase EXP gain for this bar. Will you? (automatically performs a refresh, setting your fragments to 0)`)
-                if (confirmation) {
-                    this.investedFragments = player.barFragments.amount
-                    player.refreshTime += minimumRefreshCounter;
-                    reset('Refresh');
-                    player.barFragments.set(0);
-                }
+        else {
+            const confirmation = confirm(`You will sacrifice ${format(player.barFragments.amount - this.investedFragments)} Bar Fragments to increase EXP gain for this bar. Will you? (automatically performs a refresh, setting your fragments to 0)`)
+            if (confirmation) {
+                this.investedFragments = player.barFragments.amount
+                player.refreshTime += minimumRefreshCounter;
+                reset('Refresh');
+                player.barFragments.set(0);
             }
         }
     }
 
     updateHTML(reason: TalentHTMLType): void {
-        if (this.idHTML === undefined) {return}
+        if (this.idHTML === undefined) return;
+
         if (reason === 'Initialize' || reason === 'GainEXP' || reason === 'LevelUp' || reason === 'PermLevelUp') {
             updateElementById(
                 `talent${this.idHTML}EXP`,
@@ -164,24 +158,19 @@ export class TalentCriticalChance extends Talent {
         let expGain = 1
         // Adjust EXP based on tick rate relative to base FPS of 24
         expGain *= (dt * 1000 / FPS)
-        if (player !== undefined)
-            expGain *= (player.barLevel / 10 - 1) // Is 1 at level 20
+        expGain *= (player.barLevel / 10 - 1) // Is 1 at level 20
         expGain *= (1 + 1/9 * Math.pow(Math.log2(1 + this.investedFragments / 125), 2))
 
         return expGain
     }
 
     talentEffect(): number {
-        if (player !== undefined) {
-            if (!isLevel20())
-                return 0
-            return 0.025 * (1 - Math.pow(Math.E, - this.level / 2500)) 
-                + 0.025 * Math.min(250, this.level) / 250
-                + 0.025 * (1 - Math.pow(Math.E, - this.permLevel / 4000))
-                + 0.025 * Math.min(500, this.level) / 500
-        }
-        else
-            return 0
+        if (!isLevel20()) return 0;
+
+        return 0.025 * (1 - Math.pow(Math.E, - this.level / 2500)) 
+            + 0.025 * Math.min(250, this.level) / 250
+            + 0.025 * (1 - Math.pow(Math.E, - this.permLevel / 4000))
+            + 0.025 * Math.min(500, this.level) / 500
     }
 
     displayEffect(): string {
@@ -201,20 +190,15 @@ export class TalentProgressSpeed extends Talent {
     calculateEXPGain(dt: number): number {
         // Based on PPS (progress per second)
         let expGain = Math.log10(1 + dt)
-        if (player !== undefined)
-            expGain *= (player.barLevel / 10 - 1)
+        expGain *= (player.barLevel / 10 - 1)
         expGain *= (1 + 1/9 * Math.pow(Math.log2(1 + this.investedFragments / 125), 2))
         return expGain
     }
 
     talentEffect(): number {
-        if (player !== undefined) {
-            if (!isLevel20)
-                return 0 
-            return (1 + this.level / 25) * (1 + this.permLevel / 50)
-        }
-        else
-            return 0
+        if (!isLevel20) return 0;
+
+        return (1 + this.level / 25) * (1 + this.permLevel / 50)
     }
 
     displayEffect(): string {

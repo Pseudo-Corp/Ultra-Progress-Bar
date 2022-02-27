@@ -124,8 +124,9 @@ export const interval = new Proxy(setInterval, {
 export const clearInt = new Proxy(clearInterval, {
     apply(target, thisArg, args: [ReturnType<typeof setInterval>]) {
         const id = args[0];
-        if (intervalHold.has(id))
+        if (intervalHold.has(id)) {
             intervalHold.delete(id);
+        }
 
         return target.apply(thisArg, args);
     }
@@ -151,8 +152,9 @@ export const FPS = 24;
 const saveRate = 5000
 
 export const loadGame = async () => {
-    for (const timer of intervalHold)
+    for (const timer of intervalHold) {
         clearInt(timer);
+    }
 
     intervalHold.clear();
 
@@ -218,9 +220,9 @@ export const tock = (delta: number) => {
     );
     const width = getBarWidth(player.barEXP, player.barTNL);
 
-    if (width < 100)
-        updateMainBar(width)
-    else {
+    if (width < 100) {
+        updateMainBar(width);
+    } else {
         levelUpBar();
     }
 

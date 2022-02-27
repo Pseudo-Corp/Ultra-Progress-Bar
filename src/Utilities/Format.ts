@@ -26,8 +26,9 @@
 
     // Fix Float Point Error!
     const tolerance = 1e-6;
-    if (Math.ceil(returnDecimalRaw) - returnDecimalRaw < tolerance)
+    if (Math.ceil(returnDecimalRaw) - returnDecimalRaw < tolerance) {
         returnDecimalRaw = Math.ceil(returnDecimalRaw);
+    }
     // End of Fix Float Point Error!
 
     let returnDecimalValue = decimalPoint

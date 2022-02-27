@@ -19,12 +19,15 @@ export const computeMainBarTNL = () => {
     // Buff after level 20.
     TNL *= Math.max(1, 1 + (player.barLevel - 20) / 10)
     // Multiplicative Component (Bumps at 40, 100, 200)
-    if (player.barLevel > 40)
-        TNL *= Math.pow(2, 1/10 * (player.barLevel - 40))
-    if (player.barLevel > 100)
-        TNL *= Math.pow(2, 1/10 * (player.barLevel - 100))
-    if (player.barLevel > 200)
-        TNL *= Math.pow(2, 1/10 * (player.barLevel - 200))
+    if (player.barLevel > 40) {
+        TNL *= Math.pow(2, 1/10 * (player.barLevel - 40));
+    }
+    if (player.barLevel > 100) {
+        TNL *= Math.pow(2, 1/10 * (player.barLevel - 100));
+    }
+    if (player.barLevel > 200) {
+        TNL *= Math.pow(2, 1/10 * (player.barLevel - 200));
+    }
     return TNL
 }
 
@@ -40,8 +43,9 @@ export const computeBarArmor = () => {
         baseArmor += 0.9 * (1 - Math.pow(Math.E, -player.barLevel / 200))
     }
 
-    if (baseArmor >= 0.9999)
+    if (baseArmor >= 0.9999) {
         return 10000
+    }
         
     return 1 / (1 - baseArmor)
 }
@@ -100,14 +104,13 @@ export const updateMainBar = (width: number) => {
 }
 
 export const backgroundColorCreation = () => {
+    if (player.barLevel >= 128) return '#FFFFFF';
+
     const R = (128 + player.barLevel).toString(16).padStart(2, '0');
     const G = (2 * player.barLevel).toString(16).padStart(2, '0');
     const B = (128 + player.barLevel).toString(16).padStart(2, '0');
 
-    if (player.barLevel < 128)
-        return `#${R}${G}${B}`
-    else
-        return '#ffffff'
+    return `#${R}${G}${B}`;
 }
 
 export const levelUpBar = () => {
@@ -174,22 +177,27 @@ export const computeMainBarCoinWorth = () => {
 
     const nextLevel = 1 + player.barLevel
     // Highest level bonus
-    if (nextLevel > player.highestBarLevel)
+    if (nextLevel > player.highestBarLevel) {
         baseWorth += 3;
+    }
 
     // Every 5th bar
-    if (nextLevel % 5 === 0)
-        baseWorth += Math.floor(nextLevel / 5) + 3
+    if (nextLevel % 5 === 0) {
+        baseWorth += Math.floor(nextLevel / 5) + 3;
+    }
 
     // Every 10th bar, adding to the previous
-    if (nextLevel % 10 === 0)
-        baseWorth += Math.floor(nextLevel / 2)
+    if (nextLevel % 10 === 0) {
+        baseWorth += Math.floor(nextLevel / 2);
+    }
 
-    if (nextLevel % 50 === 0)
-        baseWorth += Math.floor(nextLevel / 2)
+    if (nextLevel % 50 === 0) {
+        baseWorth += Math.floor(nextLevel / 2);
+    }
 
-    if (nextLevel % 100 === 0)
-        baseWorth += Math.floor(nextLevel)
+    if (nextLevel % 100 === 0) {
+        baseWorth += Math.floor(nextLevel);
+    }
 
     const coinHTML = getElementById('coinWorth');
     coinHTML.style.color = (baseWorth > 0) ? 'gold' : 'grey'

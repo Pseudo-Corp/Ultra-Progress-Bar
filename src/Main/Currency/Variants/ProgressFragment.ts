@@ -20,7 +20,6 @@ export class ProgressFragment extends Currency {
     }
 
     getAmountOnRefresh(): number {
-        if (player !== undefined) {
         const level = player.barLevel
 
         let baseAmount = 100 * Math.pow(1.07, -5);
@@ -30,9 +29,6 @@ export class ProgressFragment extends Currency {
         baseAmount *= (1 + player.criticalHitsThisRefresh * player.coinUpgrades.barAgitation.upgradeEffect());
         
         return Math.floor(baseAmount);
-        }
-        else
-            return 0
     }
 
     unspentBonus(): number {
