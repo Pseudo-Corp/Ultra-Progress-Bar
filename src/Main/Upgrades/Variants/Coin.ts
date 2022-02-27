@@ -88,7 +88,8 @@ export class CoinBarMomentum extends CoinUpgrade {
         updateElementById(
             'coin-bar-momentum-effect',
             {
-                textContent: `Up to ${format(Math.pow(1 + this.upgradeEffect(), 10), 2)}x Progress Speed based on fill%`,
+                textContent:
+                    `Up to ${format(Math.pow(1 + this.upgradeEffect(), 10), 2)}x Progress Speed based on fill%`,
             }
         );
 

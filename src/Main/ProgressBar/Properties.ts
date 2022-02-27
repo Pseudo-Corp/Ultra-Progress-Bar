@@ -62,12 +62,17 @@ export const incrementMainBarEXP = (delta: number) => {
     let baseAmountPerSecond = 1
     baseAmountPerSecond += player.coinUpgrades.barSpeed.upgradeEffect();
     baseAmountPerSecond *= player.barFragments.unspentBonus();
-    baseAmountPerSecond *= Math.pow(1 + player.coinUpgrades.barMomentum.upgradeEffect(), Math.sqrt(100 * Math.min(1, player.barEXP / player.barTNL)));
+    baseAmountPerSecond *= Math.pow(
+        1 + player.coinUpgrades.barMomentum.upgradeEffect(),
+        Math.sqrt(100 * Math.min(1, player.barEXP / player.barTNL))
+    );
     baseAmountPerSecond /= computeArmorMultiplier();
     baseAmountPerSecond *= player.talents.barSpeed.talentEffect();
 
     const criticalRoll = Math.random();
-    if (criticalRoll < player.coinUpgrades.barReverberation.upgradeEffect() + player.talents.barCriticalChance.talentEffect()) {
+    const total =
+        player.coinUpgrades.barReverberation.upgradeEffect() + player.talents.barCriticalChance.talentEffect();
+    if (criticalRoll < total) {
         baseAmountPerSecond *= player.coinUpgrades.barVibration.upgradeEffect();
         player.talents.barCriticalChance.gainEXP(delta);
         player.criticalHits += 1;

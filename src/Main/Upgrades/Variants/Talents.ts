@@ -79,11 +79,18 @@ export abstract class Talent extends Upgrade {
             return alert('You cannot sacrifice your bar fragments until you have at least 1,000 of them.');
         }
         if (player.barFragments.amount <= this.investedFragments) {
-            return alert(`This bar needs more fragments than you can invest. You need ${format(this.investedFragments)}.`);
+            return alert(
+                `This bar needs more fragments than you can invest. You need ${format(this.investedFragments)}.`
+            );
         }
 
         else {
-            const confirmation = confirm(`You will sacrifice ${format(player.barFragments.amount - this.investedFragments)} Bar Fragments to increase EXP gain for this bar. Will you? (automatically performs a refresh, setting your fragments to 0)`)
+            const confirmation = confirm(
+                `You will sacrifice ${format(player.barFragments.amount - this.investedFragments)} ` +
+                'Bar Fragments to increase EXP gain for this bar. Will you? ' +
+                '(automatically performs a refresh, setting your fragments to 0)'
+            );
+
             if (confirmation) {
                 this.investedFragments = player.barFragments.amount
                 player.refreshTime += minimumRefreshCounter;

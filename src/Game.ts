@@ -1,11 +1,35 @@
-import localforage from 'localforage';
 import { setProperty } from 'dot-prop';
+import localforage from 'localforage';
+import './Events/Load';
+import './Events/VisisbilityChange';
 import { Coins } from './Main/Currency/Variants/Coin';
 import { ProgressFragment } from './Main/Currency/Variants/ProgressFragment';
+import {
+    backgroundColorCreation,
+    computeMainBarCoinWorth,
+    computeMainBarTNL,
+    getBarWidth,
+    incrementMainBarEXP,
+    levelUpBar,
+    updateDPS,
+    updateMainBar,
+    updateMainBarInformation
+} from './Main/ProgressBar/Properties';
 import * as Transform from './Main/Transformations/index';
+import {
+    CoinBarAgitation,
+    CoinBarMomentum,
+    CoinBarReverberation,
+    CoinBarSpeed,
+    CoinBarVibration,
+    coinUpgradeCosts
+} from './Main/Upgrades/Variants/Coin';
+import { talentBaseEXP, TalentCriticalChance, TalentProgressSpeed } from './Main/Upgrades/Variants/Talents';
+import { Player } from './types/player';
+import { format } from './Utilities/Format';
+import { updateElementById, updateStyleById } from './Utilities/Render';
+import { hideStuff } from './Utilities/UpdateHTML';
 
-import './Events/VisisbilityChange';
-import './Events/Load';
 
 /*
 * This is the player variable, which is used throughout the game!
@@ -99,18 +123,6 @@ const loadSavefile = async () => {
 }
 
 
-/*
-* These are fundamental functions for intervals, which are used
-* to create the basic game loop at 50fps without jarring effects.
-*/
-
-import { backgroundColorCreation, computeMainBarCoinWorth, computeMainBarTNL, getBarWidth, incrementMainBarEXP, levelUpBar, updateDPS, updateMainBar, updateMainBarInformation } from './Main/ProgressBar/Properties';
-import { CoinBarAgitation, CoinBarMomentum, CoinBarReverberation, CoinBarSpeed, CoinBarVibration, coinUpgradeCosts } from './Main/Upgrades/Variants/Coin';
-import { Player } from './types/player';
-import { format } from './Utilities/Format';
-import { updateElementById, updateStyleById } from './Utilities/Render';
-import { hideStuff } from './Utilities/UpdateHTML';
-import { talentBaseEXP, TalentCriticalChance, TalentProgressSpeed } from './Main/Upgrades/Variants/Talents';
 
 export const intervalHold = new Set<ReturnType<typeof setInterval>>();
 export const interval = new Proxy(setInterval, {

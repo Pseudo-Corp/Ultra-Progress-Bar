@@ -1,6 +1,12 @@
 import type { Coins } from '../Main/Currency/Variants/Coin';
 import type { ProgressFragment } from '../Main/Currency/Variants/ProgressFragment';
-import type { CoinBarSpeed, CoinBarMomentum, CoinBarReverberation, CoinBarVibration, CoinBarAgitation } from '../Main/Upgrades/Variants/Coin';
+import type {
+    CoinBarSpeed,
+    CoinBarMomentum,
+    CoinBarReverberation,
+    CoinBarVibration,
+    CoinBarAgitation
+} from '../Main/Upgrades/Variants/Coin';
 import { TalentCriticalChance, TalentProgressSpeed } from '../Main/Upgrades/Variants/Talents';
 
 export interface Player {

@@ -18,9 +18,11 @@ module.exports = {
         '@typescript-eslint/no-non-null-assertion': 'off',
         '@typescript-eslint/no-empty-function': 'off',
 
+        // style rules
         'quotes': ['error', 'single'],
         'no-extra-semi': 'error',
         'curly': ['error', 'multi-line', 'consistent'],
+        'max-len': ['error', { 'code': 120 }],
 
         'no-empty': 'off',
         'no-loss-of-precision': 'error',
