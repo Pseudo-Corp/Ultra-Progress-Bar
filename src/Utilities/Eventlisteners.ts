@@ -33,5 +33,10 @@ export const generateEventHandlers = () => {
     getElementById('talentCriticalChanceSacrifice').addEventListener(
         'click',
         () => player.talents.barCriticalChance.sacrificeFragments()
-    )
+    );
+
+    getElementById('talentProgressSpeedSacrifice').addEventListener(
+        'click',
+        () => player.talents.barSpeed.sacrificeFragments()
+    );
 }
