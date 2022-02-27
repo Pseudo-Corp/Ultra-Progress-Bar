@@ -19,7 +19,7 @@
 
     <body>
         <div class="mainProgressBarArea" id="progressTesting">
-            <div class="tabSeparator" id="progressBarTest1"><p>Ultimate Progress Bar v0.0.4-alpha</p></div>
+            <div class="tabSeparator" id="progressBarTest1"><p>Ultimate Progress Bar v0.0.5-alpha</p></div>
             <div class="progressBarBig" id="progressBarTest2">
                 <div id="progression"></div>
                 <div class="progressBarBigText" id="level"></div>
@@ -67,6 +67,11 @@
                                 <p class="coinUpgradeText" id="coin-bar-momentum-effect">+0.00% Progress Per 1% Bar Filled</p>
                                 <button class="coinUpgradeBtn" id="buy-coin-bar-momentum">Buy more for 10 Coin</button>
                             </div>
+                            <div class="coinUpgrade" id="coin-agitation">
+                                <p class="coinUpgradeText" id="coin-bar-agitation-name">Bar Agitation</p>
+                                <p class="coinUpgradeText" id="coin-bar-agitation-effect">+0.02% Bar Fragments per CRIT</p>
+                                <button class="coinUpgradeBtn" id="buy-coin-bar-agitation">Buy more for 10k Coin</button>
+                            </div>
                         </div>
                         <div class="coinUpgrades">
                             <div class="coinUpgrade" id="coin-reverberation">
@@ -87,7 +92,7 @@
                         </div>
                         <p>You have <span id="fragment-amount" style="color:cyan"></span> Bar Fragments [+<span id="fragment-bonus" style="color: cyan"></span>% Progress Speed].</p>
                         <p>On refresh, you will have <span id="fragment-gain" style="color: orchid"></span> Bar Fragments [Replaces Current Amount!]</p>
-                        <p>Refresh timer: <span id="refresh-timer" style="color:cyan"></span>. Times refreshed: <span id="refresh-counter" style="color:cyan">0</span></p>
+                        <p>Refresh timer: <span id="refresh-timer" style="color:cyan"></span>. Times refreshed: <span id="refresh-counter" style="color:cyan">0</span>. CRITS this refresh: <span id="refresh-crit-counter" style="color: gold">0</span></p>
                     </div>
                     <div class="tabs" id="talentsTab">
                         <div class="talentContainer" id="talentCriticalChanceContainer">
