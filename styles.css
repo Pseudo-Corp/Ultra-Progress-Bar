@@ -106,7 +106,7 @@ li {
     color: gold;
 }
 
-aside {
+aside.sideNav {
     border-right: 1px solid #ededed;
     flex: 1 0 0%;
     max-width: var(--side-nav-width);
@@ -177,6 +177,9 @@ aside {
     padding: 12px;
     margin-left: 10px;
     margin-right: 10px;
+    flex-grow: 1;
+    flex-basis: 50%;
+    margin-bottom: 10px;
 }
 
 .coinUpgradeText {
