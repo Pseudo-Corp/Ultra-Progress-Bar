@@ -139,7 +139,7 @@ export class CoinBarReverberation extends CoinUpgrade {
             updateElementById(
                 'coin-bar-reverberation-name',
                 {
-                    textContent: 'Bar Momentum [MAX LEVEL]'
+                    textContent: 'Bar Reverberation [MAX LEVEL]'
                 }
             )
             updateStyleById(
