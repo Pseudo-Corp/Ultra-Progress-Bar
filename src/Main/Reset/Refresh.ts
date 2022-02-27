@@ -1,6 +1,6 @@
 import { minimumRefreshCounter, player } from '../../Game'
 import { format } from '../../Utilities/Format'
-import { onCriticalHit } from '../../Utilities/UpdateHTML'
+import { onCriticalHit, onRefresh } from '../../Utilities/UpdateHTML'
 import { computeMainBarTNL, getBarWidth, updateMainBar } from '../ProgressBar/Properties'
 
 export type resetTypes = 'Refresh' | 'Transcend'
@@ -29,6 +29,7 @@ export const reset = (variant: resetTypes) => {
         player.criticalHitsThisRefresh = 0;
 
         onCriticalHit();
+        onRefresh();
     }
     else {
         alert('You cannot refresh yet. Get to level 5 lol')
