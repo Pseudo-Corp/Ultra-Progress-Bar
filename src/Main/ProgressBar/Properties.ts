@@ -100,9 +100,9 @@ export const updateMainBar = (width: number) => {
 }
 
 export const backgroundColorCreation = () => {
-    const R = (128 + player.barLevel).toString(16)
-    const G = (2 * player.barLevel).toString(16)
-    const B = (128 + player.barLevel).toString(16)
+    const R = (128 + player.barLevel).toString(16).padStart(2, '0');
+    const G = (2 * player.barLevel).toString(16).padStart(2, '0');
+    const B = (128 + player.barLevel).toString(16).padStart(2, '0');
 
     if (player.barLevel < 128)
         return `#${R}${G}${B}`
