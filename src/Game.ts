@@ -43,23 +43,29 @@ export const player: Player = {
     barLevel: 0,
     highestBarLevel: 0,
     coins: new Coins(),
-    coinUpgrades: {
-        barSpeed: new CoinBarSpeed(0, coinUpgradeCosts.barSpeed),
-        barMomentum: new CoinBarMomentum(0, coinUpgradeCosts.barMomentum),
-        barReverberation: new CoinBarReverberation(0, coinUpgradeCosts.barReverberation),
-        barVibration: new CoinBarVibration(0, coinUpgradeCosts.barVibration),
-        barAgitation: new CoinBarAgitation(0, coinUpgradeCosts.barAgitation)
-    },
-    talents: {
-        barCriticalChance: new TalentCriticalChance(0, talentBaseEXP.talentCriticalChance, 0, 0, 0),
-        barSpeed: new TalentProgressSpeed(0, talentBaseEXP.talentProgressSpeed, 0, 0, 0)
-    },
-    barFragments: new ProgressFragment(),
+    coinUpgrades: {} as Player['coinUpgrades'],
+    talents: {} as Player['talents'],
+    barFragments: {} as Player['barFragments'],
     refreshCount: 0,
     refreshTime: 0,
     criticalHits: 0,
     criticalHitsThisRefresh: 0,
-}
+};
+
+player.coinUpgrades = {
+    barSpeed: new CoinBarSpeed(0, coinUpgradeCosts.barSpeed),
+    barMomentum: new CoinBarMomentum(0, coinUpgradeCosts.barMomentum),
+    barReverberation: new CoinBarReverberation(0, coinUpgradeCosts.barReverberation),
+    barVibration: new CoinBarVibration(0, coinUpgradeCosts.barVibration),
+    barAgitation: new CoinBarAgitation(0, coinUpgradeCosts.barAgitation)
+};
+
+player.talents = {
+    barCriticalChance: new TalentCriticalChance(0, talentBaseEXP.talentCriticalChance, 0, 0, 0),
+    barSpeed: new TalentProgressSpeed(0, talentBaseEXP.talentProgressSpeed, 0, 0, 0)
+};
+
+player.barFragments = new ProgressFragment();
 
 /**
  * A newly initiable save for later. 
