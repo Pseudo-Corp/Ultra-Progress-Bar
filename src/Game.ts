@@ -2,6 +2,7 @@ import { setProperty } from 'dot-prop';
 import localforage from 'localforage';
 import './Events/Load';
 import './Events/VisisbilityChange';
+import { Alert, Confirm } from './HTML/Popups';
 import { Coins } from './Main/Currency/Variants/Coin';
 import { ProgressFragment } from './Main/Currency/Variants/ProgressFragment';
 import {
@@ -208,11 +209,16 @@ export const loadGame = async () => {
 }
 
 export const resetGame = async () => {
+    const confirmed = await Confirm('Are you SURE you want to reset the game?');
+
+    if (confirmed === false) {
+        return Alert('OK, the game hasn\'t been reset!');
+    }
 
     await localforage.removeItem('UPBSave');
-    const emptySave = btoa(JSON.stringify(blankSave))
+    const emptySave = btoa(JSON.stringify(blankSave));
 
-    await localforage.setItem('UPBSave', emptySave)
+    await localforage.setItem('UPBSave', emptySave);
     await loadGame();
 }
 

@@ -1,4 +1,5 @@
 import { FPS, minimumRefreshCounter, player } from '../../../Game'
+import { Alert, Confirm } from '../../../HTML/Popups'
 import { format } from '../../../Utilities/Format'
 import { computePolyCost } from '../../../Utilities/HelperFunctions'
 import { updateElementById, updateStyleById } from '../../../Utilities/Render'
@@ -74,18 +75,17 @@ export abstract class Talent extends Upgrade {
         return Math.min(100, 100 * this.currEXP / this.currTNL)
     }
 
-    sacrificeFragments(): void {
+    async sacrificeFragments (): Promise<void> {
         if (player.barFragments.amount < 1000) {
-            return alert('You cannot sacrifice your bar fragments until you have at least 1,000 of them.');
-        }
-        if (player.barFragments.amount <= this.investedFragments) {
-            return alert(
+            return void Alert('You cannot sacrifice your bar fragments until you have at least 1,000 of them.');
+        } else if (player.barFragments.amount <= this.investedFragments) {
+            return void Alert(
                 `This bar needs more fragments than you can invest. You need ${format(this.investedFragments)}.`
             );
         }
 
         else {
-            const confirmation = confirm(
+            const confirmation = await Confirm(
                 `You will sacrifice ${format(player.barFragments.amount - this.investedFragments)} ` +
                 'Bar Fragments to increase EXP gain for this bar. Will you? ' +
                 '(automatically performs a refresh, setting your fragments to 0)'
@@ -94,7 +94,7 @@ export abstract class Talent extends Upgrade {
             if (confirmation) {
                 this.investedFragments = player.barFragments.amount
                 player.refreshTime += minimumRefreshCounter;
-                reset('Refresh');
+                void reset('Refresh');
                 player.barFragments.set(0);
             }
         }

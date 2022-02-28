@@ -1,4 +1,5 @@
 import { minimumRefreshCounter, player } from '../../Game'
+import { Alert } from '../../HTML/Popups'
 import { format } from '../../Utilities/Format'
 import { onCriticalHit, onRefresh } from '../../Utilities/UpdateHTML'
 import { computeMainBarTNL, getBarWidth, updateMainBar } from '../ProgressBar/Properties'
@@ -9,7 +10,7 @@ export const reset = (variant: resetTypes) => {
     if (variant === 'Refresh' && player.barLevel >= 5) {
 
         if (player.refreshTime < minimumRefreshCounter) {
-            return alert(`Currently, refreshes have a ${format(minimumRefreshCounter)} second cooldown. Sorry!`)
+            return void Alert(`Currently, refreshes have a ${format(minimumRefreshCounter)} second cooldown. Sorry!`);
         }
 
         player.barFragments.set(player.barFragments.getAmountOnRefresh())
@@ -30,8 +31,7 @@ export const reset = (variant: resetTypes) => {
 
         onCriticalHit();
         onRefresh();
-    }
-    else {
-        alert('You cannot refresh yet. Get to level 5 lol')
+    } else {
+        return void Alert('You cannot refresh yet. Get to level 5 lol')
     }
 }
