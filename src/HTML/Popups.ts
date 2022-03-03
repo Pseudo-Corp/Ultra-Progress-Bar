@@ -35,8 +35,7 @@ const ConfirmCB = (text: string, cb: (value: boolean) => void) => {
         confWrap.style.display = 'none';
         overlay.style.display = 'none';
 
-        if (targetEl === ok) cb(true);
-        else cb(false);
+        return cb(targetEl === ok);
     }
 
     const kbListener = (e: KeyboardEvent) => {
@@ -99,8 +98,8 @@ const PromptCB = (text: string, cb: (value: string | null) => void) => {
 
     // kinda disgusting types but whatever
     const listener = ({ target }: MouseEvent | { target: HTMLElement }) => {
-        const targetEl = target as HTMLButtonElement & { parentNode: ParentNode };
-        const el = querySelector<HTMLButtonElement & { parentNode: ParentNode }>(targetEl.parentNode, 'input');
+        const targetEl = (target as HTMLElement).parentNode as HTMLInputElement;
+        const el = querySelector<HTMLInputElement>(targetEl, 'input');
 
         ok.removeEventListener('click', listener);
         cancel.removeEventListener('click', listener);
@@ -109,10 +108,8 @@ const PromptCB = (text: string, cb: (value: string | null) => void) => {
         conf.style.display = 'none';
         confWrap.style.display = 'none';
         overlay.style.display = 'none';
-        
-        if (targetEl.id === ok.id) cb(el.value);
-        else cb(null); // canceled 
 
+        cb(targetEl.id === ok.id ? el.value : null);
         el.value = el.textContent = '';
     }
 
