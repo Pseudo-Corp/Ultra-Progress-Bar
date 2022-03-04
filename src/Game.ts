@@ -15,57 +15,26 @@ import {
     updateMainBarInformation
 } from './Main/ProgressBar/Properties';
 import * as Transform from './Main/Transformations/index';
-import {
-    CoinBarAgitation,
-    CoinBarMomentum,
-    CoinBarReverberation,
-    CoinBarSpeed,
-    CoinBarVibration,
-    coinUpgradeCosts
-} from './Main/Upgrades/Variants/Coin';
-import { talentBaseEXP, TalentCriticalChance, TalentProgressSpeed } from './Main/Upgrades/Variants/Talents';
 import { Player } from './types/player';
 import { format } from './Utilities/Format';
 import { updateElementById, updateStyleById } from './Utilities/Render';
 import { hideStuff } from './Utilities/UpdateHTML';
 
-
-/*
-* This is the player variable, which is used throughout the game!
-*/
-
-export const player: Player = {
+/**
+ * This is the player variable, which is used throughout the game!
+ */
+export const player = {
     firstPlayed: new Date(),
     barEXP: 0,
     barTNL: 0,
     totalEXP: 0,
     barLevel: 0,
     highestBarLevel: 0,
-    coins: {} as Player['coins'],
-    coinUpgrades: {} as Player['coinUpgrades'],
-    talents: {} as Player['talents'],
-    barFragments: {} as Player['barFragments'],
     refreshCount: 0,
     refreshTime: 0,
     criticalHits: 0,
-    criticalHitsThisRefresh: 0,
-};
-
-player.coins = new Coins(0, player);
-player.coinUpgrades = {
-    barSpeed: new CoinBarSpeed(0, coinUpgradeCosts.barSpeed, player),
-    barMomentum: new CoinBarMomentum(0, coinUpgradeCosts.barMomentum, player),
-    barReverberation: new CoinBarReverberation(0, coinUpgradeCosts.barReverberation, player),
-    barVibration: new CoinBarVibration(0, coinUpgradeCosts.barVibration, player),
-    barAgitation: new CoinBarAgitation(0, coinUpgradeCosts.barAgitation, player)
-};
-
-player.talents = {
-    barCriticalChance: new TalentCriticalChance(0, talentBaseEXP.talentCriticalChance, 0, 0, 0, player),
-    barSpeed: new TalentProgressSpeed(0, talentBaseEXP.talentProgressSpeed, 0, 0, 0, player)
-};
-
-player.barFragments = new ProgressFragment(0, player);
+    criticalHitsThisRefresh: 0
+} as Player; // downcast on purpose
 
 /**
  * A newly initiable save for later. 
@@ -104,8 +73,8 @@ export const saveGame = async (player: Player) => {
 /**
  * Map of properties on the Player object to adapt
  */
- const toAdapt = new Map<string, (data: Player, player: Player) => unknown>([
-    ['coins', (data, player) => new Coins(Number(data.coins.amount), player)],
+ const toAdapt = new Map<string, (data: Partial<Player>, player: Player) => unknown>([
+    ['coins', (data, player) => new Coins(Number(data.coins?.amount ?? 0), player)],
     ['coinUpgrades.barSpeed', Transform.transformBarSpeed],
     ['coinUpgrades.barMomentum', Transform.transformBarMomentum],
     ['coinUpgrades.barReverberation', Transform.transformReverberation],
@@ -113,33 +82,33 @@ export const saveGame = async (player: Player) => {
     ['coinUpgrades.barAgitation', Transform.transformAgitation],
     ['talents.barCriticalChance', Transform.transformTalentBarCriticalChance],
     ['talents.barSpeed', Transform.transformBarSpeedTalent],
-    ['barFragments', (data, player) => new ProgressFragment(Number(data.barFragments.amount), player)],
+    ['barFragments', (data, player) => new ProgressFragment(Number(data.barFragments?.amount ?? 0), player)],
 ]);
 
 /**
  * Loads from localforage directly
  */
 const loadSavefile = async () => {
-    console.log('load attempted')
     const save = await localforage.getItem<string>('UPBSave');
     const data = save ? JSON.parse(atob(save)) as Player & Record<string, unknown> : null;
 
-    // TODO: better error message
-    if (!data) return;
+    // data is null on the first load!
 
-    const keys = Object.keys(data) as (keyof Player & string)[];
+    if (data !== null) { 
+        const keys = Object.keys(data) as (keyof Player & string)[];
 
-    for (const key of keys) {
-        // If the property doesn't exist on the player object anymore, ignore
-        if (!(key in blankSave)) continue;
-        // If the property will be modified later, don't assign it here
-        if (toAdapt.has(key)) continue;
+        for (const key of keys) {
+            // If the property doesn't exist on the player object anymore, ignore
+            if (!(key in blankSave)) continue;
+            // If the property will be modified later, don't assign it here
+            if (toAdapt.has(key)) continue;
 
-        Object.defineProperty(player, key, { value: data[key] });
+            Object.defineProperty(player, key, { value: data[key] });
+        }
     }
 
-    for (const [key, adapter] of toAdapt) {    
-        setProperty(player, key, adapter(data, player));
+    for (const [key, adapter] of toAdapt) {
+        setProperty(player, key, adapter(data ?? player, player));
     }
 }
 
@@ -237,7 +206,6 @@ export const resetGame = async () => {
 export const tick = () => {
     const now = performance.now();
     const delta = now - lastUpdate;
-
 
     tock(delta/1000)
     lastUpdate += delta
