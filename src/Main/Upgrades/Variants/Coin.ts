@@ -1,4 +1,4 @@
-import { player } from '../../../Game';
+import { Player } from '../../../types/player';
 import { format } from '../../../Utilities/Format';
 import { updateElementById, updateStyleById } from '../../../Utilities/Render';
 import { Upgrade } from '../Upgrades';
@@ -6,8 +6,8 @@ import { Upgrade } from '../Upgrades';
 export abstract class CoinUpgrade extends Upgrade {
     abstract maxLevel: number; // -1 = infinitys
 
-    constructor(level: number, cost: number) {
-        super(level, cost)
+    constructor(level: number, cost: number, player: Player) {
+        super(level, cost, player)
         this.updateHTML();
     }
 
@@ -20,18 +20,22 @@ export abstract class CoinUpgrade extends Upgrade {
     purchaseLevels(amount: number, event: MouseEvent){
         if (event.shiftKey) {
             amount = -1;
-            amount = Math.floor(player.coins.amount / this.cost);
+            amount = Math.floor(this.player.coins.amount / this.cost);
         }
 
         if (this.maxLevel !== -1) {
             amount = Math.min(amount, this.maxLevel - this.level)
         }
         
-        if (this.cost * amount <= player.coins.amount) {
-            player.coins.spend(this.cost * amount)
+        if (this.cost * amount <= this.player.coins.amount) {
+            this.player.coins.spend(this.cost * amount)
             this.level += amount;
             this.updateHTML();
         }
+    }
+
+    public override valueOf () {
+        return { level: this.level, cost: this.cost, maxLevel: this.maxLevel };
     }
 
     abstract upgradeEffect():number
@@ -72,8 +76,8 @@ export class CoinBarMomentum extends CoinUpgrade {
     expoDivisor = 400
     maxLevel = Math.ceil(this.expoDivisor * Math.log(1000))
 
-    constructor(level: number, cost: number) {
-        super(level, cost);
+    constructor(level: number, cost: number, player: Player) {
+        super(level, cost, player);
         this.capLevel();
         this.updateHTML();
     }
@@ -114,8 +118,8 @@ export class CoinBarReverberation extends CoinUpgrade {
     expoDivisor = 100
     maxLevel = Math.ceil(this.expoDivisor * Math.log(1000))
 
-    constructor(level: number, cost: number) {
-        super(level, cost);
+    constructor(level: number, cost: number, player: Player) {
+        super(level, cost, player);
         this.capLevel();
         this.updateHTML();
     }
@@ -156,8 +160,8 @@ export class CoinBarVibration extends CoinUpgrade {
     expoDivisor = 170
     maxLevel = Math.ceil(this.expoDivisor * Math.log(1000))
 
-    constructor(level: number, cost: number) {
-        super(level, cost);
+    constructor(level: number, cost: number, player: Player) {
+        super(level, cost, player);
         this.capLevel();
         this.updateHTML();
     }
@@ -197,8 +201,8 @@ export class CoinBarVibration extends CoinUpgrade {
 export class CoinBarAgitation extends CoinUpgrade {
     maxLevel = 10
 
-    constructor(level: number, cost: number) {
-        super(level, cost);
+    constructor(level: number, cost: number, player: Player) {
+        super(level, cost, player);
         this.capLevel();
         this.updateHTML();
     }

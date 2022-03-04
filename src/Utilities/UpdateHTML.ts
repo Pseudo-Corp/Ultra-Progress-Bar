@@ -1,5 +1,5 @@
-import { player } from '../Game';
 import { backgroundColorCreation, computeMainBarCoinWorth } from '../Main/ProgressBar/Properties';
+import { Player } from '../types/player';
 import { format } from './Format';
 import { updateElementById, updateStyleById } from './Render'
 
@@ -37,10 +37,7 @@ export const hideStuff = (tab: Tabs) => {
     }
 }
 
-export const getElementById = (id: string): HTMLElement =>
-    document.getElementById(id) as HTMLElement;
-
-export const onCriticalHit = () => {
+export const onCriticalHit = (player: Player) => {
     updateStyleById(
         'progression',
         { backgroundColor: 'gold'}
@@ -49,7 +46,7 @@ export const onCriticalHit = () => {
     setTimeout(() => {
         updateStyleById(
             'progression',
-            {backgroundColor: backgroundColorCreation()}
+            {backgroundColor: backgroundColorCreation(player)}
         );
     }, 250);
 
@@ -61,7 +58,7 @@ export const onCriticalHit = () => {
 
 }
 
-export const onRefresh = () => {
+export const onRefresh = (player: Player) => {
     updateStyleById(
         'progression',
          { backgroundColor: 'cyan' }
@@ -70,13 +67,13 @@ export const onRefresh = () => {
     setTimeout(() => {
         updateStyleById(
             'progression',
-            {backgroundColor: backgroundColorCreation()}
+            {backgroundColor: backgroundColorCreation(player)}
         );
     }, 1000);
 
     updateElementById(
         'coinWorth',
-        { textContent: `Worth ${format(computeMainBarCoinWorth())} coins` }
+        { textContent: `Worth ${format(computeMainBarCoinWorth(player))} coins` }
     );
 
     updateElementById(

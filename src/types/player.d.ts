@@ -7,7 +7,7 @@ import type {
     CoinBarVibration,
     CoinBarAgitation
 } from '../Main/Upgrades/Variants/Coin';
-import { TalentCriticalChance, TalentProgressSpeed } from '../Main/Upgrades/Variants/Talents';
+import type { TalentCriticalChance, TalentProgressSpeed } from '../Main/Upgrades/Variants/Talents';
 
 export interface Player {
     firstPlayed: Date,

@@ -1,8 +1,10 @@
-import { player, resetGame } from '../Game';
+import { resetGame } from '../Game';
 import { reset } from '../Main/Reset/Refresh';
-import { getElementById, hideStuff } from './UpdateHTML';
+import { Player } from '../types/player';
+import { hideStuff } from './UpdateHTML';
+import { getElementById } from './Render';
 
-export const generateEventHandlers = () => {
+export const generateEventHandlers = (player: Player) => {
     getElementById('main-tab-nav').addEventListener('click', () => hideStuff('Main'));
     getElementById('upgrade-tab-nav').addEventListener('click', () => hideStuff('Upgrades'));
     getElementById('talent-tab-nav').addEventListener('click', () => hideStuff('Talents'))
@@ -27,7 +29,7 @@ export const generateEventHandlers = () => {
         'click',
         (event) => player.coinUpgrades.barAgitation.purchaseLevels(1, event)
     )
-    getElementById('buy-reset').addEventListener('click', () => reset('Refresh'));
+    getElementById('buy-reset').addEventListener('click', () => reset('Refresh', player));
     getElementById('reset-game').addEventListener('click', () => void resetGame());
 
     getElementById('talentCriticalChanceSacrifice').addEventListener(

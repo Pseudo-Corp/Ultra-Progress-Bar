@@ -1,9 +1,12 @@
+import { Player } from '../../types/player';
+
 export type Currencies = 'Coins'
 
 export abstract class Currency {
-    amount: number;
-    
-    constructor(amount = 0) {
+    constructor(
+        public amount = 0,
+        public player: Player
+    ) {
         this.amount = amount;
         this.updateHTML();
     }
@@ -23,6 +26,10 @@ export abstract class Currency {
     set(amount: number):void {
         this.amount = amount;
         this.updateHTML();
+    }
+
+    public valueOf () {
+        return { amount: this.amount };
     }
 
     abstract updateHTML(): void;

@@ -1,4 +1,3 @@
-import { player } from '../../../Game';
 import { format } from '../../../Utilities/Format';
 import { updateElementById } from '../../../Utilities/Render';
 import { Currency } from '../Currency';
@@ -20,13 +19,13 @@ export class ProgressFragment extends Currency {
     }
 
     getAmountOnRefresh(): number {
-        const level = player.barLevel
+        const level = this.player.barLevel
 
         let baseAmount = 100 * Math.pow(1.07, -5);
         baseAmount *= Math.pow(1.07, level);
         baseAmount *= Math.pow(3, Math.floor(level / 100));
 
-        baseAmount *= (1 + player.criticalHitsThisRefresh * player.coinUpgrades.barAgitation.upgradeEffect());
+        baseAmount *= (1 + this.player.criticalHitsThisRefresh * this.player.coinUpgrades.barAgitation.upgradeEffect());
         
         return Math.floor(baseAmount);
     }

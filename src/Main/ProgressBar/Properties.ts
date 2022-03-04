@@ -1,7 +1,8 @@
-import { player } from '../../Game';
+import { Player } from '../../types/player';
 import { format } from '../../Utilities/Format';
 import { updateElementById, updateStyleById } from '../../Utilities/Render';
-import { getElementById, onCriticalHit } from '../../Utilities/UpdateHTML';
+import { onCriticalHit } from '../../Utilities/UpdateHTML';
+import { getElementById } from '../../Utilities/Render';
 
 /**
  * Basic Bar Stats
@@ -10,7 +11,7 @@ const baseEXPReq = 10;
 let currentPerSec = 0;
 let previousPerSec = 0;
 
-export const computeMainBarTNL = () => {
+export const computeMainBarTNL = (player: Player) => {
     let TNL = 0
     // Additive Component
     TNL += baseEXPReq * Math.pow(player.barLevel + 1, 2)
@@ -31,7 +32,7 @@ export const computeMainBarTNL = () => {
     return TNL
 }
 
-export const computeBarArmor = () => {
+export const computeBarArmor = (player: Player) => {
     // Armor is a value in [0, 1]
     // 1 indicates no progress, 0 indicates full progress.
 
@@ -50,12 +51,12 @@ export const computeBarArmor = () => {
     return 1 / (1 - baseArmor)
 }
 
-export const computeArmorMultiplier = () => {
-    const armor = computeBarArmor();
+export const computeArmorMultiplier = (player: Player) => {
+    const armor = computeBarArmor(player);
     return armor * (1 - player.barEXP / player.barTNL)
 }
 
-export const incrementMainBarEXP = (delta: number) => {
+export const incrementMainBarEXP = (delta: number, player: Player) => {
     if (delta === undefined || delta === null) {
         return
     }
@@ -66,7 +67,7 @@ export const incrementMainBarEXP = (delta: number) => {
         1 + player.coinUpgrades.barMomentum.upgradeEffect(),
         Math.sqrt(100 * Math.min(1, player.barEXP / player.barTNL))
     );
-    baseAmountPerSecond /= computeArmorMultiplier();
+    baseAmountPerSecond /= computeArmorMultiplier(player);
     baseAmountPerSecond *= player.talents.barSpeed.talentEffect();
 
     const criticalRoll = Math.random();
@@ -77,7 +78,7 @@ export const incrementMainBarEXP = (delta: number) => {
         player.talents.barCriticalChance.gainEXP(delta);
         player.criticalHits += 1;
         player.criticalHitsThisRefresh += 1;
-        onCriticalHit();
+        onCriticalHit(player);
     }
     
     const actualAmount = baseAmountPerSecond * delta
@@ -108,7 +109,7 @@ export const updateMainBar = (width: number) => {
     );
 }
 
-export const backgroundColorCreation = () => {
+export const backgroundColorCreation = (player: Player) => {
     if (player.barLevel >= 128) return '#FFFFFF';
 
     const R = (128 + player.barLevel).toString(16).padStart(2, '0');
@@ -118,8 +119,8 @@ export const backgroundColorCreation = () => {
     return `#${R}${G}${B}`;
 }
 
-export const levelUpBar = () => {
-    player.coins.gain(computeMainBarCoinWorth());
+export const levelUpBar = (player: Player) => {
+    player.coins.gain(computeMainBarCoinWorth(player));
     player.barEXP -= player.barTNL
     player.barLevel += 1;
 
@@ -127,13 +128,13 @@ export const levelUpBar = () => {
         player.highestBarLevel = player.barLevel
     }
 
-    const barColor = backgroundColorCreation();
+    const barColor = backgroundColorCreation(player);
     updateStyleById(
         'progression',
         { backgroundColor: barColor }
     );
 
-    player.barTNL = computeMainBarTNL()
+    player.barTNL = computeMainBarTNL(player)
 
     // Adjust barEXP to prevent overleveling / snowball effect on levels
     player.barEXP /= 10;
@@ -144,7 +145,7 @@ export const levelUpBar = () => {
 
     updateElementById(
         'coinWorth',
-        { textContent: `Worth ${format(computeMainBarCoinWorth())} coins` }
+        { textContent: `Worth ${format(computeMainBarCoinWorth(player))} coins` }
     );
     player.barFragments.updateHTML();
 
@@ -154,7 +155,7 @@ export const levelUpBar = () => {
     }
 }
 
-export const updateMainBarInformation = () => {
+export const updateMainBarInformation = (player: Player) => {
     updateElementById(
         'level',
         { textContent: `Level: ${player.barLevel}` }
@@ -165,7 +166,7 @@ export const updateMainBarInformation = () => {
     );
 }
 
-export const updateDPS = () => {
+export const updateDPS = (player: Player) => {
     previousPerSec = currentPerSec;
     currentPerSec = 0;
     updateElementById(
@@ -177,7 +178,7 @@ export const updateDPS = () => {
     player.talents.barSpeed.gainEXP(previousPerSec);
 }
 
-export const computeMainBarCoinWorth = () => {
+export const computeMainBarCoinWorth = (player: Player) => {
     let baseWorth = 0;
 
     const nextLevel = 1 + player.barLevel

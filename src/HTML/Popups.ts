@@ -1,4 +1,4 @@
-import { getElementById } from '../Utilities/UpdateHTML';
+import { getElementById } from '../Utilities/Render';
 
 const querySelector = <
 	R extends Element = HTMLElement,

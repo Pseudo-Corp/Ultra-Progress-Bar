@@ -18,6 +18,6 @@ document.addEventListener('visibilitychange', () => {
 
     updateElementById(
         'coinWorth',
-        { textContent: `Worth ${format(computeMainBarCoinWorth())} coins` }
+        { textContent: `Worth ${format(computeMainBarCoinWorth(player))} coins` }
     );
 });

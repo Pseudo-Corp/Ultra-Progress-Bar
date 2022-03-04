@@ -1,13 +1,13 @@
-import { loadGame } from '../Game';
+import { loadGame, player } from '../Game';
 import { Alert } from '../HTML/Popups';
 import { generateEventHandlers } from '../Utilities/Eventlisteners';
 import { onRefresh } from '../Utilities/UpdateHTML';
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 window.addEventListener('load', async () => {
-	generateEventHandlers();
+	generateEventHandlers(player);
     await loadGame();
-	onRefresh();
+	onRefresh(player);
 
 	// All versions of Chrome and Firefox supported by the game have this API,
     // but not all versions of Edge and Safari do.

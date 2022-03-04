@@ -1,7 +1,5 @@
 import { setProperty } from 'dot-prop';
 import localforage from 'localforage';
-import './Events/Load';
-import './Events/VisisbilityChange';
 import { Alert, Confirm } from './HTML/Popups';
 import { Coins } from './Main/Currency/Variants/Coin';
 import { ProgressFragment } from './Main/Currency/Variants/ProgressFragment';
@@ -43,7 +41,7 @@ export const player: Player = {
     totalEXP: 0,
     barLevel: 0,
     highestBarLevel: 0,
-    coins: new Coins(),
+    coins: {} as Player['coins'],
     coinUpgrades: {} as Player['coinUpgrades'],
     talents: {} as Player['talents'],
     barFragments: {} as Player['barFragments'],
@@ -53,20 +51,21 @@ export const player: Player = {
     criticalHitsThisRefresh: 0,
 };
 
+player.coins = new Coins(0, player);
 player.coinUpgrades = {
-    barSpeed: new CoinBarSpeed(0, coinUpgradeCosts.barSpeed),
-    barMomentum: new CoinBarMomentum(0, coinUpgradeCosts.barMomentum),
-    barReverberation: new CoinBarReverberation(0, coinUpgradeCosts.barReverberation),
-    barVibration: new CoinBarVibration(0, coinUpgradeCosts.barVibration),
-    barAgitation: new CoinBarAgitation(0, coinUpgradeCosts.barAgitation)
+    barSpeed: new CoinBarSpeed(0, coinUpgradeCosts.barSpeed, player),
+    barMomentum: new CoinBarMomentum(0, coinUpgradeCosts.barMomentum, player),
+    barReverberation: new CoinBarReverberation(0, coinUpgradeCosts.barReverberation, player),
+    barVibration: new CoinBarVibration(0, coinUpgradeCosts.barVibration, player),
+    barAgitation: new CoinBarAgitation(0, coinUpgradeCosts.barAgitation, player)
 };
 
 player.talents = {
-    barCriticalChance: new TalentCriticalChance(0, talentBaseEXP.talentCriticalChance, 0, 0, 0),
-    barSpeed: new TalentProgressSpeed(0, talentBaseEXP.talentProgressSpeed, 0, 0, 0)
+    barCriticalChance: new TalentCriticalChance(0, talentBaseEXP.talentCriticalChance, 0, 0, 0, player),
+    barSpeed: new TalentProgressSpeed(0, talentBaseEXP.talentProgressSpeed, 0, 0, 0, player)
 };
 
-player.barFragments = new ProgressFragment();
+player.barFragments = new ProgressFragment(0, player);
 
 /**
  * A newly initiable save for later. 
@@ -76,12 +75,27 @@ export const blankSave = Object.assign({}, player);
 /**
  * Saves your savefile to localstorage.
  */
-export const saveGame = async () => {
-    const saveString = Object.assign({}, player, {}); 
-
+export const saveGame = async (player: Player) => {
     await localforage.removeItem('UPBSave');
 
-    const save = btoa(JSON.stringify(saveString));
+    const saveObject = {
+        ...player,
+        coins: player.coins.valueOf(),
+        coinUpgrades: {
+            barSpeed: player.coinUpgrades.barSpeed.valueOf(),
+            barMomentum: player.coinUpgrades.barMomentum.valueOf(),
+            barReverberation: player.coinUpgrades.barReverberation.valueOf(),
+            barVibration: player.coinUpgrades.barVibration.valueOf(),
+            barAgitation: player.coinUpgrades.barAgitation.valueOf()
+        },
+        talents: {
+            barCriticalChance: player.talents.barCriticalChance.valueOf(),
+            barSpeed: player.talents.barSpeed.valueOf()
+        },
+        barFragments: player.barFragments.valueOf()
+    };
+
+    const save = btoa(JSON.stringify(saveObject));
     if (save !== null) {
         await localforage.setItem('UPBSave', save);
     }
@@ -90,8 +104,8 @@ export const saveGame = async () => {
 /**
  * Map of properties on the Player object to adapt
  */
- const toAdapt = new Map<string, (data: Player) => unknown>([
-    ['coins', data => new Coins(Number(data.coins.amount))],
+ const toAdapt = new Map<string, (data: Player, player: Player) => unknown>([
+    ['coins', (data, player) => new Coins(Number(data.coins.amount), player)],
     ['coinUpgrades.barSpeed', Transform.transformBarSpeed],
     ['coinUpgrades.barMomentum', Transform.transformBarMomentum],
     ['coinUpgrades.barReverberation', Transform.transformReverberation],
@@ -99,7 +113,7 @@ export const saveGame = async () => {
     ['coinUpgrades.barAgitation', Transform.transformAgitation],
     ['talents.barCriticalChance', Transform.transformTalentBarCriticalChance],
     ['talents.barSpeed', Transform.transformBarSpeedTalent],
-    ['barFragments', data => new ProgressFragment(Number(data.barFragments.amount))],
+    ['barFragments', (data, player) => new ProgressFragment(Number(data.barFragments.amount), player)],
 ]);
 
 /**
@@ -125,11 +139,9 @@ const loadSavefile = async () => {
     }
 
     for (const [key, adapter] of toAdapt) {    
-        setProperty(player, key, adapter(data));
+        setProperty(player, key, adapter(data, player));
     }
 }
-
-
 
 export const intervalHold = new Set<ReturnType<typeof setInterval>>();
 export const interval = new Proxy(setInterval, {
@@ -178,7 +190,7 @@ export const loadGame = async () => {
     intervalHold.clear();
 
     await loadSavefile();
-    player.barTNL = computeMainBarTNL();
+    player.barTNL = computeMainBarTNL(player);
 
     Object.defineProperty(window, 'player', {
         value: player
@@ -192,20 +204,20 @@ export const loadGame = async () => {
     updateStyleById(
         'progression',
         {
-            backgroundColor: backgroundColorCreation()
+            backgroundColor: backgroundColorCreation(player)
         }
     );
     updateElementById(
         'coinWorth',
         {
-            textContent: `Worth ${format(computeMainBarCoinWorth())} coins`
+            textContent: `Worth ${format(computeMainBarCoinWorth(player))} coins`
         }
     );
 
     lastUpdate = performance.now();
     interval(tick, 1000 / FPS);
-    interval(updateDPS, 1000);
-    interval(saveGame, saveRate)
+    interval(updateDPS, 1000, player);
+    interval(saveGame, saveRate, player)
 }
 
 export const resetGame = async () => {
@@ -236,7 +248,7 @@ export const tick = () => {
  * @param delta how many seconds have elapsed since the previous tick
  */
 export const tock = (delta: number) => {
-    incrementMainBarEXP(delta);
+    incrementMainBarEXP(delta, player);
     player.refreshTime += delta;
     updateElementById(
         'refresh-timer',
@@ -247,10 +259,10 @@ export const tock = (delta: number) => {
     if (width < 100) {
         updateMainBar(width);
     } else {
-        levelUpBar();
+        levelUpBar(player);
     }
 
-    updateMainBarInformation();
+    updateMainBarInformation(player);
 }
 
 /*
