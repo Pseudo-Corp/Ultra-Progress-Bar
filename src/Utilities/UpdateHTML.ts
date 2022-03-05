@@ -57,7 +57,7 @@ export const onCriticalHit = (player: Player) => {
 
     updateElementById(
         'refresh-crit-fragments',
-        { textContent: format(100 * player.criticalHitsThisRefresh * 
+        { textContent: format(100 * player.criticalHitsThisRefresh *
             player.coinUpgrades.barAgitation.upgradeEffect(), 2) }
     )
     player.barFragments.updateHTML();
@@ -67,7 +67,7 @@ export const onCriticalHit = (player: Player) => {
 export const onRefresh = (player: Player) => {
     updateStyleById(
         'progression',
-         { backgroundColor: 'cyan' }
+        { backgroundColor: 'cyan' }
     );
 
     setTimeout(() => {
@@ -87,8 +87,7 @@ export const onRefresh = (player: Player) => {
             'coinWorth',
             { color: 'gold' }
         )
-    }
-    else {
+    } else {
         updateStyleById(
             'coinWorth',
             { color: 'grey' }

@@ -33,11 +33,11 @@ export const player = {
     refreshTime: 0,
     criticalHits: 0,
     criticalHitsThisRefresh: 0,
-    coinValueCache: 0,
+    coinValueCache: 0
 } as Player; // downcast on purpose
 
 /**
- * A newly initiable save for later. 
+ * A newly initiable save for later.
  */
 export const blankSave = Object.assign({}, player);
 
@@ -77,7 +77,7 @@ export const saveGame = async (player: Player) => {
 /**
  * Map of properties on the Player object to adapt
  */
- const toAdapt = new Map<string, (data: Partial<Player>, player: Player) => unknown>([
+const toAdapt = new Map<string,(data: Partial<Player>, player: Player) => unknown>([
     ['coins', (data, player) => new Coins(Number(data.coins?.amount ?? 0), player)],
     ['coinUpgrades.barSpeed', Transform.transformBarSpeed],
     ['coinUpgrades.barMomentum', Transform.transformBarMomentum],
@@ -90,7 +90,7 @@ export const saveGame = async (player: Player) => {
     ['talents.barCriticalChance', Transform.transformTalentBarCriticalChance],
     ['talents.barSpeed', Transform.transformBarSpeedTalent],
     ['talents.coinGain', Transform.transformTalentCoinGain],
-    ['barFragments', (data, player) => new ProgressFragment(Number(data.barFragments?.amount ?? 0), player)],
+    ['barFragments', (data, player) => new ProgressFragment(Number(data.barFragments?.amount ?? 0), player)]
 ]);
 
 /**
@@ -102,7 +102,7 @@ const loadSavefile = async () => {
 
     // data is null on the first load!
 
-    if (data !== null) { 
+    if (data !== null) {
         const keys = Object.keys(data) as (keyof Player & string)[];
 
         for (const key of keys) {
@@ -156,7 +156,7 @@ window.addEventListener('pagehide', () => {
  * FPS: How many times the game is to update (tick) per second.
  */
 let lastUpdate = 0;
-export const FPS = 24; 
+export const FPS = 24;
 const saveRate = 5000
 
 export const loadGame = async () => {
@@ -177,7 +177,7 @@ export const loadGame = async () => {
     player.barFragments.updateHTML();
 
     hideStuff('Main');
-    
+
     updateStyleById(
         'progression',
         {

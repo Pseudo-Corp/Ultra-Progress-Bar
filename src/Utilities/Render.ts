@@ -5,9 +5,9 @@ export const updateElement = <
     T extends HTMLElement | CSSStyleDeclaration,
     R extends keyof T
 >(
-    element: T,
-    keys: Record<R, T[R]>
-): boolean => {
+        element: T,
+        keys: Record<R, T[R]>
+    ): boolean => {
     if (document.visibilityState === 'hidden') return false;
 
     const entries = Object.entries(keys) as [R, T[R]][];

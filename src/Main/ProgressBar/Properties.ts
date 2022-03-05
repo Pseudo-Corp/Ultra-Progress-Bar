@@ -47,7 +47,7 @@ export const computeBarArmor = (player: Player) => {
     if (baseArmor >= 0.9999) {
         return 10000
     }
-        
+
     return 1 / (1 - baseArmor)
 }
 
@@ -81,7 +81,7 @@ export const incrementMainBarEXP = (delta: number, player: Player) => {
         player.criticalHitsThisRefresh += 1;
         onCriticalHit(player);
     }
-    
+
     const actualAmount = baseAmountPerSecond * delta
     player.barEXP += actualAmount
     currentPerSec += actualAmount
@@ -141,7 +141,7 @@ export const levelUpBar = (player: Player) => {
     // Adjust barEXP to prevent overleveling / snowball effect on levels
     player.barEXP /= 10;
     player.barEXP = Math.min(player.barEXP, Math.floor(player.barTNL / 10));
-    
+
     const width = getBarWidth(player.barEXP, player.barTNL);
     updateMainBar(width);
 
@@ -224,7 +224,7 @@ export const computeMainBarCoinWorth = (player: Player) => {
 
     const coinHTML = getElementById('coinWorth');
     coinHTML.style.color = (baseWorth > 0) ? 'gold' : 'grey'
-    
+
 
     return baseWorth
 }

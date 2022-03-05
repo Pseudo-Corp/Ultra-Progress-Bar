@@ -26,7 +26,7 @@ export abstract class CoinUpgrade extends Upgrade {
         if (this.maxLevel !== -1) {
             amount = Math.min(amount, this.maxLevel - this.level)
         }
-        
+
         if (this.cost * amount <= this.player.coins.amount) {
             this.player.coins.spend(this.cost * amount)
             this.level += amount;
@@ -58,7 +58,7 @@ export const coinUpgradeCosts = {
 export class CoinBarSpeed extends CoinUpgrade {
     maxLevel = -1;
     /**
-     * 
+     *
      * @returns Bar Speed to add on top of the base amount. Additive!
      */
     upgradeEffect(): number {
@@ -73,11 +73,11 @@ export class CoinBarSpeed extends CoinUpgrade {
             }
         );
         updateElementById(
-                'coin-bar-speed-name',
-                {
-                    textContent: `Bar Speed ${format(this.level)}` 
-                }
-            )
+            'coin-bar-speed-name',
+            {
+                textContent: `Bar Speed ${format(this.level)}`
+            }
+        )
     }
 }
 
@@ -94,7 +94,7 @@ export class CoinBarMomentum extends CoinUpgrade {
     upgradeEffect(): number {
         if (this.maxLevel === this.level) return (Math.pow(100, 1/10) - 1);
 
-        return (0.45 * (1 - Math.pow(Math.E, -this.level/this.expoDivisor)) 
+        return (0.45 * (1 - Math.pow(Math.E, -this.level/this.expoDivisor))
                + 1/200 * Math.min(10, this.level)) * ((Math.pow(100, 1/10) - 1) / 0.5)
     }
 
@@ -103,7 +103,7 @@ export class CoinBarMomentum extends CoinUpgrade {
             'coin-bar-momentum-effect',
             {
                 textContent:
-                    `Up to ${format(Math.pow(1 + this.upgradeEffect(), 10), 2)}x Progress Speed based on fill%`,
+                    `Up to ${format(Math.pow(1 + this.upgradeEffect(), 10), 2)}x Progress Speed based on fill%`
             }
         );
 
@@ -120,12 +120,11 @@ export class CoinBarMomentum extends CoinUpgrade {
                     color: 'orchid'
                 }
             )
-        }
-        else {
+        } else {
             updateElementById(
                 'coin-bar-momentum-name',
                 {
-                    textContent: `Bar Momentum ${format(this.level)}/${format(this.maxLevel)}` 
+                    textContent: `Bar Momentum ${format(this.level)}/${format(this.maxLevel)}`
                 }
             )
         }
@@ -170,12 +169,11 @@ export class CoinBarReverberation extends CoinUpgrade {
                     color: 'orchid'
                 }
             )
-        }
-        else {
+        } else {
             updateElementById(
                 'coin-bar-reverberation-name',
                 {
-                    textContent: `Bar Reverberation ${format(this.level)}/${format(this.maxLevel)}` 
+                    textContent: `Bar Reverberation ${format(this.level)}/${format(this.maxLevel)}`
                 }
             )
         }
@@ -220,12 +218,11 @@ export class CoinBarVibration extends CoinUpgrade {
                     color: 'orchid'
                 }
             )
-        }
-        else {
+        } else {
             updateElementById(
                 'coin-bar-vibration-name',
                 {
-                    textContent: `Bar Vibration ${format(this.level)}/${format(this.maxLevel)}` 
+                    textContent: `Bar Vibration ${format(this.level)}/${format(this.maxLevel)}`
                 }
             )
         }
@@ -252,10 +249,10 @@ export class CoinBarAgitation extends CoinUpgrade {
             }
         )
         updateElementById(
-                'coin-bar-agitation-name',
-                {
-                    textContent: `Bar Agitation ${format(this.level)}` 
-                }
+            'coin-bar-agitation-name',
+            {
+                textContent: `Bar Agitation ${format(this.level)}`
+            }
         )
     }
 }
@@ -293,12 +290,11 @@ export class CoinBarAdoption extends CoinUpgrade {
                     color: 'orchid'
                 }
             )
-        }
-        else {
+        } else {
             updateElementById(
                 'coin-bar-adoption-name',
                 {
-                    textContent: `Bar Adoption ${format(this.level)}/${format(this.maxLevel)}` 
+                    textContent: `Bar Adoption ${format(this.level)}/${format(this.maxLevel)}`
                 }
             )
         }
@@ -338,12 +334,11 @@ export class CoinBarEmpowerment extends CoinUpgrade {
                     color: 'orchid'
                 }
             )
-        }
-        else {
+        } else {
             updateElementById(
                 'coin-bar-empowerment-name',
                 {
-                    textContent: `Bar Empowerment ${format(this.level)}/${format(this.maxLevel)}` 
+                    textContent: `Bar Empowerment ${format(this.level)}/${format(this.maxLevel)}`
                 }
             )
         }
@@ -373,8 +368,8 @@ export class CoinBarReinforcement extends CoinUpgrade {
         updateElementById(
             'coin-bar-reinforcement-name',
             {
-                textContent: `Bar Reinforcement ${format(this.level)}` 
+                textContent: `Bar Reinforcement ${format(this.level)}`
             }
         )
-        }
+    }
 }

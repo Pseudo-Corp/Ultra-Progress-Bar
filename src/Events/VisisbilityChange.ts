@@ -25,8 +25,7 @@ document.addEventListener('visibilitychange', () => {
             'coinWorth',
             { color: 'gold' }
         )
-    }
-    else {
+    } else {
         updateStyleById(
             'coinWorth',
             { color: 'grey' }

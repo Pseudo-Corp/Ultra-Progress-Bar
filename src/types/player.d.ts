@@ -21,7 +21,7 @@ export interface Player {
     highestBarLevel: number,
     coins: Coins
     coinUpgrades: {
-        barSpeed: CoinBarSpeed 
+        barSpeed: CoinBarSpeed
         barMomentum: CoinBarMomentum
         barReverberation: CoinBarReverberation
         barVibration: CoinBarVibration

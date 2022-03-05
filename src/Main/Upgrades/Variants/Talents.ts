@@ -19,9 +19,9 @@ export abstract class Talent extends Upgrade {
     currTNL: number
 
     // In this case, "cost" refers to the base EXP requirement.
-    constructor(level: number, cost: number, 
-                investedFragments: number, permLevel: number, 
-                currEXP: number, player: Player) {
+    constructor(level: number, cost: number,
+        investedFragments: number, permLevel: number,
+        currEXP: number, player: Player) {
         super(level, cost, player)
         this.investedFragments = investedFragments;
         this.permLevel = permLevel;
@@ -112,9 +112,7 @@ export abstract class Talent extends Upgrade {
             return void Alert(
                 `This bar needs more fragments than you can invest. You need ${format(this.investedFragments)}.`
             );
-        }
-
-        else {
+        } else {
             const confirmation = await Confirm(
                 `You will sacrifice ${format(this.player.barFragments.amount - this.investedFragments)} ` +
                 'Bar Fragments to increase EXP gain for this bar. Will you? ' +
@@ -190,13 +188,13 @@ export abstract class Talent extends Upgrade {
 export const talentBaseEXP = {
     talentCriticalChance: 10,
     talentProgressSpeed: 10,
-    talentCoinGain: 1000,
+    talentCoinGain: 1000
 }
 
 export class TalentCriticalChance extends Talent {
     idHTML = 'CriticalChance'
-    constructor(level: number, cost: number, 
-        investedFragments: number, permLevel: number, 
+    constructor(level: number, cost: number,
+        investedFragments: number, permLevel: number,
         currEXP: number, player: Player) {
         super(level, cost, investedFragments, permLevel, currEXP, player);
         this.updateHTML('Initialize');
@@ -215,7 +213,7 @@ export class TalentCriticalChance extends Talent {
     talentEffect(): number {
         if (!isLevel20(this.player)) return 0;
 
-        return 0.025 * (1 - Math.pow(Math.E, - this.level / 2500)) 
+        return 0.025 * (1 - Math.pow(Math.E, - this.level / 2500))
             + 0.025 * Math.min(250, this.level) / 250
             + 0.025 * (1 - Math.pow(Math.E, - this.permLevel / 4000))
             + 0.025 * Math.min(500, this.level) / 500
@@ -228,8 +226,8 @@ export class TalentCriticalChance extends Talent {
 
 export class TalentProgressSpeed extends Talent {
     idHTML = 'ProgressSpeed'
-    constructor(level: number, cost: number, 
-        investedFragments: number, permLevel: number, 
+    constructor(level: number, cost: number,
+        investedFragments: number, permLevel: number,
         currEXP: number, player: Player) {
         super(level, cost, investedFragments, permLevel, currEXP, player);
         this.updateHTML('Initialize');
@@ -257,8 +255,8 @@ export class TalentProgressSpeed extends Talent {
 export class TalentCoinGain extends Talent {
     idHTML = 'CoinGain'
 
-    constructor(level: number, cost: number, 
-        investedFragments: number, permLevel: number, 
+    constructor(level: number, cost: number,
+        investedFragments: number, permLevel: number,
         currEXP: number, player: Player) {
         super(level, cost, investedFragments, permLevel, currEXP, player);
         this.updateHTML('Initialize');
@@ -273,8 +271,8 @@ export class TalentCoinGain extends Talent {
 
     talentEffect(): number {
         // Max +50% coins from the progress bar
-        return Math.min(0.4, this.level / 1000 ) + 
-        Math.min(0.4, this.permLevel / 2000) + 
+        return Math.min(0.4, this.level / 1000 ) +
+        Math.min(0.4, this.permLevel / 2000) +
         0.2 * (this.level * 25 + this.permLevel) / (2500 + this.level * 25 + this.permLevel) +
         1 * (this.level * 25 + this.permLevel) / (50000 + this.level * 25 + this.permLevel)
     }

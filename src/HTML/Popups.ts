@@ -3,11 +3,8 @@ import { getElementById } from '../Utilities/Render';
 const querySelector = <
 	R extends Element = HTMLElement,
 	T extends Document | ParentNode = Document | ParentNode
->(
-	item: T,
-	args: Parameters<T['querySelector']>[0]
-): R => {
-	return item.querySelector(args) as R;
+>(item: T, args: Parameters<T['querySelector']>[0]): R => {
+    return item.querySelector(args) as R;
 }
 
 const ConfirmCB = (text: string, cb: (value: boolean) => void) => {
@@ -17,7 +14,7 @@ const ConfirmCB = (text: string, cb: (value: boolean) => void) => {
     const overlay = querySelector(document, '#transparentBG');
     const ok = querySelector(popup, '#okConfirm');
     const cancel = querySelector(popup, '#cancelConfirm');
-    
+
     conf.style.display = 'block';
     confWrap.style.display = 'block';
     overlay.style.display = 'block';
@@ -59,7 +56,7 @@ const AlertCB = (text: string, cb: (value: undefined) => void) => {
     const overlay = querySelector(document, '#transparentBG');
     const popup = querySelector(document, '#alert');
     const ok = querySelector(popup, '#okAlert');
-    
+
     conf.style.display = 'block';
     alertWrap.style.display = 'block';
     overlay.style.display = 'block';
@@ -69,7 +66,7 @@ const AlertCB = (text: string, cb: (value: undefined) => void) => {
     const listener = () => {
         ok.removeEventListener('click', listener);
         popup.removeEventListener('keyup', kbListener);
-        
+
         conf.style.display = 'none';
         alertWrap.style.display = 'none';
         overlay.style.display = 'none';
@@ -80,7 +77,7 @@ const AlertCB = (text: string, cb: (value: undefined) => void) => {
 
     ok.addEventListener('click', listener);
     popup.addEventListener('keyup', kbListener);
-} 
+}
 
 const PromptCB = (text: string, cb: (value: string | null) => void) => {
     const conf = getElementById('confirmationBox');
@@ -89,7 +86,7 @@ const PromptCB = (text: string, cb: (value: string | null) => void) => {
     const popup = querySelector(document, '#prompt');
     const ok = querySelector(popup, '#okPrompt');
     const cancel = querySelector(popup, '#cancelPrompt');
-    
+
     conf.style.display = 'block';
     confWrap.style.display = 'block';
     overlay.style.display = 'block';

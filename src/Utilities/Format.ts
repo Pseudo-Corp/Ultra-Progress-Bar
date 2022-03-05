@@ -4,7 +4,7 @@
  * @param accuracy : The amount of decimal digits to be displayed
  * @returns a string of the number formatted to specific conditions.
  */
- export const format = (n: number, accuracy = 0): string => {
+export const format = (n: number, accuracy = 0): string => {
     if (n < 0) return '-' + format(-n, accuracy);
 
     if (n >= 1e6) {
