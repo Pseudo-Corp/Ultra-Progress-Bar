@@ -214,11 +214,18 @@ export const resetGame = async () => {
     }
 
     await localforage.removeItem('UPBSave');
-    
-    const emptySave = btoa(JSON.stringify(blankSave));
 
-    await localforage.setItem('UPBSave', emptySave);
-     alert('refresh the tab now! to reset your game...')
+    const keys = Object.keys(player) as (keyof Player)[];
+
+    for (const key of keys) {
+        if (typeof player[key] === 'object') {
+            delete player[key];
+            continue;
+        }
+
+        Object.defineProperty(player, key, { value: blankSave[key] });
+    }
+
     await loadGame();
 }
 

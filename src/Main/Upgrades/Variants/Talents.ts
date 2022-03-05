@@ -244,7 +244,7 @@ export class TalentProgressSpeed extends Talent {
     }
 
     talentEffect(): number {
-        if (!isLevel20) return 0;
+        if (!isLevel20(this.player)) return 0;
 
         return (1 + this.level / 25) * (1 + this.permLevel / 50)
     }
@@ -274,7 +274,7 @@ export class TalentCoinGain extends Talent {
     }
 
     talentEffect(): number {
-        if (!isLevel20) return 0;
+        if (!isLevel20(this.player)) return 0;
 
         // Max +50% coins from the progress bar
         return Math.min(0.4, this.level / 1000 ) + 

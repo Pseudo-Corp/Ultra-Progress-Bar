@@ -29,7 +29,7 @@
     "check:tsc": "npx -p typescript tsc",
     "watch:tsc": "npx -p typescript tsc --watch",
     "prepare": "husky install",
-    "dependency-test": "npx madge --circular --extensions ts ./src"
+    "dependency-test": "npx madge --circular --exclude .d.ts --extensions ts ./src"
   },
   "repository": {
     "type": "git",
