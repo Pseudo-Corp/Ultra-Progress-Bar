@@ -21,6 +21,7 @@ export abstract class Currency {
     gain(amount: number):void {
         this.amount += amount;
         this.updateHTML();
+        this.updateOnGain(amount);
     }
 
     set(amount: number):void {
@@ -32,6 +33,7 @@ export abstract class Currency {
         return { amount: this.amount };
     }
 
+    abstract updateOnGain(amount: number): void;
     abstract updateHTML(): void;
 
 }

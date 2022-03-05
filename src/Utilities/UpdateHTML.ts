@@ -54,6 +54,12 @@ export const onCriticalHit = (player: Player) => {
         'refresh-crit-counter',
         { textContent: format(player.criticalHitsThisRefresh) }
     )
+
+    updateElementById(
+        'refresh-crit-fragments',
+        { textContent: format(100 * player.criticalHitsThisRefresh * 
+            player.coinUpgrades.barAgitation.upgradeEffect(), 2) }
+    )
     player.barFragments.updateHTML();
 
 }

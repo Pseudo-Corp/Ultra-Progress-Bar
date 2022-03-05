@@ -43,7 +43,7 @@
             </div>
         </div>
         <div class="mainProgressBarArea" id="progressTesting">
-            <div class="tabSeparator" id="progressBarTest1"><p>Ultimate Progress Bar v0.0.5-alpha</p></div>
+            <div class="tabSeparator" id="progressBarTest1"><p>Ultimate Progress Bar v0.0.7-alpha</p></div>
             <div class="progressBarBig" id="progressBarTest2">
                 <div id="progression"></div>
                 <div class="progressBarBigText" id="level"></div>
@@ -108,6 +108,23 @@
                                 <p class="coinUpgradeText" id="coin-bar-vibration-effect">CRITICAL Ticks fill up the bar 10x faster.</p>
                                 <button class="coinUpgradeBtn" id="buy-coin-bar-vibration">Buy more for 50 Coin</button>
                             </div>
+                            <div class="coinUpgrade" id="coin-adoption">
+                                <p class="coinUpgradeText" id="coin-bar-adoption-name">Bar Adoption</p>
+                                <p class="coinUpgradeText" id="coin-bar-adoption-effect">+1% Talent Gain per level</p>
+                                <button class="coinUpgradeBtn" id="buy-coin-bar-adoption">Buy more for 250 Coin</button>
+                            </div>
+                        </div>
+                        <div class="coinUpgrades">
+                            <div class="coinUpgrade" id="coin-empowerment">
+                                <p class="coinUpgradeText" id="coin-bar-empowerment-name">Bar Empowerment</p>
+                                <p class="coinUpgradeText" id="coin-bar-empowerment-effect">Increase Progress Speed by 1% per level (multiplicative)</p>
+                                <button class="coinUpgradeBtn" id="buy-coin-bar-empowerment">Buy more for 10k Coin</button>
+                            </div>
+                            <div class="coinUpgrade" id="coin-reinforcement">
+                                <p class="coinUpgradeText" id="coin-bar-reinforcement-name">Bar Reinforcement</p>
+                                <p class="coinUpgradeText" id="coin-bar-reinforcement-effect">Gain 2% more Bar Fragments per bar level.</p>
+                                <button class="coinUpgradeBtn" id="buy-coin-bar-reinforcement">Buy more for 20k Coin</button>
+                            </div>
                             <div class="coinUpgrade" id="reset">
                                 <p class="coinUpgradeText" id="reset-name">RESET</p>
                                 <p class="coinUpgradeText">Go back to level 0, pronto!</p>
@@ -116,7 +133,7 @@
                         </div>
                         <p>You have <span id="fragment-amount" style="color:cyan"></span> Bar Fragments [+<span id="fragment-bonus" style="color: cyan"></span>% Progress Speed].</p>
                         <p>On refresh, you will have <span id="fragment-gain" style="color: orchid"></span> Bar Fragments [Replaces Current Amount!]</p>
-                        <p>Refresh timer: <span id="refresh-timer" style="color:cyan"></span>. Times refreshed: <span id="refresh-counter" style="color:cyan">0</span>. CRITS this refresh: <span id="refresh-crit-counter" style="color: gold">0</span></p>
+                        <p>Refresh timer: <span id="refresh-timer" style="color:cyan"></span>. Times refreshed: <span id="refresh-counter" style="color:cyan">0</span>. CRITS this refresh: <span id="refresh-crit-counter" style="color: gold">0</span> \ Bar Fragments +<span id="refresh-crit-fragments" style="color: gold">0</span>%</p>
                     </div>
                     <div class="tabs" id="talentsTab">
                         <div class="talentContainer" id="talentCriticalChanceContainer">
@@ -151,6 +168,23 @@
                                 <p class="talentInfoText" id="talentProgressSpeedPermGain">Test 3</p>
                                 <p class="talentInfoText" id="talentProgressSpeedEffect">Test 4</p>
                                 <p class="talentInfoText" id="talentProgressSpeedInfo">Gain EXP from higher EXP/sec!</p>
+                            </div>
+                        </div>
+                        <div class="talentContainer" id="talentCoinGainContainer">
+                            <div class="talentBarContainer">
+                                <p>Coin Gain</p>
+                                <div class="talentProgressBar">
+                                    <div class="talentProgression" id="talentCoinGainProgression"></div>
+                                    <div class="talentBarText" id="talentCoinGainEXP"></div>
+                                </div>
+                                <button class="talentSacrifice" id="talentCoinGainSacrifice">Sacrifice Bar Fragments</button>
+                            </div>
+                            <div class="talentInfo">
+                                <p class="talentInfoText" id="talentCoinGainTempLevel">Test 1</p>
+                                <p class="talentInfoText" id="talentCoinGainPermLevel">Test 2</p>
+                                <p class="talentInfoText" id="talentCoinGainPermGain">Test 3</p>
+                                <p class="talentInfoText" id="talentCoinGainEffect">Test 4</p>
+                                <p class="talentInfoText" id="talentCoinGainInfo">Gain EXP from earning coins!</p>
                             </div>
                         </div>
                     </div>

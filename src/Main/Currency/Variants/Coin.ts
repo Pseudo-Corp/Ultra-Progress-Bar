@@ -11,4 +11,10 @@ export class Coins extends Currency {
             }
         );
     }
+
+    updateOnGain(amount: number): void {
+        if (amount > 0) {
+            this.player.talents.coinGain.gainEXP(amount)
+        }
+    }
 }

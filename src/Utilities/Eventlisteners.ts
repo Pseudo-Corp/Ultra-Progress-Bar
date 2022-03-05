@@ -29,6 +29,18 @@ export const generateEventHandlers = (player: Player) => {
         'click',
         (event) => player.coinUpgrades.barAgitation.purchaseLevels(1, event)
     )
+    getElementById('buy-coin-bar-adoption').addEventListener(
+        'click',
+        (event) => player.coinUpgrades.barAdoption.purchaseLevels(1, event)
+    )
+    getElementById('buy-coin-bar-empowerment').addEventListener(
+        'click',
+        (event) => player.coinUpgrades.barEmpowerment.purchaseLevels(1, event)
+    )
+    getElementById('buy-coin-bar-reinforcement').addEventListener(
+        'click',
+        (event) => player.coinUpgrades.barReinforcement.purchaseLevels(1, event)
+    )
     getElementById('buy-reset').addEventListener('click', () => reset('Refresh', player));
     getElementById('reset-game').addEventListener('click', () => void resetGame());
 
@@ -40,5 +52,10 @@ export const generateEventHandlers = (player: Player) => {
     getElementById('talentProgressSpeedSacrifice').addEventListener(
         'click',
         () => void player.talents.barSpeed.sacrificeFragments()
+    );
+
+    getElementById('talentCoinGainSacrifice').addEventListener(
+        'click',
+        () => void player.talents.coinGain.sacrificeFragments()
     );
 }

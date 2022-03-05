@@ -26,11 +26,16 @@ export class ProgressFragment extends Currency {
         baseAmount *= Math.pow(3, Math.floor(level / 100));
 
         baseAmount *= (1 + this.player.criticalHitsThisRefresh * this.player.coinUpgrades.barAgitation.upgradeEffect());
-        
+        baseAmount *= (1 + this.player.coinUpgrades.barReinforcement.upgradeEffect() * this.player.barLevel);
         return Math.floor(baseAmount);
     }
 
     unspentBonus(): number {
         return (1 + 1/100 * this.amount)
+    }
+
+    updateOnGain(): void {
+        // This is intentionally empty. Add something here if it seems suitable.
+        // Called whenever this.gain() is called.
     }
 }

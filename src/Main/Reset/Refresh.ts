@@ -3,7 +3,7 @@ import { Alert } from '../../HTML/Popups'
 import { Player } from '../../types/player'
 import { format } from '../../Utilities/Format'
 import { onCriticalHit, onRefresh } from '../../Utilities/UpdateHTML'
-import { computeMainBarTNL, getBarWidth, updateMainBar } from '../ProgressBar/Properties'
+import { computeMainBarCoinWorth, computeMainBarTNL, getBarWidth, updateMainBar } from '../ProgressBar/Properties'
 
 export type resetTypes = 'Refresh' | 'Transcend'
 
@@ -26,9 +26,12 @@ export const reset = (variant: resetTypes, player: Player) => {
         player.talents.barCriticalChance.updateHTML('Initialize');
         player.talents.barSpeed.convertToPerm();
         player.talents.barSpeed.updateHTML('Initialize')
+        player.talents.coinGain.convertToPerm();
+        player.talents.coinGain.updateHTML('Initialize')
         player.refreshCount += 1
         player.refreshTime = 0;
         player.criticalHitsThisRefresh = 0;
+        player.coinValueCache = computeMainBarCoinWorth(player);
 
         onCriticalHit(player);
         onRefresh(player);

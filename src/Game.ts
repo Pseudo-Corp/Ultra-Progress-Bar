@@ -5,7 +5,6 @@ import { Coins } from './Main/Currency/Variants/Coin';
 import { ProgressFragment } from './Main/Currency/Variants/ProgressFragment';
 import {
     backgroundColorCreation,
-    computeMainBarCoinWorth,
     computeMainBarTNL,
     getBarWidth,
     incrementMainBarEXP,
@@ -33,7 +32,8 @@ export const player = {
     refreshCount: 0,
     refreshTime: 0,
     criticalHits: 0,
-    criticalHitsThisRefresh: 0
+    criticalHitsThisRefresh: 0,
+    coinValueCache: 0,
 } as Player; // downcast on purpose
 
 /**
@@ -45,7 +45,6 @@ export const blankSave = Object.assign({}, player);
  * Saves your savefile to localstorage.
  */
 export const saveGame = async (player: Player) => {
-    await localforage.removeItem('UPBSave');
 
     const saveObject = {
         ...player,
@@ -55,11 +54,15 @@ export const saveGame = async (player: Player) => {
             barMomentum: player.coinUpgrades.barMomentum.valueOf(),
             barReverberation: player.coinUpgrades.barReverberation.valueOf(),
             barVibration: player.coinUpgrades.barVibration.valueOf(),
-            barAgitation: player.coinUpgrades.barAgitation.valueOf()
+            barAgitation: player.coinUpgrades.barAgitation.valueOf(),
+            barAdoption: player.coinUpgrades.barAdoption.valueOf(),
+            barEmpowerment: player.coinUpgrades.barEmpowerment.valueOf(),
+            barReinforcement: player.coinUpgrades.barReinforcement.valueOf()
         },
         talents: {
             barCriticalChance: player.talents.barCriticalChance.valueOf(),
-            barSpeed: player.talents.barSpeed.valueOf()
+            barSpeed: player.talents.barSpeed.valueOf(),
+            coinGain: player.talents.coinGain.valueOf()
         },
         barFragments: player.barFragments.valueOf()
     };
@@ -68,6 +71,7 @@ export const saveGame = async (player: Player) => {
     if (save !== null) {
         await localforage.setItem('UPBSave', save);
     }
+
 }
 
 /**
@@ -80,8 +84,12 @@ export const saveGame = async (player: Player) => {
     ['coinUpgrades.barReverberation', Transform.transformReverberation],
     ['coinUpgrades.barVibration', Transform.transformVibration],
     ['coinUpgrades.barAgitation', Transform.transformAgitation],
+    ['coinUpgrades.barAdoption', Transform.transformAdoption],
+    ['coinUpgrades.barEmpowerment', Transform.transformEmpowerment],
+    ['coinUpgrades.barReinforcement', Transform.transformReinforcement],
     ['talents.barCriticalChance', Transform.transformTalentBarCriticalChance],
     ['talents.barSpeed', Transform.transformBarSpeedTalent],
+    ['talents.coinGain', Transform.transformTalentCoinGain],
     ['barFragments', (data, player) => new ProgressFragment(Number(data.barFragments?.amount ?? 0), player)],
 ]);
 
@@ -179,9 +187,18 @@ export const loadGame = async () => {
     updateElementById(
         'coinWorth',
         {
-            textContent: `Worth ${format(computeMainBarCoinWorth(player))} coins`
+            textContent: `Worth ${format(player.coinValueCache)} coins`
         }
     );
+
+    if (player.coinValueCache) {
+        updateStyleById(
+            'coinWorth',
+            {
+                color: 'gold'
+            }
+        )
+    }
 
     lastUpdate = performance.now();
     interval(tick, 1000 / FPS);

@@ -5,9 +5,12 @@ import type {
     CoinBarMomentum,
     CoinBarReverberation,
     CoinBarVibration,
-    CoinBarAgitation
+    CoinBarAgitation,
+    CoinBarAdoption,
+    CoinBarEmpowerment,
+    CoinBarReinforcement
 } from '../Main/Upgrades/Variants/Coin';
-import type { TalentCriticalChance, TalentProgressSpeed } from '../Main/Upgrades/Variants/Talents';
+import type { TalentCoinGain, TalentCriticalChance, TalentProgressSpeed } from '../Main/Upgrades/Variants/Talents';
 
 export interface Player {
     firstPlayed: Date,
@@ -23,14 +26,19 @@ export interface Player {
         barReverberation: CoinBarReverberation
         barVibration: CoinBarVibration
         barAgitation: CoinBarAgitation
+        barAdoption: CoinBarAdoption
+        barEmpowerment: CoinBarEmpowerment
+        barReinforcement: CoinBarReinforcement
     }
     talents: {
         barCriticalChance: TalentCriticalChance
         barSpeed: TalentProgressSpeed
+        coinGain: TalentCoinGain
     }
     barFragments: ProgressFragment
     refreshCount: number
     refreshTime: number
     criticalHits: number
     criticalHitsThisRefresh: number
+    coinValueCache: number
 }

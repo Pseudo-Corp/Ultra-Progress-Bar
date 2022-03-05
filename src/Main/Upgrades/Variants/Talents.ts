@@ -30,12 +30,31 @@ export abstract class Talent extends Upgrade {
     }
 
     calculateTNL(): number {
-        return computePolyCost(this.cost, this.level, this.level + 1, 2);
+        let baseCost = computePolyCost(this.cost, this.level, this.level + 1, 2)
+        const costIncreaseThresholds = [50, 100, 200, 500, 1000, 2000, 5000, 10000]
+        for (const level of costIncreaseThresholds) {
+            if (this.level >= level) {
+                baseCost *= 2
+            }
+        }
+        return baseCost;
     }
 
     setEXP(amount: number): void {
         this.currEXP = amount
         this.updateHTML('GainEXP')
+    }
+
+    /**
+     * Returns the product multipliers that apply to every single talent
+     * If you have a global multiplier you like to add, add it here because it
+     * is a lot safer than putting it in each of the talents (and easier to change later).
+     */
+    globalTalentEXPMultipliers(): number {
+        let globalMult = 1;
+        globalMult *= (1 + 1/100 * Math.pow(Math.log2(1 + this.investedFragments / 125), 2))
+        globalMult *= (1 + this.player.coinUpgrades.barAdoption.upgradeEffect());
+        return globalMult
     }
 
     gainEXP(dt?: number): void {
@@ -49,11 +68,21 @@ export abstract class Talent extends Upgrade {
         this.updateHTML('GainEXP');
     }
 
+    subEXP(amount: number): void {
+        if (!isLevel20(this.player)) return;
+        this.currEXP -= amount;
+    }
+
     levelUp(): void {
-        this.level += 1
-        this.setEXP(0)
-        this.currTNL = this.calculateTNL();
-        this.updateHTML('LevelUp')
+        let counter = 0;
+        while (this.currEXP >= this.currTNL) {
+            if (counter >= 10) break;
+            this.level += 1;
+            this.subEXP(this.currTNL);
+            this.currTNL = this.calculateTNL();
+            counter++;
+        }
+        this.updateHTML('LevelUp');
     }
 
     computePermLevelGain(level: number): number {
@@ -160,7 +189,8 @@ export abstract class Talent extends Upgrade {
 
 export const talentBaseEXP = {
     talentCriticalChance: 10,
-    talentProgressSpeed: 10
+    talentProgressSpeed: 10,
+    talentCoinGain: 1000,
 }
 
 export class TalentCriticalChance extends Talent {
@@ -178,8 +208,7 @@ export class TalentCriticalChance extends Talent {
         // Adjust EXP based on tick rate relative to base FPS of 24
         expGain *= (dt * 1000 / FPS)
         expGain *= (this.player.barLevel / 10 - 1) // Is 1 at level 20
-        expGain *= (1 + 1/9 * Math.pow(Math.log2(1 + this.investedFragments / 125), 2))
-
+        expGain *= this.globalTalentEXPMultipliers();
         return expGain
     }
 
@@ -210,7 +239,7 @@ export class TalentProgressSpeed extends Talent {
         // Based on PPS (progress per second)
         let expGain = Math.log10(1 + dt)
         expGain *= (this.player.barLevel / 10 - 1)
-        expGain *= (1 + 1/9 * Math.pow(Math.log2(1 + this.investedFragments / 125), 2))
+        expGain *= this.globalTalentEXPMultipliers();
         return expGain
     }
 
@@ -225,4 +254,36 @@ export class TalentProgressSpeed extends Talent {
     }
 
 
+}
+
+export class TalentCoinGain extends Talent {
+    idHTML = 'CoinGain'
+
+    constructor(level: number, cost: number, 
+        investedFragments: number, permLevel: number, 
+        currEXP: number, player: Player) {
+        super(level, cost, investedFragments, permLevel, currEXP, player);
+        this.updateHTML('Initialize');
+    }
+
+    calculateEXPGain(coin: number): number {
+        // Based on coin gains
+        let expGain = 10 + Math.floor(Math.pow(coin, 2) / 100 + 3 * coin);
+        expGain *= this.globalTalentEXPMultipliers();
+        return expGain;
+    }
+
+    talentEffect(): number {
+        if (!isLevel20) return 0;
+
+        // Max +50% coins from the progress bar
+        return Math.min(0.4, this.level / 1000 ) + 
+        Math.min(0.4, this.permLevel / 2000) + 
+        0.2 * (this.level * 25 + this.permLevel) / (2500 + this.level * 25 + this.permLevel) +
+        1 * (this.level * 25 + this.permLevel) / (50000 + this.level * 25 + this.permLevel)
+    }
+
+    displayEffect(): string {
+        return `Progress bar grants +${format(100 * this.talentEffect(), 2)}% coins!`
+    }
 }

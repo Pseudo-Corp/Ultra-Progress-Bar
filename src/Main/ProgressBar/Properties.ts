@@ -69,6 +69,7 @@ export const incrementMainBarEXP = (delta: number, player: Player) => {
     );
     baseAmountPerSecond /= computeArmorMultiplier(player);
     baseAmountPerSecond *= player.talents.barSpeed.talentEffect();
+    baseAmountPerSecond *= Math.pow(1 + player.coinUpgrades.barEmpowerment.upgradeEffect(), player.barLevel);
 
     const criticalRoll = Math.random();
     const total =
@@ -120,7 +121,8 @@ export const backgroundColorCreation = (player: Player) => {
 }
 
 export const levelUpBar = (player: Player) => {
-    player.coins.gain(computeMainBarCoinWorth(player));
+    player.coins.gain(player.coinValueCache);
+    player.coinValueCache = computeMainBarCoinWorth(player);
     player.barEXP -= player.barTNL
     player.barLevel += 1;
 
@@ -145,7 +147,7 @@ export const levelUpBar = (player: Player) => {
 
     updateElementById(
         'coinWorth',
-        { textContent: `Worth ${format(computeMainBarCoinWorth(player))} coins` }
+        { textContent: `Worth ${format(player.coinValueCache)} coins` }
     );
     player.barFragments.updateHTML();
 
@@ -176,6 +178,9 @@ export const updateDPS = (player: Player) => {
 
     player.talents.barCriticalChance.updateHTML('Time')
     player.talents.barSpeed.gainEXP(previousPerSec);
+    player.talents.barSpeed.updateHTML('Time')
+    player.talents.coinGain.updateHTML('Time')
+
 }
 
 export const computeMainBarCoinWorth = (player: Player) => {
@@ -204,6 +209,18 @@ export const computeMainBarCoinWorth = (player: Player) => {
     if (nextLevel % 100 === 0) {
         baseWorth += Math.floor(nextLevel);
     }
+
+    if (baseWorth > 100) {
+        baseWorth = 10 * Math.pow(baseWorth, 1/2)
+    }
+    baseWorth *= (1 + player.talents.coinGain.talentEffect());
+
+    const RNGCoin = baseWorth - Math.floor(baseWorth)
+    if (Math.random() < RNGCoin) {
+        baseWorth += 1
+    }
+
+    baseWorth = Math.floor(baseWorth);
 
     const coinHTML = getElementById('coinWorth');
     coinHTML.style.color = (baseWorth > 0) ? 'gold' : 'grey'
