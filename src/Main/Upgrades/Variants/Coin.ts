@@ -95,7 +95,7 @@ export class CoinBarMomentum extends CoinUpgrade {
         if (this.maxLevel === this.level) return (Math.pow(100, 1/10) - 1);
 
         return (0.45 * (1 - Math.pow(Math.E, -this.level/this.expoDivisor)) 
-               + 1/200 * Math.min(10, this.level)) * (Math.pow(100, 1/10) / 0.5)
+               + 1/200 * Math.min(10, this.level)) * ((Math.pow(100, 1/10) - 1) / 0.5)
     }
 
     updateHTML(): void {
@@ -233,11 +233,10 @@ export class CoinBarVibration extends CoinUpgrade {
 }
 
 export class CoinBarAgitation extends CoinUpgrade {
-    maxLevel = 10
+    maxLevel = -1
 
     constructor(level: number, cost: number, player: Player) {
         super(level, cost, player);
-        this.capLevel();
         this.updateHTML();
     }
 
@@ -252,28 +251,12 @@ export class CoinBarAgitation extends CoinUpgrade {
                 textContent: `+${format(100 * this.upgradeEffect(), 2)}% Bar Fragments per CRIT`
             }
         )
-        if (this.level === this.maxLevel) {
-            updateElementById(
+        updateElementById(
                 'coin-bar-agitation-name',
                 {
-                    textContent: 'Bar Agitation [MAX LEVEL]'
+                    textContent: `Bar Agitation ${format(this.level)}` 
                 }
-            )
-            updateStyleById(
-                'coin-bar-agitation-name',
-                {
-                    color: 'orchid'
-                }
-            )
-        }
-        else {
-            updateElementById(
-                'coin-bar-agitation-name',
-                {
-                    textContent: `Bar Agitation ${format(this.level)}/${format(this.maxLevel)}` 
-                }
-            )
-        }
+        )
     }
 }
 
@@ -339,7 +322,7 @@ export class CoinBarEmpowerment extends CoinUpgrade {
         updateElementById(
             'coin-bar-empowerment-effect',
             {
-                textContent: `+${format(100 * this.upgradeEffect(), 2)}% Progress Speed per level: (1+x)^(level)`
+                textContent: `+${format(100 * this.upgradeEffect(), 2)}% Progress Speed per bar level: (1+x)^(level)`
             }
         )
         if (this.level === this.maxLevel) {
@@ -384,7 +367,7 @@ export class CoinBarReinforcement extends CoinUpgrade {
         updateElementById(
             'coin-bar-reinforcement-effect',
             {
-                textContent: `+${format(100 * this.upgradeEffect(), 2)}% Bar Fragments per level (1 + x * level)`
+                textContent: `+${format(100 * this.upgradeEffect(), 2)}% Bar Fragments per bar level (1 + x * level)`
             }
         )
         updateElementById(

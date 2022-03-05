@@ -1,4 +1,4 @@
-import { backgroundColorCreation, computeMainBarCoinWorth } from '../Main/ProgressBar/Properties';
+import { backgroundColorCreation } from '../Main/ProgressBar/Properties';
 import { Player } from '../types/player';
 import { format } from './Format';
 import { updateElementById, updateStyleById } from './Render'
@@ -79,8 +79,21 @@ export const onRefresh = (player: Player) => {
 
     updateElementById(
         'coinWorth',
-        { textContent: `Worth ${format(computeMainBarCoinWorth(player))} coins` }
+        { textContent: `Worth ${format(player.coinValueCache)} coins` }
     );
+
+    if (player.coinValueCache > 0) {
+        updateStyleById(
+            'coinWorth',
+            { color: 'gold' }
+        )
+    }
+    else {
+        updateStyleById(
+            'coinWorth',
+            { color: 'grey' }
+        )
+    }
 
     updateElementById(
         'refresh-crit-counter',

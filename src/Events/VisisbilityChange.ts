@@ -1,7 +1,6 @@
 import { player } from '../Game';
-import { computeMainBarCoinWorth } from '../Main/ProgressBar/Properties';
 import { format } from '../Utilities/Format';
-import { updateElementById } from '../Utilities/Render';
+import { updateElementById, updateStyleById } from '../Utilities/Render';
 
 document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'hidden') return;
@@ -18,6 +17,19 @@ document.addEventListener('visibilitychange', () => {
 
     updateElementById(
         'coinWorth',
-        { textContent: `Worth ${format(computeMainBarCoinWorth(player))} coins` }
+        { textContent: `Worth ${format(player.coinValueCache)} coins` }
     );
+
+    if (player.coinValueCache > 0) {
+        updateStyleById(
+            'coinWorth',
+            { color: 'gold' }
+        )
+    }
+    else {
+        updateStyleById(
+            'coinWorth',
+            { color: 'grey' }
+        )
+    }
 });
