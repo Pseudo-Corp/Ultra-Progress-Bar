@@ -34,6 +34,7 @@ window.addEventListener('load', async () => {
                 );
             }
         } else {
+            // eslint-disable-next-line no-console
             console.log(`Storage is persistent! (persistent = ${persistent})`);
         }
     }

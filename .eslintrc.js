@@ -41,6 +41,7 @@ module.exports = {
 		'no-whitespace-before-property': 'error',
 
         'no-empty': 'off',
+        'no-console': 'error',
         'no-loss-of-precision': 'error',
         'no-promise-executor-return': 'off',
         'no-unreachable-loop': 'error',

@@ -93,7 +93,7 @@ export const incrementMainBarEXP = (delta: number, player: Player) => {
             player.coins.gain(2 + Math.floor(player.coinValueCache / 5) - 2 * Math.min(1, player.coinValueCache))
             superCrit = true
         }
-        console.log(superCrit)
+
         onCriticalHit(player, superCrit);
     }
 
@@ -129,11 +129,10 @@ export const backgroundColorCreation = (player: Player) => {
 
     // "BOSS"
     if (player.barLevel % 5 === 0) {
-        console.log('testing!!!!')
-        if (player.barLevel >= 320) return '#FF0000'
+        if (player.barLevel >= 320) return '#FF0000';
 
         const R = (128 + 4 * Math.floor(player.barLevel / 10)).toString(16).padStart(2, '0');
-        return `#${R}0000`
+        return `#${R}0000`;
     }
 
     if (player.barLevel >= 128) return '#FFFFFF';
