@@ -43,7 +43,7 @@
             </div>
         </div>
         <div class="mainProgressBarArea" id="progressTesting">
-            <div class="tabSeparator" id="progressBarTest1"><p>Ultimate Progress Bar v0.0.8-alpha</p></div>
+            <div class="tabSeparator" id="progressBarTest1"><p>Ultimate Progress Bar v0.0.9-alpha</p></div>
             <div class="progressBarBig" id="progressBarTest2">
                 <div id="progression"></div>
                 <div class="progressBarBigText" id="level"></div>
@@ -57,16 +57,16 @@
             <aside class="sideNav" id="test2">
                 <ul class="tabColumn" id="test3">
                     <li class="tab" id="main-tab-nav">Main</li>
-                    <li class="tab" id="upgrade-tab-nav">Upgrades</li>
-                    <li class="tab" id="talent-tab-nav">Talents</li>
-                    <li class="tab">???</li>
+                    <li class="tab" id="upgrade-tab-nav" style="color: gold">Upgrades</li>
+                    <li class="tab" id="talent-tab-nav" style="color: orchid">Talents</li>
+                    <li class="tab" style="color:aquamarine">Dueling (WIP)</li>
                     <li class="tab">???</li>
                     <li class="tab">???</li>
                     <li class="tab">Settings</li>
                 </ul>
             </aside>
             <main>
-                <div class="wrapperInner" id="inner-testing">
+                <div class="wrapperInner" id="innerTesting">
                     <div class="tabs" id="mainTab"> 
                         <h1>How did we get here?</h1>
                         <p>You're powerless, but you weren't at one point. Ant God must have reduced you to mere atoms!</p>
@@ -131,6 +131,13 @@
                                 <button class="coinUpgradeBtn" id="buy-reset">~Refresh~</button>
                             </div>
                         </div>
+                        <div class="coinUpgrades">
+                            <div class="coinUpgrade" id="coin-resonance">
+                                <p class="coinUpgradeText" id="coin-bar-resonance-name">Bar Resonance</p>
+                                <p class="coinUpgradeText" id="coin-bar-resonance-effect">On CRIT, chance to do SUPER CRIT (3x Damage and earn coins!)</p>
+                                <button class="coinUpgradeBtn" id="buy-coin-bar-resonance">Buy more for 2k Coin</button>
+                            </div>
+                        </div>
                         <p>You have <span id="fragment-amount" style="color:cyan"></span> Bar Fragments [+<span id="fragment-bonus" style="color: cyan"></span>% Progress Speed].</p>
                         <p>On refresh, you will have <span id="fragment-gain" style="color: orchid"></span> Bar Fragments [Replaces Current Amount!]</p>
                         <p>Refresh timer: <span id="refresh-timer" style="color:cyan"></span>. Times refreshed: <span id="refresh-counter" style="color:cyan">0</span>. CRITS this refresh: <span id="refresh-crit-counter" style="color: gold">0</span> \ Bar Fragments +<span id="refresh-crit-fragments" style="color: gold">0</span>%</p>
@@ -143,7 +150,10 @@
                                     <div class="talentProgression" id="talentCriticalChanceProgression"></div>
                                     <div class="talentBarText" id="talentCriticalChanceEXP"></div>
                                 </div>
-                                <button class="talentSacrifice" id="talentCriticalChanceSacrifice">Sacrifice Bar Fragments</button>
+                                <div class="talentSacrificeArea">
+                                    <button class="talentSacrifice" id="talentCriticalChanceSacrifice">Sacrifice Bar Fragments</button>
+                                    <p class="talentInfoText">Sacrificed: <span id="talentCriticalChanceSacrificeAmount" style="color: orchid"></span> \ Talent EXP x<span id="talentCriticalChanceSacrificeMultiplier" style="color: orchid"></span></p>
+                                </div>
                             </div>
                             <div class="talentInfo">
                                 <p class="talentInfoText" id="talentCriticalChanceTempLevel">Test 1</p>
@@ -160,7 +170,10 @@
                                     <div class="talentProgression" id="talentProgressSpeedProgression"></div>
                                     <div class="talentBarText" id="talentProgressSpeedEXP"></div>
                                 </div>
-                                <button class="talentSacrifice" id="talentProgressSpeedSacrifice">Sacrifice Bar Fragments</button>
+                                <div class="talentSacrificeArea">
+                                    <button class="talentSacrifice" id="talentProgressSpeedSacrifice">Sacrifice Bar Fragments</button>
+                                    <p class="talentInfoText">Sacrificed: <span id="talentProgressSpeedSacrificeAmount" style="color: orchid"></span> \ Talent EXP x<span id="talentProgressSpeedSacrificeMultiplier" style="color: orchid"></span></p>
+                                </div>
                             </div>
                             <div class="talentInfo">
                                 <p class="talentInfoText" id="talentProgressSpeedTempLevel">Test 1</p>
@@ -177,7 +190,10 @@
                                     <div class="talentProgression" id="talentCoinGainProgression"></div>
                                     <div class="talentBarText" id="talentCoinGainEXP"></div>
                                 </div>
-                                <button class="talentSacrifice" id="talentCoinGainSacrifice">Sacrifice Bar Fragments</button>
+                                <div class="talentSacrificeArea">
+                                    <button class="talentSacrifice" id="talentCoinGainSacrifice">Sacrifice Bar Fragments</button>
+                                    <p class="talentInfoText">Sacrificed: <span id="talentCoinGainSacrificeAmount" style="color: orchid"></span> \ Talent EXP x<span id="talentCoinGainSacrificeMultiplier" style="color: orchid"></span></p>
+                                </div>
                             </div>
                             <div class="talentInfo">
                                 <p class="talentInfoText" id="talentCoinGainTempLevel">Test 1</p>

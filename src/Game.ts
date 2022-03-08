@@ -57,7 +57,8 @@ export const saveGame = async (player: Player) => {
             barAgitation: player.coinUpgrades.barAgitation.valueOf(),
             barAdoption: player.coinUpgrades.barAdoption.valueOf(),
             barEmpowerment: player.coinUpgrades.barEmpowerment.valueOf(),
-            barReinforcement: player.coinUpgrades.barReinforcement.valueOf()
+            barReinforcement: player.coinUpgrades.barReinforcement.valueOf(),
+            barResonance: player.coinUpgrades.barResonance.valueOf()
         },
         talents: {
             barCriticalChance: player.talents.barCriticalChance.valueOf(),
@@ -87,6 +88,7 @@ const toAdapt = new Map<string,(data: Partial<Player>, player: Player) => unknow
     ['coinUpgrades.barAdoption', Transform.transformAdoption],
     ['coinUpgrades.barEmpowerment', Transform.transformEmpowerment],
     ['coinUpgrades.barReinforcement', Transform.transformReinforcement],
+    ['coinUpgrades.barResonance', Transform.transformResonance],
     ['talents.barCriticalChance', Transform.transformTalentBarCriticalChance],
     ['talents.barSpeed', Transform.transformBarSpeedTalent],
     ['talents.coinGain', Transform.transformTalentCoinGain],

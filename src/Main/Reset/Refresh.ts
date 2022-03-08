@@ -33,7 +33,7 @@ export const reset = (variant: resetTypes, player: Player) => {
         player.criticalHitsThisRefresh = 0;
         player.coinValueCache = computeMainBarCoinWorth(player);
 
-        onCriticalHit(player);
+        onCriticalHit(player, false);
         onRefresh(player);
     } else {
         return void Alert('You cannot refresh yet. Get to level 5 lol')

@@ -8,7 +8,8 @@ import type {
     CoinBarAgitation,
     CoinBarAdoption,
     CoinBarEmpowerment,
-    CoinBarReinforcement
+    CoinBarReinforcement,
+    CoinBarResonance
 } from '../Main/Upgrades/Variants/Coin';
 import type { TalentCoinGain, TalentCriticalChance, TalentProgressSpeed } from '../Main/Upgrades/Variants/Talents';
 
@@ -29,6 +30,7 @@ export interface Player {
         barAdoption: CoinBarAdoption
         barEmpowerment: CoinBarEmpowerment
         barReinforcement: CoinBarReinforcement
+        barResonance: CoinBarResonance
     }
     talents: {
         barCriticalChance: TalentCriticalChance

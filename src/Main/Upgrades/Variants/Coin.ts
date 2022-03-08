@@ -52,7 +52,8 @@ export const coinUpgradeCosts = {
     barAgitation: 10000,
     barAdoption: 250,
     barEmpowerment: 10000,
-    barReinforcement: 20000
+    barReinforcement: 20000,
+    barResonance: 2000
 }
 
 export class CoinBarSpeed extends CoinUpgrade {
@@ -87,6 +88,7 @@ export class CoinBarMomentum extends CoinUpgrade {
 
     constructor(level: number, cost: number, player: Player) {
         super(level, cost, player);
+        this.maxLevel = 100 * Math.round(this.maxLevel / 100);
         this.capLevel();
         this.updateHTML();
     }
@@ -133,19 +135,20 @@ export class CoinBarMomentum extends CoinUpgrade {
 
 export class CoinBarReverberation extends CoinUpgrade {
     expoDivisor = 100
-    maxLevel = Math.ceil(this.expoDivisor * Math.log(1000))
+    maxLevel = Math.ceil(this.expoDivisor * Math.log(1000));
 
     constructor(level: number, cost: number, player: Player) {
         super(level, cost, player);
+        this.maxLevel = 100 * Math.round(this.maxLevel / 100);
         this.capLevel();
         this.updateHTML();
     }
 
     upgradeEffect(): number {
         if (this.level === this.maxLevel) {
-            return 0.10
+            return 0.01
         } else {
-            return 0.09 * (1 - Math.pow(Math.E, -this.level / this.expoDivisor)) + 0.002 * Math.min(5, this.level);
+            return 0.009 * (1 - Math.pow(Math.E, -this.level / this.expoDivisor)) + 0.0002 * Math.min(5, this.level);
         }
     }
 
@@ -186,15 +189,16 @@ export class CoinBarVibration extends CoinUpgrade {
 
     constructor(level: number, cost: number, player: Player) {
         super(level, cost, player);
+        this.maxLevel = 100 * Math.round(this.maxLevel / 100);
         this.capLevel();
         this.updateHTML();
     }
 
     upgradeEffect(): number {
         if (this.level === this.maxLevel) {
-            return 200
+            return 2000
         } else {
-            return 20 + 170 * (1 - Math.pow(Math.E, -this.level / this.expoDivisor)) + Math.min(10, this.level)
+            return 100 + 1700 * (1 - Math.pow(Math.E, -this.level / this.expoDivisor)) + 20 * Math.min(10, this.level)
         }
     }
 
@@ -238,7 +242,7 @@ export class CoinBarAgitation extends CoinUpgrade {
     }
 
     upgradeEffect(): number {
-        return this.level / 5000
+        return this.level / 500
     }
 
     updateHTML(): void {
@@ -371,5 +375,56 @@ export class CoinBarReinforcement extends CoinUpgrade {
                 textContent: `Bar Reinforcement ${format(this.level)}`
             }
         )
+    }
+}
+
+export class CoinBarResonance extends CoinUpgrade {
+    expoDivisor = 500
+    maxLevel = Math.ceil(this.expoDivisor * Math.log(1000))
+
+    constructor(level: number, cost: number, player: Player) {
+        super(level, cost, player);
+        this.maxLevel = 100 * Math.round(this.maxLevel / 100);
+        this.capLevel();
+        this.updateHTML();
+    }
+
+    upgradeEffect(): number {
+        if (this.level === this.maxLevel) {
+            return 1;
+        } else {
+            return 1 - Math.pow(Math.E, -this.level / this.expoDivisor)
+        }
+    }
+
+    updateHTML(): void {
+        updateElementById(
+            'coin-bar-resonance-effect',
+            {
+                textContent: `On CRIT, ${format(100 * this.upgradeEffect(), 2)}% chance of SUPER
+                             CRIT (3x damage and earn coins)`
+            }
+        )
+        if (this.level === this.maxLevel) {
+            updateElementById(
+                'coin-bar-resonance-name',
+                {
+                    textContent: 'Bar Resonance [MAX LEVEL]'
+                }
+            )
+            updateStyleById(
+                'coin-bar-resonance-name',
+                {
+                    color: 'orchid'
+                }
+            )
+        } else {
+            updateElementById(
+                'coin-bar-resonance-name',
+                {
+                    textContent: `Bar Resonance ${format(this.level)}/${format(this.maxLevel)}`
+                }
+            )
+        }
     }
 }

@@ -29,6 +29,12 @@ export const computeMainBarTNL = (player: Player) => {
     if (player.barLevel > 200) {
         TNL *= Math.pow(2, 1/10 * (player.barLevel - 200));
     }
+
+    // BOSS
+    if (player.barLevel % 5 === 0) {
+        TNL *= Math.max(1, (1/2 * player.barLevel / 10))
+    }
+
     return TNL
 }
 
@@ -75,11 +81,20 @@ export const incrementMainBarEXP = (delta: number, player: Player) => {
     const total =
         player.coinUpgrades.barReverberation.upgradeEffect() + player.talents.barCriticalChance.talentEffect();
     if (criticalRoll < total) {
+        let superCrit = false
         baseAmountPerSecond *= player.coinUpgrades.barVibration.upgradeEffect();
         player.talents.barCriticalChance.gainEXP(delta);
         player.criticalHits += 1;
         player.criticalHitsThisRefresh += 1;
-        onCriticalHit(player);
+
+        const superCriticalRoll = Math.random();
+        if (superCriticalRoll < player.coinUpgrades.barResonance.upgradeEffect()) {
+            baseAmountPerSecond *= 3
+            player.coins.gain(2 + Math.floor(player.coinValueCache / 5) - 2 * Math.min(1, player.coinValueCache))
+            superCrit = true
+        }
+        console.log(superCrit)
+        onCriticalHit(player, superCrit);
     }
 
     const actualAmount = baseAmountPerSecond * delta
@@ -111,6 +126,16 @@ export const updateMainBar = (width: number) => {
 }
 
 export const backgroundColorCreation = (player: Player) => {
+
+    // "BOSS"
+    if (player.barLevel % 5 === 0) {
+        console.log('testing!!!!')
+        if (player.barLevel >= 320) return '#FF0000'
+
+        const R = (128 + 4 * Math.floor(player.barLevel / 10)).toString(16).padStart(2, '0');
+        return `#${R}0000`
+    }
+
     if (player.barLevel >= 128) return '#FFFFFF';
 
     const R = (128 + player.barLevel).toString(16).padStart(2, '0');
@@ -195,6 +220,10 @@ export const computeMainBarCoinWorth = (player: Player) => {
     // Every 5th bar
     if (nextLevel % 5 === 0) {
         baseWorth += Math.floor(nextLevel / 5) + 3;
+
+        if (Math.random() < 0.5 && nextLevel > 25) {
+            baseWorth = 0;
+        }
     }
 
     // Every 10th bar, adding to the previous

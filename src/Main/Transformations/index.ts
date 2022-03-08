@@ -6,6 +6,7 @@ export { transform as transformAgitation } from './CoinUpgrades/BarAgitation';
 export { transform as transformAdoption } from './CoinUpgrades/BarAdoption';
 export { transform as transformEmpowerment } from './CoinUpgrades/BarEmpowerment';
 export { transform as transformReinforcement } from './CoinUpgrades/BarReinforcement';
+export { transform as transformResonance } from './CoinUpgrades/BarResonance'
 
 export { transform as transformTalentBarCriticalChance } from './Talents/BarCriticalChance';
 export { transform as transformBarSpeedTalent } from './Talents/BarSpeed';

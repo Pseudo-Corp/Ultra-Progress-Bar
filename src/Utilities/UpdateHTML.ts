@@ -37,18 +37,26 @@ export const hideStuff = (tab: Tabs) => {
     }
 }
 
-export const onCriticalHit = (player: Player) => {
-    updateStyleById(
-        'progression',
-        { backgroundColor: 'gold'}
-    );
+export const onCriticalHit = (player: Player, superCrit: boolean) => {
+
+    if (superCrit) {
+        updateStyleById(
+            'progression',
+            { backgroundColor: 'gold'}
+        );
+    } else {
+        updateStyleById(
+            'progression',
+            { backgroundColor: 'turquoise'}
+        );
+    }
 
     setTimeout(() => {
         updateStyleById(
             'progression',
             {backgroundColor: backgroundColorCreation(player)}
         );
-    }, 250);
+    }, 500);
 
     updateElementById(
         'refresh-crit-counter',

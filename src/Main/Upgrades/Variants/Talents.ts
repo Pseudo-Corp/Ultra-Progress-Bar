@@ -9,7 +9,7 @@ import { Upgrade } from '../Upgrades'
 
 export const isLevel20 = (player: Player) => player.barLevel >= 20;
 
-export type TalentHTMLType = 'Initialize' | 'GainEXP' | 'LevelUp' | 'PermLevelUp' | 'Time' | 'Level20'
+export type TalentHTMLType = 'Initialize' | 'GainEXP' | 'LevelUp' | 'PermLevelUp' | 'Time' | 'Level20' | 'Sacrifice'
 
 export abstract class Talent extends Upgrade {
     abstract idHTML: string
@@ -52,7 +52,7 @@ export abstract class Talent extends Upgrade {
      */
     globalTalentEXPMultipliers(): number {
         let globalMult = 1;
-        globalMult *= (1 + 1/100 * Math.pow(Math.log2(1 + this.investedFragments / 125), 2))
+        globalMult *= this.sacrificeBoost();
         globalMult *= (1 + this.player.coinUpgrades.barAdoption.upgradeEffect());
         return globalMult
     }
@@ -105,6 +105,10 @@ export abstract class Talent extends Upgrade {
         return Math.min(100, 100 * this.currEXP / this.currTNL)
     }
 
+    sacrificeBoost(): number {
+        return (1 + 1/100 * Math.pow(Math.log2(1 + this.investedFragments / 4), 2))
+    }
+
     async sacrificeFragments (): Promise<void> {
         if (this.player.barFragments.amount < 1000) {
             return void Alert('You cannot sacrifice your bar fragments until you have at least 1,000 of them.');
@@ -124,6 +128,7 @@ export abstract class Talent extends Upgrade {
                 this.player.refreshTime += minimumRefreshCounter;
                 void reset('Refresh', this.player);
                 this.player.barFragments.set(0);
+                this.updateHTML('Sacrifice')
             }
         }
     }
@@ -167,6 +172,17 @@ export abstract class Talent extends Upgrade {
                 { textContent: this.displayEffect()}
             )
         }
+
+        if (reason === 'Initialize' || reason === 'Sacrifice') {
+            updateElementById(
+                `talent${this.idHTML}SacrificeAmount`,
+                { textContent: format(this.investedFragments)}
+            )
+            updateElementById(
+                `talent${this.idHTML}SacrificeMultiplier`,
+                { textContent: format(this.sacrificeBoost(), 3)}
+            )
+        }
     }
 
     public override valueOf () {
@@ -202,7 +218,7 @@ export class TalentCriticalChance extends Talent {
 
     calculateEXPGain(dt: number): number {
         // Critical Hit by default adds 1 EXP
-        let expGain = 1
+        let expGain = 5
         // Adjust EXP based on tick rate relative to base FPS of 24
         expGain *= (dt * 1000 / FPS)
         expGain *= (this.player.barLevel / 10 - 1) // Is 1 at level 20
@@ -213,10 +229,10 @@ export class TalentCriticalChance extends Talent {
     talentEffect(): number {
         if (!isLevel20(this.player)) return 0;
 
-        return 0.025 * (1 - Math.pow(Math.E, - this.level / 2500))
-            + 0.025 * Math.min(250, this.level) / 250
-            + 0.025 * (1 - Math.pow(Math.E, - this.permLevel / 4000))
-            + 0.025 * Math.min(500, this.level) / 500
+        return 0.0025 * (1 - Math.pow(Math.E, - this.level / 2500))
+            + 0.0025 * Math.min(250, this.level) / 250
+            + 0.0025 * (1 - Math.pow(Math.E, - this.permLevel / 4000))
+            + 0.0025 * Math.min(500, this.level) / 500
     }
 
     displayEffect(): string {
@@ -264,7 +280,7 @@ export class TalentCoinGain extends Talent {
 
     calculateEXPGain(coin: number): number {
         // Based on coin gains
-        let expGain = 10 + Math.floor(Math.pow(coin, 2) / 100 + 3 * coin);
+        let expGain = 2 + Math.floor(Math.pow(coin, 2) / 100 + 4 * coin);
         expGain *= this.globalTalentEXPMultipliers();
         return expGain;
     }
