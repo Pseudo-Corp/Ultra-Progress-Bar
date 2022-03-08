@@ -1,8 +1,6 @@
 import { setProperty } from 'dot-prop';
 import localforage from 'localforage';
 import { Alert, Confirm } from './HTML/Popups';
-import { Coins } from './Main/Currency/Variants/Coin';
-import { ProgressFragment } from './Main/Currency/Variants/ProgressFragment';
 import {
     backgroundColorCreation,
     computeMainBarTNL,
@@ -79,7 +77,7 @@ export const saveGame = async (player: Player) => {
  * Map of properties on the Player object to adapt
  */
 const toAdapt = new Map<string,(data: Partial<Player>, player: Player) => unknown>([
-    ['coins', (data, player) => new Coins(Number(data.coins?.amount ?? 0), player)],
+    ['coins', Transform.transformCoins],
     ['coinUpgrades.barSpeed', Transform.transformBarSpeed],
     ['coinUpgrades.barMomentum', Transform.transformBarMomentum],
     ['coinUpgrades.barReverberation', Transform.transformReverberation],
@@ -92,7 +90,7 @@ const toAdapt = new Map<string,(data: Partial<Player>, player: Player) => unknow
     ['talents.barCriticalChance', Transform.transformTalentBarCriticalChance],
     ['talents.barSpeed', Transform.transformBarSpeedTalent],
     ['talents.coinGain', Transform.transformTalentCoinGain],
-    ['barFragments', (data, player) => new ProgressFragment(Number(data.barFragments?.amount ?? 0), player)]
+    ['barFragments', Transform.transformBarFragments]
 ]);
 
 /**

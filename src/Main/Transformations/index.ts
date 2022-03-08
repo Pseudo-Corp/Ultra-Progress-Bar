@@ -1,3 +1,6 @@
+export { transform as transformCoins } from './Other/Coins';
+export { transform as transformBarFragments } from './Other/BarFragments';
+
 export { transform as transformBarSpeed } from './CoinUpgrades/BarSpeed';
 export { transform as transformBarMomentum } from './CoinUpgrades/BarMomentum';
 export { transform as transformReverberation } from './CoinUpgrades/BarReverberation';
