@@ -240,6 +240,10 @@ aside.sideNav {
     height: 475px;
 }
 
+#innerTesting {
+    overflow-y: visible;
+}
+
 .tabColumn {
     display: flex;
     flex-direction: column;
@@ -337,6 +341,12 @@ aside.sideNav {
     vertical-align: middle;
 }
 
+.talentSacrificeArea {
+    display: flex;
+    justify-content: left;
+    flex-direction: row;
+}
+
 .talentBarText {
     position: absolute;
     bottom: 0;
@@ -365,6 +375,7 @@ aside.sideNav {
     cursor: pointer;
     background-color: var(--main-bg);
     color: orchid;
+    margin-right: 10px;
 }
 
 .talentInfo {
