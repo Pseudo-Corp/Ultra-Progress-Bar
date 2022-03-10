@@ -44,7 +44,6 @@ export const blankSave = Object.assign({}, player);
  * Saves your savefile to localstorage.
  */
 export const saveGame = async (player: Player) => {
-
     const saveObject = {
         ...player,
         coins: player.coins.valueOf(),
@@ -68,10 +67,21 @@ export const saveGame = async (player: Player) => {
     };
 
     const save = btoa(JSON.stringify(saveObject));
-    if (save !== null) {
-        await localforage.setItem('UPBSave', save);
-    }
 
+    await localforage.setItem('UPBSave', save);
+
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (typeof navigator.storage?.estimate === 'function') {
+        // TODO: can either of these really be undefined?
+        const { usage, quota } = await navigator.storage.estimate();
+
+        if (quota && usage && usage / quota * 100 > 95) {
+            void Alert(
+                'You are very close to running out of space on this computer which may cause your save to get' +
+                'automatically deleted soon! Clear some other site\'s data (and tell Khafra that this works please)!'
+            );
+        }
+    }
 }
 
 /**
@@ -158,7 +168,7 @@ window.addEventListener('pagehide', () => {
  */
 let lastUpdate = 0;
 export const FPS = 24;
-const saveRate = 5000
+const saveRate = 60_000;
 
 export const loadGame = async () => {
     for (const timer of intervalHold) {
