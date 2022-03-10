@@ -249,7 +249,7 @@ export class CoinBarAgitation extends CoinUpgrade {
         updateElementById(
             'coin-bar-agitation-effect',
             {
-                textContent: `+${format(100 * this.upgradeEffect(), 2)}% Bar Fragments per CRIT`
+                textContent: `+${format(100 * this.upgradeEffect(), 2)}% Bar Fragments per CRIT.`
             }
         )
         updateElementById(
@@ -306,7 +306,7 @@ export class CoinBarAdoption extends CoinUpgrade {
 }
 
 export class CoinBarEmpowerment extends CoinUpgrade {
-    maxLevel = 20
+    maxLevel = 100
 
     constructor(level: number, cost: number, player: Player) {
         super(level, cost, player);
@@ -315,7 +315,7 @@ export class CoinBarEmpowerment extends CoinUpgrade {
     }
 
     upgradeEffect(): number {
-        return 0.02 * this.level / 200
+        return 0.02 * this.level / 100
     }
 
     updateHTML(): void {

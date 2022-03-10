@@ -1,4 +1,4 @@
-import { resetGame } from '../Game';
+import { resetGame, tock } from '../Game';
 import { reset } from '../Main/Reset/Refresh';
 import { Player } from '../types/player';
 import { hideStuff } from './UpdateHTML';
@@ -47,6 +47,7 @@ export const generateEventHandlers = (player: Player) => {
     )
     getElementById('buy-reset').addEventListener('click', () => reset('Refresh', player));
     getElementById('reset-game').addEventListener('click', () => void resetGame());
+    getElementById('simulate-time').addEventListener('click', () => void tock(3600))
 
     getElementById('talentCriticalChanceSacrifice').addEventListener(
         'click',

@@ -78,9 +78,7 @@ export const incrementMainBarEXP = (delta: number, player: Player) => {
     baseAmountPerSecond *= Math.pow(1 + player.coinUpgrades.barEmpowerment.upgradeEffect(), player.barLevel);
 
     const criticalRoll = Math.random();
-    const total =
-        player.coinUpgrades.barReverberation.upgradeEffect() + player.talents.barCriticalChance.talentEffect();
-    if (criticalRoll < total) {
+    if (criticalRoll < getCritTickChance(player)) {
         let superCrit = false
         baseAmountPerSecond *= player.coinUpgrades.barVibration.upgradeEffect();
         player.talents.barCriticalChance.gainEXP(delta);
@@ -89,9 +87,9 @@ export const incrementMainBarEXP = (delta: number, player: Player) => {
 
         const superCriticalRoll = Math.random();
         if (superCriticalRoll < player.coinUpgrades.barResonance.upgradeEffect()) {
-            baseAmountPerSecond *= 3
-            player.coins.gain(2 + Math.floor(player.coinValueCache / 5) - 2 * Math.min(1, player.coinValueCache))
-            superCrit = true
+            baseAmountPerSecond *= 3;
+            player.coins.gain(Math.floor(player.barLevel / 5) + 3);
+            superCrit = true;
         }
 
         onCriticalHit(player, superCrit);
@@ -255,4 +253,9 @@ export const computeMainBarCoinWorth = (player: Player) => {
 
 
     return baseWorth
+}
+
+export const getCritTickChance = (player: Player) => {
+    return player.coinUpgrades.barReverberation.upgradeEffect() +
+            player.talents.barCriticalChance.talentEffect();
 }

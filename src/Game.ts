@@ -5,6 +5,7 @@ import {
     backgroundColorCreation,
     computeMainBarTNL,
     getBarWidth,
+    getCritTickChance,
     incrementMainBarEXP,
     levelUpBar,
     updateDPS,
@@ -238,11 +239,61 @@ export const tick = () => {
 }
 
 /**
- * Updates major game states (the main progress bar) per tick (about 50/sec)
+ * Updates major game states (the main progress bar) per tick (about 24/sec)
  * @param delta how many seconds have elapsed since the previous tick
  */
 export const tock = (delta: number) => {
-    incrementMainBarEXP(delta, player);
+    let remainingDelta = delta;
+
+    if (remainingDelta > 5) {
+        const criticalHitChance = getCritTickChance(player);
+        const simulatedCriticalHits = FPS * criticalHitChance * 5;
+        const floorCriticalHits = Math.floor(simulatedCriticalHits);
+        const decimalCrit = simulatedCriticalHits - floorCriticalHits;
+
+        const simulatedSuperCrit = simulatedCriticalHits * player.coinUpgrades.barResonance.upgradeEffect();
+        const floorSuper = Math.floor(simulatedSuperCrit)
+        const decimalSuper = simulatedSuperCrit - floorSuper
+
+        while (remainingDelta > 5) {
+
+            const random = Math.random();
+            let extraCrits = 0
+            if (random < decimalCrit) {
+                extraCrits = 1
+            }
+
+            const actualCriticalHits = floorCriticalHits + extraCrits
+            player.criticalHitsThisRefresh += actualCriticalHits;
+
+
+            const superRandom = Math.random();
+            let extraSuper = 0
+            if (superRandom < decimalSuper) {
+                extraSuper += 1
+            }
+
+            let actualSuper = floorSuper + extraSuper
+
+            while (actualSuper > 0) {
+                player.coins.gain(Math.floor(player.barLevel/5) + 3);
+                actualSuper -= 1;
+            }
+
+            incrementMainBarEXP(5, player);
+            remainingDelta -= 5;
+
+            const width = getBarWidth(player.barEXP, player.barTNL);
+
+            if (width >= 100) {
+                levelUpBar(player);
+            }
+
+            updateMainBarInformation(player);
+        }
+    }
+
+    incrementMainBarEXP(remainingDelta, player);
     player.refreshTime += delta;
     updateElementById(
         'refresh-timer',
