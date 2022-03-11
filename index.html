@@ -43,7 +43,7 @@
             </div>
         </div>
         <div class="mainProgressBarArea" id="progressTesting">
-            <div class="tabSeparator" id="progressBarTest1"><p>Ultimate Progress Bar v0.0.10-alpha</p></div>
+            <div class="tabSeparator" id="progressBarTest1"><p>Ultimate Progress Bar v0.1.0-alpha</p></div>
             <div class="progressBarBig" id="progressBarTest2">
                 <div id="progression"></div>
                 <div class="progressBarBigText" id="level"></div>
@@ -59,7 +59,7 @@
                     <li class="tab" id="main-tab-nav">Main</li>
                     <li class="tab" id="upgrade-tab-nav" style="color: gold">Upgrades</li>
                     <li class="tab" id="talent-tab-nav" style="color: orchid">Talents</li>
-                    <li class="tab" style="color:aquamarine">Dueling (WIP)</li>
+                    <li class="tab" id="dueling-tab-nav" style="color:aquamarine">Dueling</li>
                     <li class="tab">???</li>
                     <li class="tab">???</li>
                     <li class="tab">Settings</li>
@@ -202,6 +202,57 @@
                                 <p class="talentInfoText" id="talentCoinGainPermGain">Test 3</p>
                                 <p class="talentInfoText" id="talentCoinGainEffect">Test 4</p>
                                 <p class="talentInfoText" id="talentCoinGainInfo">Gain EXP from earning coins!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tabs" id="duelingTab">
+                        <div class="mainBattleContainer">
+                            <div class="duelingStatArea" id="playerCorner">
+                                <p id="playerName">Tester!</p>
+                                <div id="playerHPBar" class="duelingProgressBar hpBar">
+                                    <div class="duelingBarProgression hpBarProgression" id="playerHPProgression"></div>
+                                    <div class="duelingBarText" id="playerHPText">100/100 HP</div>
+                                </div>
+                                <div id="playerMPBar" class="duelingProgressBar mpBar">
+                                    <div class="duelingBarProgression mpBarProgression" id="playerMPProgression"></div>
+                                    <div class="duelingBarText" id="playerMPText">4/4 MP</div>
+                                </div>
+                                <div class="statSummary">
+                                    <p id="playerATK">ATK 8</p>
+                                    <p id="playerSTR">STR 13</p>
+                                    <p id="playerDEF">DEF 10</p>
+                                    <p id="playerARMOR">ARMOR 10</p>
+                                    <p id="playerCritChance">CritChance 10</p>
+                                    <p id="playerCritDamage">CritDamage 140</p>
+                                </div>
+                            </div>
+                            <div id="playerMoves">
+                                <button class="moveButton">Auto Attack [OFF WIP]</button>
+                                <button class="moveButton" id="basicAttack">Basic Attack</button>
+                                <button class="moveButton">Heal [-1 MP WIP]</button>
+                                <button class="moveButton">Enrage [-10 MP WIP]</button>
+                                <button class="moveButton">Entrophize [-100 MP WIP]</button>
+
+                            </div>
+                            <div class="duelingStatArea" id="enemyCorner">
+                                <p id="enemyName">Testing Dummy Lv.04</p>
+                                <div id="enemyHPBar" class="duelingProgressBar hpBar">
+                                    <div class="duelingBarProgression hpBarProgression" id="enemyHPProgression"></div>
+                                    <div class="duelingBarText" id="enemyHPText">100/100 HP</div>
+                                </div>
+                                <div id="enemyMPBar" class="duelingProgressBar mpBar">
+                                    <div class="duelingBarProgression mpBarProgression" id="enemyMPProgression"></div>
+                                    <div class="duelingBarText" id="enemyMPText">4/4 MP</div>
+                                </div>
+                                <div class="statSummary">
+                                    <p id="enemyATK">ATK 8</p>
+                                    <p id="enemySTR">STR 13</p>
+                                    <p id="enemyDEF">DEF 10</p>
+                                    <p id="enemyARMOR">ARMOR 10</p>
+                                    <p id="enemyCritChance">CritChance 10</p>
+                                    <p id="enemyCritDamage">CritDamage 140</p>
+                                    <p id="enemyLastMove">Last Move: <span id="enemyMove"></span></p>
+                                </div>
                             </div>
                         </div>
                     </div>
