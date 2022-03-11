@@ -43,11 +43,9 @@ export const computeBarArmor = (player: Player) => {
     // 1 indicates no progress, 0 indicates full progress.
 
     let baseArmor = 0
-    if (player.barLevel >= 5) {
-        baseArmor = 0.1
-    }
+
     if (player.barLevel >= 10) {
-        baseArmor += 0.9 * (1 - Math.pow(Math.E, -player.barLevel / 200))
+        baseArmor += (1 - Math.pow(Math.E, -player.barLevel / 200))
     }
 
     if (baseArmor >= 0.9999) {
@@ -59,7 +57,7 @@ export const computeBarArmor = (player: Player) => {
 
 export const computeArmorMultiplier = (player: Player) => {
     const armor = computeBarArmor(player);
-    return armor * (1 - player.barEXP / player.barTNL)
+    return Math.max(1, armor * (1 - player.barEXP / player.barTNL))
 }
 
 export const incrementMainBarEXP = (delta: number, player: Player) => {

@@ -29,3 +29,10 @@ export const computeExponentialCost = (multiplier: number, baseLevel: number, to
 
     return toLevelCost - baseLevelCost
 }
+
+/**
+ *
+ * @param ms Milliseconds
+ * @returns a promise that resolves after ms milliseconds
+ */
+export const timer = (ms:number) => new Promise(res => setTimeout(res, ms))

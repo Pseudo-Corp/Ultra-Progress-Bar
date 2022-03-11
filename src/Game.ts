@@ -1,6 +1,8 @@
 import { setProperty } from 'dot-prop';
 import localforage from 'localforage';
 import { Alert, Confirm } from './HTML/Popups';
+import { testEnemy } from './Main/Combat/Enemies/Variants/Aggressive';
+import { testFighter } from './Main/Combat/Player/Fighter';
 import {
     backgroundColorCreation,
     computeMainBarTNL,
@@ -308,6 +310,8 @@ export const tock = (delta: number) => {
     }
 
     updateMainBarInformation(player);
+    testEnemy.generateAttacks(remainingDelta);
+    testFighter.decreaseDelay(remainingDelta);
 }
 
 /*

@@ -3,9 +3,13 @@ import { Player } from '../types/player';
 import { format } from './Format';
 import { updateElementById, updateStyleById } from './Render'
 
-export type Tabs = 'Main' | 'Upgrades' | 'Talents'
+export type Tabs = 'Main' | 'Upgrades' | 'Talents' | 'Dueling'
 
 export const hideStuff = (tab: Tabs) => {
+    updateStyleById(
+        'innerTesting',
+        { border: 'none' }
+    )
     updateStyleById(
         'mainTab',
         { display: 'none' }
@@ -18,6 +22,10 @@ export const hideStuff = (tab: Tabs) => {
         'talentsTab',
         { display: 'none' }
     );
+    updateStyleById(
+        'duelingTab',
+        { display: 'none' }
+    )
 
     if (tab === 'Main') {
         updateStyleById(
@@ -34,6 +42,15 @@ export const hideStuff = (tab: Tabs) => {
             'talentsTab',
             { display: 'block' }
         );
+    } else if (tab === 'Dueling') {
+        updateStyleById(
+            'duelingTab',
+            { display: 'block' }
+        )
+        updateStyleById(
+            'innerTesting',
+            { border: '2px solid grey' }
+        )
     }
 }
 

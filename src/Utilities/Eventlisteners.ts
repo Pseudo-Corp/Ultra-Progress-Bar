@@ -3,11 +3,13 @@ import { reset } from '../Main/Reset/Refresh';
 import { Player } from '../types/player';
 import { hideStuff } from './UpdateHTML';
 import { getElementById } from './Render';
+import { testFighter } from '../Main/Combat/Player/Fighter';
 
 export const generateEventHandlers = (player: Player) => {
     getElementById('main-tab-nav').addEventListener('click', () => hideStuff('Main'));
     getElementById('upgrade-tab-nav').addEventListener('click', () => hideStuff('Upgrades'));
     getElementById('talent-tab-nav').addEventListener('click', () => hideStuff('Talents'))
+    getElementById('dueling-tab-nav').addEventListener('click', () => hideStuff('Dueling'))
 
     getElementById('buy-coin-bar-speed').addEventListener(
         'click',
@@ -62,5 +64,10 @@ export const generateEventHandlers = (player: Player) => {
     getElementById('talentCoinGainSacrifice').addEventListener(
         'click',
         () => void player.talents.coinGain.sacrificeFragments()
+    );
+
+    getElementById('basicAttack').addEventListener(
+        'click',
+        () => void testFighter.attack()
     );
 }
