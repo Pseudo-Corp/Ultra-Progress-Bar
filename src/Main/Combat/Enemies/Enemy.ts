@@ -1,7 +1,9 @@
 import { format } from '../../../Utilities/Format'
+import { timer } from '../../../Utilities/HelperFunctions'
 import { updateElementById, updateStyleById } from '../../../Utilities/Render'
 import { combatStats } from '../Stats/Stats'
 import { combatHTMLReasons } from '../types'
+import { spawnEnemy } from './SpawnEnemy'
 
 
 export type EnemyTypes = 'Idle' | 'Random' | 'Aggressive' | 'Healer' | 'Defensive' | 'BOSS'
@@ -39,10 +41,12 @@ export abstract class Enemy {
     }
 
     generateAttacks(dt: number): void {
-        this.delay -= dt
-        if (this.delay < 0) {
-            this.makeMove();
-            this.delay = this.attackRate
+        if (this.currStats.HP > 0) {
+            this.delay -= dt
+            if (this.delay < 0) {
+                this.makeMove();
+                this.delay = this.attackRate
+            }
         }
     }
 
@@ -75,23 +79,24 @@ export abstract class Enemy {
         return Math.max(0, (baseAmount - armorReduce / defenseDivide))
     }
 
-    takeDamage(baseAmount: number): void {
+    async takeDamage(baseAmount: number): Promise<void> {
+        if (this.currStats.HP === 0) return;
         const damageTaken = this.computeActualDamageReceived(baseAmount)
 
         this.currStats.HP -= damageTaken
-
-        if (this.currStats.HP < 0) {
-            // Reset Player Statistical
-            this.currStats = {...this.baseStats}
-        }
-
-        // Update HTML
+        this.currStats.HP = Math.max(0, this.currStats.HP)
         this.updateHTML('Damage')
+
+        if (this.currStats.HP === 0) {
+            // Spawn a new enemy after 1 second
+            await timer(1000);
+            spawnEnemy();
+        }
     }
 
     computeStrengthModifier(): number {
         const strengthEffect = this.currStats.STR
-        return (1 + strengthEffect * (1 - this.currStats.HP / this.currStats.HP) / 100)
+        return (1 + strengthEffect * (1 - this.currStats.HP / this.baseStats.HP) / 100)
     }
 
     computeDamageBase(): number {
@@ -126,30 +131,30 @@ export abstract class Enemy {
     }
 
     updateHTML(reason: combatHTMLReasons): void {
-        if (reason === 'Initialize') {
+        if (reason === 'Initialize' || reason == 'StatChange') {
             updateElementById(
                 'enemyATK',
-                { textContent: `ATK ${this.baseStats.ATK}`}
+                { textContent: `ATK ${this.currStats.ATK}`}
             )
             updateElementById(
                 'enemySTR',
-                { textContent: `STR ${this.baseStats.STR}`}
+                { textContent: `STR ${this.currStats.STR}`}
             )
             updateElementById(
                 'enemyDEF',
-                { textContent: `DEF ${this.baseStats.DEF}`}
+                { textContent: `DEF ${this.currStats.DEF}`}
             )
             updateElementById(
                 'enemyARMOR',
-                { textContent: `ARMOR ${this.baseStats.ARMOR}`}
+                { textContent: `ARMOR ${this.currStats.ARMOR}`}
             )
             updateElementById(
                 'enemyCritChance',
-                { textContent: `CritChance ${this.baseStats.CRITCHANCE}`}
+                { textContent: `CritChance ${this.currStats.CRITCHANCE}`}
             )
             updateElementById(
                 'enemyCritDamage',
-                { textContent: `CritDamage ${this.baseStats.CRITDAMAGE}`}
+                { textContent: `CritDamage ${this.currStats.CRITDAMAGE}`}
             )
         }
 

@@ -3,7 +3,7 @@ import { reset } from '../Main/Reset/Refresh';
 import { Player } from '../types/player';
 import { hideStuff } from './UpdateHTML';
 import { getElementById } from './Render';
-import { testFighter } from '../Main/Combat/Player/Fighter';
+import { testFighter, toggleAuto } from '../Main/Combat/Player/Fighter';
 
 export const generateEventHandlers = (player: Player) => {
     getElementById('main-tab-nav').addEventListener('click', () => hideStuff('Main'));
@@ -69,5 +69,10 @@ export const generateEventHandlers = (player: Player) => {
     getElementById('basicAttack').addEventListener(
         'click',
         () => void testFighter.attack()
+    );
+
+    getElementById('autoAttack').addEventListener(
+        'click',
+        () => void toggleAuto()
     );
 }

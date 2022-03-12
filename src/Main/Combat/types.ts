@@ -1,1 +1,1 @@
-export type combatHTMLReasons = 'Initialize' | 'Damage' | 'Ability'
+export type combatHTMLReasons = 'Initialize' | 'Damage' | 'Ability' | 'StatChange'

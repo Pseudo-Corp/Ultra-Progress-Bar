@@ -3,17 +3,18 @@
 // do NOT attach this to the player variable until the combat system is (mostly) implemented!
 
 import { format } from '../../../Utilities/Format';
+import { timer } from '../../../Utilities/HelperFunctions';
 import { updateElementById, updateStyleById } from '../../../Utilities/Render';
-import { testEnemy } from '../Enemies/Variants/Aggressive';
+import { spawnEnemy, testEnemy } from '../Enemies/SpawnEnemy';
 import { combatStats } from '../Stats/Stats';
 import { combatHTMLReasons } from '../types';
 
 const testFighterStats:combatStats = {
-    HP: 80,
+    HP: 120,
     MP: 10,
-    ATK: 5,
+    ATK: 15,
     STR: 0,
-    DEF: 0,
+    DEF: 15,
     ARMOR: 0,
     CRITCHANCE: 0,
     CRITDAMAGE: 100
@@ -34,8 +35,12 @@ export class PlayerFighter {
         this.updateHTML('Initialize')
     }
 
-    decreaseDelay(dt: number): void {
+    async decreaseDelay(dt: number): Promise<void> {
         this.delay -= dt
+
+        if (autoFight && this.delay < 0) {
+            await this.attack();
+        }
     }
 
     computeArmorDamageReduction(): number {
@@ -54,23 +59,26 @@ export class PlayerFighter {
         return Math.max(0, (baseAmount - armorReduce / defenseDivide))
     }
 
-    takeDamage(baseAmount: number): void {
+    async takeDamage(baseAmount: number): Promise<void> {
         const damageTaken = this.computeActualDamageReceived(baseAmount)
 
-        this.currStats.HP -= damageTaken
-
-        if (this.currStats.HP < 0) {
-            // Reset Player Statistical
-            this.currStats = {...this.baseStats}
-        }
-
-        // Update HTML
+        this.currStats.HP -= damageTaken;
+        this.currStats.HP = Math.max(0, this.currStats.HP);
         this.updateHTML('Damage')
+
+        if (this.currStats.HP === 0) {
+            // Reset Player Statistical
+            await timer(1000);
+            this.currStats = {...this.baseStats};
+            this.delay = this.attackRate;
+            this.updateHTML('Initialize');
+            spawnEnemy();
+        }
     }
 
     computeStrengthModifier(): number {
         const strengthEffect = this.currStats.STR
-        return (1 + strengthEffect * (1 - this.currStats.HP / this.currStats.HP) / 100)
+        return (1 + strengthEffect / 100)
     }
 
     computeDamageBase(): number {
@@ -92,13 +100,13 @@ export class PlayerFighter {
         return damageBase * strengthMod * critMultiplier
     }
 
-    attack(): void {
-        if (this.delay > 0) {
+    async attack(): Promise<void> {
+        if (this.delay > 0 || this.currStats.HP === 0) {
             return
         }
 
         const damageSent = this.computeBaseDamageSent();
-        testEnemy.takeDamage(damageSent);
+        await testEnemy.takeDamage(damageSent);
 
         this.delay = this.attackRate;
     }
@@ -169,4 +177,14 @@ export class PlayerFighter {
 
 }
 
-export const testFighter = new PlayerFighter(testFighterStats, 1)
+export const testFighter = new PlayerFighter(testFighterStats, 0.666)
+export let autoFight = false
+
+export const toggleAuto = () => {
+
+    autoFight = !autoFight;
+    updateElementById(
+        'autoAttack',
+        {textContent: `Auto Fight: ${autoFight}`}
+    )
+}

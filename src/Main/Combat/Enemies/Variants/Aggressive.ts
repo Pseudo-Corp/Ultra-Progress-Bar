@@ -28,27 +28,27 @@ export class AggressiveEnemy extends Enemy {
                 { textContent: 'HEAL' }
             )
         } else if (RNG < 0.33 && this.currStats.MP >= 1) {
-            await this.doubleHit();
             this.currStats.MP -= 1;
             this.updateHTML('Ability')
             updateElementById(
                 'enemyMove',
                 { textContent: 'DoubleHit' }
             )
+            await this.doubleHit();
         } else if (RNG < 0.5 && this.currStats.MP >= 2) {
-            await this.tripleHit();
             this.currStats.MP -= 2;
             this.updateHTML('Ability')
             updateElementById(
                 'enemyMove',
                 { textContent: 'TripleHit' }
             )
+            await this.tripleHit();
         } else {
-            await this.attack();
             updateElementById(
                 'enemyMove',
                 { textContent: 'Attack' }
             )
+            await this.attack();
         }
     }
 
@@ -59,7 +59,7 @@ export class AggressiveEnemy extends Enemy {
 
     async attack(): Promise<void> {
         const damageSent = this.computeBaseDamageSent();
-        testFighter.takeDamage(damageSent);
+        await testFighter.takeDamage(damageSent);
     }
 
     async doubleHit(): Promise<void> {
@@ -86,16 +86,3 @@ export class AggressiveEnemy extends Enemy {
     }
 
 }
-
-const testAggressiveStats: combatStats = {
-    HP: 20,
-    MP: 99,
-    ATK: 2,
-    STR: 0,
-    DEF: 0,
-    ARMOR: 0,
-    CRITCHANCE: 5,
-    CRITDAMAGE: 144
-}
-
-export const testEnemy = new AggressiveEnemy(testAggressiveStats, 1)

@@ -1,7 +1,7 @@
 import { setProperty } from 'dot-prop';
 import localforage from 'localforage';
 import { Alert, Confirm } from './HTML/Popups';
-import { testEnemy } from './Main/Combat/Enemies/Variants/Aggressive';
+import { spawnEnemy, testEnemy } from './Main/Combat/Enemies/SpawnEnemy';
 import { testFighter } from './Main/Combat/Player/Fighter';
 import {
     backgroundColorCreation,
@@ -169,6 +169,7 @@ window.addEventListener('pagehide', () => {
  * FPS: How many times the game is to update (tick) per second.
  */
 let lastUpdate = 0;
+let lastFightUpdate = 0;
 export const FPS = 24;
 const saveRate = 60_000;
 
@@ -214,9 +215,13 @@ export const loadGame = async () => {
     }
 
     lastUpdate = performance.now();
+    lastFightUpdate = performance.now();
     interval(tick, 1000 / FPS);
+    interval(fightUpdate, 1000/FPS);
     interval(updateDPS, 1000, player);
-    interval(saveGame, saveRate, player)
+    interval(saveGame, saveRate, player);
+
+    spawnEnemy();
 }
 
 export const resetGame = async () => {
@@ -248,6 +253,15 @@ export const tick = () => {
 
     tock(delta/1000)
     lastUpdate += delta
+}
+
+export const fightUpdate = async () => {
+    const now = performance.now();
+    const delta = now - lastFightUpdate;
+
+    lastFightUpdate += delta
+    testEnemy.generateAttacks(delta/1000);
+    await testFighter.decreaseDelay(delta/1000);
 }
 
 /**
@@ -320,8 +334,6 @@ export const tock = (delta: number) => {
     }
 
     updateMainBarInformation(player);
-    testEnemy.generateAttacks(remainingDelta);
-    testFighter.decreaseDelay(remainingDelta);
 }
 
 /*
