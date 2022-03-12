@@ -162,8 +162,6 @@ li {
 }
 
 .progressBarBigText {
-    position: absolute;
-    bottom: 0;
     height: 25px;
     border: 2px solid white;
     border-top-left-radius: 20%;
@@ -171,8 +169,6 @@ li {
     background-color: black;
     z-index: 10;
     text-align: center;
-    word-break: break-all;
-    overflow: hidden;
 }
 
 #progression {
@@ -181,31 +177,30 @@ li {
     height: 100%;
 }
 
-#level {
-    right: 550px;
-    width: 100px;
+#smallResourceIndicators {
+    display: flex;
+    /* Prevent shaky numbers */
+    font-variant-numeric: tabular-nums;
+    /* Place in bottom right */
+    position: absolute;
+    bottom: 0;
+    right: 0;
 }
 
-#exp {
-    right: 400px;
-    width: 150px;
+#smallResourceIndicators > div {
+    /* Place child elements side-by-side */
+    display: inline-block;
 }
 
 #perSecCurr {
-    right: 250px;
-    width: 150px;
     color: gold;
 }
 
 #perSecPrev {
-    right: 100px;
-    width: 150px;
     color: var(--bronze);
 }
 
 #coinWorth {
-    right: 0;
-    width: 100px;
     color: gold;
 }
 
