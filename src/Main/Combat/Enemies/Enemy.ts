@@ -1,6 +1,7 @@
 import { format } from '../../../Utilities/Format'
 import { timer } from '../../../Utilities/HelperFunctions'
 import { updateElementById, updateStyleById } from '../../../Utilities/Render'
+import { testFighter } from '../Player/Fighter'
 import { combatStats } from '../Stats/Stats'
 import { combatHTMLReasons } from '../types'
 import { spawnEnemy } from './SpawnEnemy'
@@ -40,8 +41,8 @@ export abstract class Enemy {
         this.updateHTML('Initialize')
     }
 
-    generateAttacks(dt: number): void {
-        if (this.currStats.HP > 0) {
+    async generateAttacks(dt: number): Promise<void> {
+        if (await this.checkMoveUse()) {
             this.delay -= dt
             if (this.delay < 0) {
                 this.makeMove();
@@ -185,8 +186,57 @@ export abstract class Enemy {
         }
     }
 
+    async multiAttack(attacks: number): Promise<void> {
+        updateElementById(
+            'enemyMove',
+            { textContent: `${format(attacks)}Hit` }
+        );
+        for (let i = 0; i < attacks; i++) {
+            if (!await this.checkMoveUse()) break;
+            await this.attack(true);
+            await timer(this.attackRate / (1 + attacks) * 1000);
+        }
+    }
+
+    async attack(multiHit = false): Promise<void> {
+        const damageSent = this.computeBaseDamageSent();
+        await testFighter.takeDamage(damageSent);
+
+        if (!multiHit) {
+            updateElementById(
+                'enemyMove',
+                { textContent: 'Attack' }
+            )
+        }
+    }
+
+    async doNothing(): Promise<void> {
+        updateElementById(
+            'enemyMove',
+            { textContent: 'Nothing' }
+        )
+    }
+
+    async heal(): Promise<void> {
+        this.currStats.HP += this.baseStats.HP * (0.5 + 0.5 * this.level / 99)
+        this.currStats.HP = Math.min(this.currStats.HP, this.baseStats.HP)
+        updateElementById(
+            'enemyMove',
+            { textContent: 'Heal' }
+        )
+        this.updateHTML('Damage');
+    }
+
+    async checkMoveUse(): Promise<boolean> {
+        return (testFighter.currStats.HP > 0 && this.currStats.HP > 0)
+    }
+
     abstract variantSpecificHTML(reason: combatHTMLReasons): void
 
     abstract enemyAI(): void
+
+
+
+
 
 }

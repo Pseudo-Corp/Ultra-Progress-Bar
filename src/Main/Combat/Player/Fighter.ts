@@ -59,7 +59,9 @@ export class PlayerFighter {
         return Math.max(0, (baseAmount - armorReduce / defenseDivide))
     }
 
+
     async takeDamage(baseAmount: number): Promise<void> {
+        if (this.currStats.HP === 0) return; // This is AWFUL, please fix this Future Platonic
         const damageTaken = this.computeActualDamageReceived(baseAmount)
 
         this.currStats.HP -= damageTaken;

@@ -12,12 +12,8 @@ export class IdleEnemy extends Enemy {
         this.variantSpecificHTML('Initialize')
     }
 
-    enemyAI(): void {
-        this.doNothing();
-    }
-
-    doNothing(): void {
-        // HTML Update. Does not attack!
+    async enemyAI(): Promise<void> {
+        await this.doNothing();
     }
 
     variantSpecificHTML(reason: combatHTMLReasons): void {

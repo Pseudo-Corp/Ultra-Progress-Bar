@@ -78,17 +78,17 @@ export let testEnemy: Enemy
 export const spawnEnemy = () => {
     const RNG = Math.random();
 
-    if (RNG <= 0.1) {
+    if (RNG <= 0.05) {
         testEnemy = new IdleEnemy(testIdleStats, 1)
-    } else if (RNG <= 0.3) {
-        testEnemy = new AggressiveEnemy(testAggressiveStats, 0.75)
-    } else if (RNG <= 0.5) {
+    } else if (RNG <= 0.6) {
+        testEnemy = new AggressiveEnemy(testAggressiveStats, 1.5)
+    } else if (RNG <= 0.625) {
         testEnemy = new DefenseiveEnemy(testDefensiveStats, 1)
-    } else if (RNG <= 0.7) {
+    } else if (RNG <= 0.65) {
         testEnemy = new HealerEnemy(testHealerStats, 1)
-    } else if (RNG <= 0.9) {
+    } else if (RNG <= 0.7) {
         testEnemy = new RandomEnemy(testRandomStats, 1)
     } else {
-        testEnemy = new BossEnemy(testBossStats, 1.5)
+        testEnemy = new BossEnemy(testBossStats, 2)
     }
 }

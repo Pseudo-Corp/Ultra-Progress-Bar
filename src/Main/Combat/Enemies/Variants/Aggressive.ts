@@ -1,7 +1,5 @@
 import { format } from '../../../../Utilities/Format';
-import { timer } from '../../../../Utilities/HelperFunctions';
 import { updateElementById } from '../../../../Utilities/Render';
-import { testFighter } from '../../Player/Fighter';
 import { combatStats } from '../../Stats/Stats';
 import { combatHTMLReasons } from '../../types';
 import { Enemy, EnemyTypes } from '../Enemy';
@@ -19,60 +17,20 @@ export class AggressiveEnemy extends Enemy {
         const RNG = Math.random();
 
         if (RNG < 0.25 && this.currStats.HP / this.baseStats.HP < 0.22 && this.currStats.MP >= 2) {
-            this.heal();
+            await this.heal();
             this.currStats.MP -= 2;
             this.updateHTML('Damage');
             this.updateHTML('Ability');
-            updateElementById(
-                'enemyMove',
-                { textContent: 'HEAL' }
-            )
         } else if (RNG < 0.33 && this.currStats.MP >= 1) {
             this.currStats.MP -= 1;
             this.updateHTML('Ability')
-            updateElementById(
-                'enemyMove',
-                { textContent: 'DoubleHit' }
-            )
-            await this.doubleHit();
+            await this.multiAttack(2);
         } else if (RNG < 0.5 && this.currStats.MP >= 2) {
             this.currStats.MP -= 2;
             this.updateHTML('Ability')
-            updateElementById(
-                'enemyMove',
-                { textContent: 'TripleHit' }
-            )
-            await this.tripleHit();
+            await this.multiAttack(12);
         } else {
-            updateElementById(
-                'enemyMove',
-                { textContent: 'Attack' }
-            )
             await this.attack();
-        }
-    }
-
-    heal(): void {
-        this.currStats.HP += this.baseStats.HP * (0.3 + 0.5 * this.level / 99)
-        this.currStats.HP = Math.min(this.currStats.HP, this.baseStats.HP)
-    }
-
-    async attack(): Promise<void> {
-        const damageSent = this.computeBaseDamageSent();
-        await testFighter.takeDamage(damageSent);
-    }
-
-    async doubleHit(): Promise<void> {
-        for (let i = 0; i < 2; i++) {
-            await this.attack();
-            await timer(333);
-        }
-    }
-
-    async tripleHit(): Promise<void> {
-        for (let i = 0; i < 3; i++) {
-            await this.attack();
-            await timer(250);
         }
     }
 

@@ -260,7 +260,7 @@ export const fightUpdate = async () => {
     const delta = now - lastFightUpdate;
 
     lastFightUpdate += delta
-    testEnemy.generateAttacks(delta/1000);
+    await testEnemy.generateAttacks(delta/1000);
     await testFighter.decreaseDelay(delta/1000);
 }
 

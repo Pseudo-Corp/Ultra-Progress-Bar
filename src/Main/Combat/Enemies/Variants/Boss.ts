@@ -1,7 +1,5 @@
 import { format } from '../../../../Utilities/Format';
-import { timer } from '../../../../Utilities/HelperFunctions';
 import { updateElementById } from '../../../../Utilities/Render';
-import { testFighter } from '../../Player/Fighter';
 import { combatStats } from '../../Stats/Stats';
 import { combatHTMLReasons } from '../../types';
 import { Enemy, EnemyTypes } from '../Enemy';
@@ -21,7 +19,6 @@ export class BossEnemy extends Enemy {
     }
 
     async enemyAI(): Promise<void> {
-
         const RNG = Math.random();
 
         if (this.firstAttack) {
@@ -50,27 +47,15 @@ export class BossEnemy extends Enemy {
         }
 
         if ((RNG < 0.05 || (RNG < 0.3 && this.currStats.HP / this.baseStats.HP < 0.05)) && this.currStats.MP >= 2) {
-            this.heal();
+            await this.heal();
             this.currStats.MP -= 2;
             this.updateHTML('Damage');
             this.updateHTML('Ability');
-            updateElementById(
-                'enemyMove',
-                { textContent: 'HEAL' }
-            )
-        } else if (RNG < 0.25 && this.currStats.MP >= 4) {
+        } else if (RNG < 0.75 && this.currStats.MP >= 4) {
             this.currStats.MP -= 4;
             this.updateHTML('Ability')
-            updateElementById(
-                'enemyMove',
-                { textContent: 'QuadrupleHit' }
-            )
-            await this.quadrupleHit();
+            await this.multiAttack(5);
         } else {
-            updateElementById(
-                'enemyMove',
-                { textContent: 'Attack' }
-            )
             await this.attack();
         }
     }
@@ -88,23 +73,6 @@ export class BossEnemy extends Enemy {
         this.currStats.CRITCHANCE += 75
         this.currStats.CRITDAMAGE = Math.floor(1.5 * this.currStats.CRITDAMAGE)
         this.currStats.HP = this.baseStats.HP * (0.75 + 0.25 * this.level/99)
-    }
-
-    heal(): void {
-        this.currStats.HP += this.baseStats.HP * (0.3 + 0.4 * this.level / 99)
-        this.currStats.HP = Math.min(this.currStats.HP, this.baseStats.HP)
-    }
-
-    async attack(): Promise<void> {
-        const damageSent = this.computeBaseDamageSent();
-        await testFighter.takeDamage(damageSent);
-    }
-
-    async quadrupleHit(): Promise<void> {
-        for (let i = 0; i < 2; i++) {
-            await this.attack();
-            await timer(200);
-        }
     }
 
     variantSpecificHTML(reason: combatHTMLReasons): void {
