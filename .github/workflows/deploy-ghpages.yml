@@ -30,7 +30,7 @@ jobs:
         run: |
           rm -rf targetdir
           mkdir -p targetdir
-          mv dist index.html styles.css UPBTransparent.ico targetdir/
+          mv dist Pictures index.html styles.css UPBTransparent.ico targetdir/
       - name: Deploy with the $GME emoji for some reason 🚀
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
