@@ -27,6 +27,10 @@ export class ProgressFragment extends Currency {
 
         baseAmount *= (1 + this.player.criticalHitsThisRefresh * this.player.coinUpgrades.barAgitation.upgradeEffect())
         baseAmount *= (1 + this.player.coinUpgrades.barReinforcement.upgradeEffect() * this.player.barLevel);
+
+        if (this.player.currentChallenge === 'Reduced Bar Fragments') {
+            baseAmount = Math.pow(baseAmount, 1/3)
+        }
         return Math.floor(baseAmount);
     }
 
