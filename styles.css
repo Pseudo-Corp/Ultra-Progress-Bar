@@ -497,3 +497,7 @@ aside.sideNav {
         overflow: hidden;
     }
 }
+
+img {
+    cursor: pointer;
+}

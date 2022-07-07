@@ -43,7 +43,7 @@
             </div>
         </div>
         <div class="mainProgressBarArea" id="progressTesting">
-            <div class="tabSeparator" id="progressBarTest1"><p>Ultimate Progress Bar v0.1.2-alpha</p></div>
+            <div class="tabSeparator" id="progressBarTest1"><p>Ultimate Progress Bar v0.2.0-alpha</p></div>
             <div class="progressBarBig" id="progressBarTest2">
                 <div id="progression"></div>
                 <div id="smallResourceIndicators">
@@ -61,10 +61,8 @@
                     <li class="tab" id="main-tab-nav">Main</li>
                     <li class="tab" id="upgrade-tab-nav" style="color: gold">Upgrades</li>
                     <li class="tab" id="talent-tab-nav" style="color: orchid">Talents</li>
-                    <li class="tab" id="dueling-tab-nav" style="color:aquamarine">Dueling</li>
-                    <li class="tab">???</li>
-                    <li class="tab">???</li>
-                    <li class="tab">Settings</li>
+                    <li class="tab" id="dueling-tab-nav" style="color:aquamarine">[Updated!] Dueling</li>
+                    <li class="tab" id="challenge-tab-nav" style="color: red">[New!] Challenges</li>
                 </ul>
             </aside>
             <main>
@@ -232,7 +230,7 @@
                                 <button class="moveButton" id="autoAttack">Auto Attack [OFF]</button>
                                 <button class="moveButton" id="basicAttack">Basic Attack</button>
                                 <button class="moveButton">Heal [-1 MP WIP]</button>
-                                <button class="moveButton">Enrage [-10 MP WIP]</button>
+                                <button class="moveButton" id="enrageSkill">Enrage</button>
                                 <button class="moveButton">Entrophize [-100 MP WIP]</button>
                             </div>
                             <div class="duelingStatArea" id="enemyCorner">
@@ -255,6 +253,22 @@
                                     <p id="enemyLastMove">Last Move: <span id="enemyMove"></span></p>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="tabs" id="challengeTab">
+                        <div class="challengeContainer">
+                            <img id="basic-challenge-icon" src="src/Pictures/Transparent Pictures/Basic Challenge.png">
+                            <img id="no-refresh-challenge-icon" src="src/Pictures/Transparent Pictures/No Refresh.png">
+                            <img id="no-coin-upgrade-challenge-icon" src="src/Pictures/Transparent Pictures/No Coin Upgrades.png">
+                            <img id="reduced-fragments-challenge-icon" src="src/Pictures/Transparent Pictures/Work In Progress Challenge.png">
+                            <img id="none-challenge-icon" src="src/Pictures/Transparent Pictures/Work In Progress Challenge.png">
+                        </div>
+
+                        <div class="challengeDescriptionContainer">
+                            <p id="challenge-name">Testing</p>
+                            <p id="challenge-description">This is a test of challenge mode!</p>
+                            <p id="challenge-completions">0/25</p>
+                            <p id="challenge-reward">+1 Swag Point.</p>
                         </div>
                     </div>
                 </div>
