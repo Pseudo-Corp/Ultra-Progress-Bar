@@ -1,3 +1,4 @@
+import { Challenges } from '../Main/Challenges/types';
 import type { Coins } from '../Main/Currency/Variants/Coin';
 import type { ProgressFragment } from '../Main/Currency/Variants/ProgressFragment';
 import type {
@@ -43,4 +44,11 @@ export interface Player {
     criticalHits: number
     criticalHitsThisRefresh: number
     coinValueCache: number
+    currentChallenge: Challenges
+    completedChallenges: {
+        basicChallenge: number
+        noRefresh: number
+        noCoinUpgrades: number
+        reducedFragments: number
+    }
 }

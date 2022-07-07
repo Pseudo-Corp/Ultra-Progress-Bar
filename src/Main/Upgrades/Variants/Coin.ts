@@ -38,6 +38,10 @@ export abstract class CoinUpgrade extends Upgrade {
         return { level: this.level, cost: this.cost, maxLevel: this.maxLevel };
     }
 
+    public checkChallenge () {
+        return this.player.currentChallenge === 'No Coin Upgrades'
+    }
+
     abstract upgradeEffect():number
 
     abstract updateHTML():void
@@ -63,7 +67,7 @@ export class CoinBarSpeed extends CoinUpgrade {
      * @returns Bar Speed to add on top of the base amount. Additive!
      */
     upgradeEffect(): number {
-        return 4 * this.level / 100 + 0.06 * Math.min(90, this.level)
+        return this.checkChallenge() ? 0 : 4 * this.level / 100 + 0.06 * Math.min(90, this.level)
     }
 
     updateHTML(): void {
@@ -94,9 +98,9 @@ export class CoinBarMomentum extends CoinUpgrade {
     }
 
     upgradeEffect(): number {
-        if (this.maxLevel === this.level) return (Math.pow(100, 1/10) - 1);
+        if (this.maxLevel === this.level) return this.checkChallenge() ? 0 : (Math.pow(100, 1/10) - 1);
 
-        return (0.45 * (1 - Math.pow(Math.E, -this.level/this.expoDivisor))
+        return this.checkChallenge() ? 0 : (0.45 * (1 - Math.pow(Math.E, -this.level/this.expoDivisor))
                + 1/200 * Math.min(10, this.level)) * ((Math.pow(100, 1/10) - 1) / 0.5)
     }
 
@@ -146,9 +150,10 @@ export class CoinBarReverberation extends CoinUpgrade {
 
     upgradeEffect(): number {
         if (this.level === this.maxLevel) {
-            return 0.01
+            return this.checkChallenge() ? 0 : 0.01
         } else {
-            return 0.009 * (1 - Math.pow(Math.E, -this.level / this.expoDivisor)) + 0.0002 * Math.min(5, this.level);
+            return this.checkChallenge() ? 0 :
+                0.009 * (1 - Math.pow(Math.E, -this.level / this.expoDivisor)) + 0.0002 * Math.min(5, this.level);
         }
     }
 
@@ -196,9 +201,10 @@ export class CoinBarVibration extends CoinUpgrade {
 
     upgradeEffect(): number {
         if (this.level === this.maxLevel) {
-            return 2000
+            return this.checkChallenge() ? 100 : 2000
         } else {
-            return 100 + 1700 * (1 - Math.pow(Math.E, -this.level / this.expoDivisor)) + 20 * Math.min(10, this.level)
+            return this.checkChallenge() ? 100 :
+                100 + 1700 * (1 - Math.pow(Math.E, -this.level / this.expoDivisor)) + 20 * Math.min(10, this.level)
         }
     }
 
@@ -242,7 +248,7 @@ export class CoinBarAgitation extends CoinUpgrade {
     }
 
     upgradeEffect(): number {
-        return this.level / 500
+        return this.checkChallenge() ? 0 : this.level / 500
     }
 
     updateHTML(): void {
@@ -315,7 +321,7 @@ export class CoinBarEmpowerment extends CoinUpgrade {
     }
 
     upgradeEffect(): number {
-        return 0.02 * this.level / 100
+        return this.checkChallenge() ? 0 : 0.02 * this.level / 100
     }
 
     updateHTML(): void {
@@ -359,7 +365,7 @@ export class CoinBarReinforcement extends CoinUpgrade {
     }
 
     upgradeEffect(): number {
-        return this.level / 1000
+        return this.checkChallenge() ? 0 : this.level / 1000
     }
 
     updateHTML(): void {
@@ -391,9 +397,9 @@ export class CoinBarResonance extends CoinUpgrade {
 
     upgradeEffect(): number {
         if (this.level === this.maxLevel) {
-            return 1;
+            return this.checkChallenge() ? 0 : 1;
         } else {
-            return 1 - Math.pow(Math.E, -this.level / this.expoDivisor)
+            return this.checkChallenge() ? 0 : 1 - Math.pow(Math.E, -this.level / this.expoDivisor)
         }
     }
 

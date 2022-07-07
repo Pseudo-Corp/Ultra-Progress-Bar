@@ -1,8 +1,12 @@
 import { Player } from '../../types/player';
 import { format } from '../../Utilities/Format';
 import { updateElementById, updateStyleById } from '../../Utilities/Render';
-import { onCriticalHit } from '../../Utilities/UpdateHTML';
+import { onCriticalHit, unlockStuff } from '../../Utilities/UpdateHTML';
 import { getElementById } from '../../Utilities/Render';
+import { checkChallenge } from '../Challenges/checkChallenge';
+import { Challenges } from '../Challenges/types';
+import { toggleChallenge } from '../Challenges/toggles';
+import { Alert } from '../../HTML/Popups';
 
 /**
  * Basic Bar Stats
@@ -123,6 +127,11 @@ export const updateMainBar = (width: number) => {
 
 export const backgroundColorCreation = (player: Player) => {
 
+    // Challenge
+    if (player.currentChallenge !== 'None') {
+        return 'lightgoldenrodyellow'
+    }
+
     // "BOSS"
     if (player.barLevel % 5 === 0) {
         if (player.barLevel >= 320) return '#FF0000';
@@ -148,6 +157,7 @@ export const levelUpBar = (player: Player) => {
 
     if (player.barLevel > player.highestBarLevel) {
         player.highestBarLevel = player.barLevel
+        unlockStuff(player);
     }
 
     const barColor = backgroundColorCreation(player);
@@ -174,6 +184,27 @@ export const levelUpBar = (player: Player) => {
     if (player.barLevel === 20) {
         player.talents.barCriticalChance.updateHTML('Level20');
         player.talents.barSpeed.updateHTML('Level20');
+    }
+
+    if (player.currentChallenge !== 'None') {
+        const name = player.currentChallenge
+        if (checkChallenge(name, player)) {
+            type c = keyof typeof player.completedChallenges
+            const conversion: Record<Challenges, c> = {
+                'Basic Challenge': 'basicChallenge',
+                'No Refresh': 'noRefresh',
+                'No Coin Upgrades': 'noCoinUpgrades',
+                'Reduced Bar Fragments': 'reducedFragments',
+                'None': 'reducedFragments' // This code is awful, so awful I never want to write code again. -Platonic
+            }
+            const dictKey = conversion[name]
+            player.completedChallenges[dictKey] += 1
+
+            void toggleChallenge('None')
+            return Alert(`Congratulations! You have completed 
+            ${name} #${player.completedChallenges[dictKey]}! 
+            Ant God is satisfied.`)
+        }
     }
 }
 

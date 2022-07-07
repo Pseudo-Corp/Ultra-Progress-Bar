@@ -54,7 +54,7 @@ export class BossEnemy extends Enemy {
         } else if (RNG < 0.75 && this.currStats.MP >= 4) {
             this.currStats.MP -= 4;
             this.updateHTML('Ability')
-            await this.multiAttack(5);
+            await this.multiAttack(3);
         } else {
             await this.attack();
         }
@@ -65,6 +65,7 @@ export class BossEnemy extends Enemy {
         this.currStats.STR = Math.floor(1.5 * this.currStats.STR + 2)
         this.currStats.CRITCHANCE += 25
         this.currStats.CRITDAMAGE = Math.floor(1.4 * this.currStats.CRITDAMAGE)
+        this.updateHTML('StatChange')
     }
 
     rage(): void {
@@ -73,6 +74,10 @@ export class BossEnemy extends Enemy {
         this.currStats.CRITCHANCE += 75
         this.currStats.CRITDAMAGE = Math.floor(1.5 * this.currStats.CRITDAMAGE)
         this.currStats.HP = this.baseStats.HP * (0.75 + 0.25 * this.level/99)
+
+        this.updateHTML('Ability')
+        this.updateHTML('Damage')
+        this.updateHTML('StatChange')
     }
 
     variantSpecificHTML(reason: combatHTMLReasons): void {

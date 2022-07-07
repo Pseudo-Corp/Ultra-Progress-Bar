@@ -18,7 +18,7 @@ import * as Transform from './Main/Transformations/index';
 import { Player } from './types/player';
 import { format } from './Utilities/Format';
 import { updateElementById, updateStyleById } from './Utilities/Render';
-import { hideStuff } from './Utilities/UpdateHTML';
+import { hideStuff, unlockStuff } from './Utilities/UpdateHTML';
 
 /**
  * This is the player variable, which is used throughout the game!
@@ -34,7 +34,15 @@ export const player = {
     refreshTime: 0,
     criticalHits: 0,
     criticalHitsThisRefresh: 0,
-    coinValueCache: 0
+    coinValueCache: 0,
+    currentChallenge: 'None',
+    completedChallenges: {
+        basicChallenge: 0,
+        noRefresh: 0,
+        noCoinUpgrades: 0,
+        reducedFragments: 0
+    }
+
 } as Player; // downcast on purpose
 
 /**
@@ -131,6 +139,8 @@ const loadSavefile = async () => {
     for (const [key, adapter] of toAdapt) {
         setProperty(player, key, adapter(data ?? player, player));
     }
+
+    unlockStuff(player)
 }
 
 export const intervalHold = new Set<ReturnType<typeof setInterval>>();
@@ -260,8 +270,8 @@ export const fightUpdate = async () => {
     const delta = now - lastFightUpdate;
 
     lastFightUpdate += delta
-    await testEnemy.generateAttacks(delta/1000);
-    await testFighter.decreaseDelay(delta/1000);
+    void testEnemy.generateAttacks(delta/1000);
+    void testFighter.decreaseDelay(delta/1000);
 }
 
 /**
@@ -312,7 +322,7 @@ export const tock = (delta: number) => {
             const width = getBarWidth(player.barEXP, player.barTNL);
 
             if (width >= 100) {
-                levelUpBar(player);
+                void levelUpBar(player);
             }
 
             updateMainBarInformation(player);
@@ -330,7 +340,7 @@ export const tock = (delta: number) => {
     if (width < 100) {
         updateMainBar(width);
     } else {
-        levelUpBar(player);
+        void levelUpBar(player);
     }
 
     updateMainBarInformation(player);

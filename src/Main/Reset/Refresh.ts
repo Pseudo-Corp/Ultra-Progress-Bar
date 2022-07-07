@@ -8,6 +8,9 @@ import { computeMainBarCoinWorth, computeMainBarTNL, getBarWidth, updateMainBar 
 export type resetTypes = 'Refresh' | 'Transcend'
 
 export const reset = (variant: resetTypes, player: Player) => {
+    if (player.currentChallenge === 'No Refresh') {
+        return Alert('Hey, bub! You can\'t refresh, it\'ll be catastrophic, or something.')
+    }
     if (variant === 'Refresh' && player.barLevel >= 5) {
 
         if (player.refreshTime < minimumRefreshCounter) {

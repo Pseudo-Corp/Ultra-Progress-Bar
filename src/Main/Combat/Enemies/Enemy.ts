@@ -192,15 +192,15 @@ export abstract class Enemy {
             { textContent: `${format(attacks)}Hit` }
         );
         for (let i = 0; i < attacks; i++) {
-            if (!await this.checkMoveUse()) break;
-            await this.attack(true);
-            await timer(this.attackRate / (1 + attacks) * 1000);
+            void this.attack(true);
+            if (!await this.checkMoveUse()) break
+            await timer(this.attackRate / Math.min(4, (1 + attacks)) * 1000);
         }
     }
 
     async attack(multiHit = false): Promise<void> {
         const damageSent = this.computeBaseDamageSent();
-        await testFighter.takeDamage(damageSent);
+        void testFighter.takeDamage(damageSent);
 
         if (!multiHit) {
             updateElementById(

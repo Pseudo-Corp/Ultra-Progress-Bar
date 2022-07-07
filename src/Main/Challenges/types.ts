@@ -1,0 +1,1 @@
+export type Challenges = 'Basic Challenge' | 'No Refresh' | 'No Coin Upgrades' | 'Reduced Bar Fragments' | 'None'

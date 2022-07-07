@@ -10,8 +10,8 @@ import { combatStats } from '../Stats/Stats';
 import { combatHTMLReasons } from '../types';
 
 const testFighterStats:combatStats = {
-    HP: 120,
-    MP: 10,
+    HP: 150,
+    MP: 25,
     ATK: 15,
     STR: 0,
     DEF: 15,
@@ -30,7 +30,7 @@ export class PlayerFighter {
         this.baseStats = {...stats}
         this.currStats = {...stats}
         this.attackRate = attackRate
-        this.delay = 0
+        this.delay = attackRate
 
         this.updateHTML('Initialize')
     }
@@ -108,9 +108,23 @@ export class PlayerFighter {
         }
 
         const damageSent = this.computeBaseDamageSent();
-        await testEnemy.takeDamage(damageSent);
+        void testEnemy.takeDamage(damageSent);
 
         this.delay = this.attackRate;
+    }
+
+    async enrage(): Promise<void> {
+        if (this.delay > 0 || this.currStats.HP === 0 || this.currStats.MP < 10) {
+            return
+        }
+        this.currStats.ATK = Math.floor(1.1 * this.currStats.ATK + 2)
+        this.currStats.STR = Math.floor(1.1 * this.currStats.STR + 2)
+        this.currStats.CRITCHANCE += 5
+        this.currStats.CRITDAMAGE = Math.floor(1.2 * this.currStats.CRITDAMAGE)
+        this.currStats.MP -= 10
+        this.updateHTML('StatChange')
+        this.updateHTML('Ability')
+        this.delay = this.attackRate
     }
 
     computeHPBarWidth(): number {
@@ -122,31 +136,31 @@ export class PlayerFighter {
     }
 
     updateHTML(reason: combatHTMLReasons):void {
-        if (reason === 'Initialize') {
+        if (reason === 'Initialize' || reason === 'StatChange') {
 
             updateElementById(
                 'playerATK',
-                { textContent: `ATK ${this.baseStats.ATK}`}
+                { textContent: `ATK ${this.currStats.ATK}`}
             )
             updateElementById(
                 'playerSTR',
-                { textContent: `STR ${this.baseStats.STR}`}
+                { textContent: `STR ${this.currStats.STR}`}
             )
             updateElementById(
                 'playerDEF',
-                { textContent: `DEF ${this.baseStats.DEF}`}
+                { textContent: `DEF ${this.currStats.DEF}`}
             )
             updateElementById(
                 'playerARMOR',
-                { textContent: `ARMOR ${this.baseStats.ARMOR}`}
+                { textContent: `ARMOR ${this.currStats.ARMOR}`}
             )
             updateElementById(
                 'playerCritChance',
-                { textContent: `CritChance ${this.baseStats.CRITCHANCE}`}
+                { textContent: `CritChance ${this.currStats.CRITCHANCE}`}
             )
             updateElementById(
                 'playerCritDamage',
-                { textContent: `CritDamage ${this.baseStats.CRITDAMAGE}`}
+                { textContent: `CritDamage ${this.currStats.CRITDAMAGE}`}
             )
         }
 

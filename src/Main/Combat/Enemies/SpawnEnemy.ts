@@ -8,8 +8,8 @@ import { IdleEnemy } from './Variants/Idle';
 import { RandomEnemy } from './Variants/Random';
 
 export const testAggressiveStats: combatStats = {
-    HP: 20,
-    MP: 99,
+    HP: 50,
+    MP: 25,
     ATK: 2,
     STR: 0,
     DEF: 0,
@@ -19,8 +19,8 @@ export const testAggressiveStats: combatStats = {
 }
 
 export const testBossStats: combatStats = {
-    HP: 200,
-    MP: 120,
+    HP: 130,
+    MP: 30,
     ATK: 1,
     STR: 1,
     DEF: 1,
@@ -30,7 +30,7 @@ export const testBossStats: combatStats = {
 }
 
 export const testDefensiveStats: combatStats = {
-    HP: 50,
+    HP: 90,
     MP: 12,
     ATK: 1,
     STR: 0,
@@ -41,7 +41,7 @@ export const testDefensiveStats: combatStats = {
 }
 
 export const testHealerStats: combatStats = {
-    HP: 35,
+    HP: 60,
     MP: 24,
     ATK: 1,
     STR: 0,
@@ -52,8 +52,8 @@ export const testHealerStats: combatStats = {
 }
 
 export const testIdleStats: combatStats = {
-    HP: 50,
-    MP: 1,
+    HP: 200,
+    MP: 0,
     ATK: 0,
     STR: 0,
     DEF: 0,
@@ -63,7 +63,7 @@ export const testIdleStats: combatStats = {
 }
 
 export const testRandomStats: combatStats = {
-    HP: 30,
+    HP: 50,
     MP: 25,
     ATK: 1,
     STR: 1,
@@ -79,16 +79,16 @@ export const spawnEnemy = () => {
     const RNG = Math.random();
 
     if (RNG <= 0.05) {
-        testEnemy = new IdleEnemy(testIdleStats, 1)
+        testEnemy = new IdleEnemy(testIdleStats, 0.666)
     } else if (RNG <= 0.6) {
-        testEnemy = new AggressiveEnemy(testAggressiveStats, 1.5)
+        testEnemy = new AggressiveEnemy(testAggressiveStats, 0.5)
     } else if (RNG <= 0.625) {
-        testEnemy = new DefenseiveEnemy(testDefensiveStats, 1)
+        testEnemy = new DefenseiveEnemy(testDefensiveStats, 0.66)
     } else if (RNG <= 0.65) {
-        testEnemy = new HealerEnemy(testHealerStats, 1)
+        testEnemy = new HealerEnemy(testHealerStats, 0.66)
     } else if (RNG <= 0.7) {
-        testEnemy = new RandomEnemy(testRandomStats, 1)
+        testEnemy = new RandomEnemy(testRandomStats, 0.66)
     } else {
-        testEnemy = new BossEnemy(testBossStats, 2)
+        testEnemy = new BossEnemy(testBossStats, 1)
     }
 }

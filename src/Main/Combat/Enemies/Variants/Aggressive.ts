@@ -28,7 +28,7 @@ export class AggressiveEnemy extends Enemy {
         } else if (RNG < 0.5 && this.currStats.MP >= 2) {
             this.currStats.MP -= 2;
             this.updateHTML('Ability')
-            await this.multiAttack(12);
+            await this.multiAttack(5);
         } else {
             await this.attack();
         }
@@ -38,7 +38,7 @@ export class AggressiveEnemy extends Enemy {
         if (reason === 'Initialize') {
             updateElementById(
                 'enemyName',
-                { textContent: `${this.enemyType} Training Dummy Lv${format(this.level)}` }
+                { textContent: `${this.enemyType} Testing Dummy Lv${format(this.level)}` }
             )
         }
     }
