@@ -1,6 +1,5 @@
 import { Player } from '../../../types/player';
 import { enemyStats } from '../Stats/Stats';
-import { Enemy } from './Enemy';
 import { AggressiveEnemy } from './Variants/Aggressive';
 import { BossEnemy } from './Variants/Boss';
 import { DefenseiveEnemy } from './Variants/Defensive';
@@ -8,6 +7,7 @@ import { HealerEnemy } from './Variants/Healer';
 import { IdleEnemy } from './Variants/Idle';
 import { NullEnemy } from './Variants/Null';
 import { RandomEnemy } from './Variants/Random';
+import { Globals } from '../../Globals';
 
 export const testNullStats: enemyStats = {
     HP: 1,
@@ -102,28 +102,26 @@ export const testRandomStats: enemyStats = {
     CRITICAL: true
 }
 
-export let testEnemy: Enemy
-
 export const spawnEnemy = (player: Player, nullified = false) => {
-
     if (nullified) {
-        testEnemy = new NullEnemy(testNullStats, 5000, player)
-        return
+        return Globals.setGlobalEnemy(
+            new NullEnemy(testNullStats, 5000, player)
+        );
     }
 
     const RNG = Math.random();
 
     if (RNG <= 0.05) {
-        testEnemy = new IdleEnemy(testIdleStats, 0.666, player)
+        Globals.setGlobalEnemy(new IdleEnemy(testIdleStats, 0.666, player))
     } else if (RNG <= 0.6) {
-        testEnemy = new AggressiveEnemy(testAggressiveStats, 0.5, player)
+        Globals.setGlobalEnemy(new AggressiveEnemy(testAggressiveStats, 0.5, player))
     } else if (RNG <= 0.625) {
-        testEnemy = new DefenseiveEnemy(testDefensiveStats, 0.66, player)
+        Globals.setGlobalEnemy(new DefenseiveEnemy(testDefensiveStats, 0.66, player))
     } else if (RNG <= 0.65) {
-        testEnemy = new HealerEnemy(testHealerStats, 0.66, player)
+        Globals.setGlobalEnemy(new HealerEnemy(testHealerStats, 0.66, player))
     } else if (RNG <= 0.7) {
-        testEnemy = new RandomEnemy(testRandomStats, 0.66, player)
+        Globals.setGlobalEnemy(new RandomEnemy(testRandomStats, 0.66, player))
     } else {
-        testEnemy = new BossEnemy(testBossStats, 1, player)
+        Globals.setGlobalEnemy(new BossEnemy(testBossStats, 1, player))
     }
 }

@@ -1,7 +1,6 @@
 import { setProperty } from 'dot-prop';
 import localforage from 'localforage';
 import { Alert, Confirm } from './HTML/Popups';
-import { testEnemy } from './Main/Combat/Enemies/SpawnEnemy';
 import {
     backgroundColorCreation,
     computeMainBarTNL,
@@ -18,6 +17,7 @@ import { Player } from './types/player';
 import { format } from './Utilities/Format';
 import { updateElementById, updateStyleById } from './Utilities/Render';
 import { hideStuff, unlockStuff } from './Utilities/UpdateHTML';
+import { Globals } from './Main/Globals';
 
 /**
  * This is the player variable, which is used throughout the game!
@@ -73,7 +73,7 @@ export const saveGame = async (player: Player) => {
             coinGain: player.talents.coinGain.valueOf()
         },
         barFragments: player.barFragments.valueOf(),
-        fighter: player.fighter.valueof()
+        fighter: player.fighter.valueOf()
     };
 
     const save = btoa(JSON.stringify(saveObject));
@@ -270,9 +270,7 @@ export const fightUpdate = async () => {
 
     lastFightUpdate += delta
 
-    if (testEnemy) {
-        void testEnemy.generateAttacks(delta/1000);
-    }
+    void Globals.getGlobalEnemy()?.generateAttacks(delta/1000);
     void player.fighter.decreaseDelay(delta/1000);
 }
 
