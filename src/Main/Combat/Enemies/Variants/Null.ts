@@ -1,20 +1,20 @@
-import { Player } from '../../../../types/player';
-import { format } from '../../../../Utilities/Format';
-import { updateElementById } from '../../../../Utilities/Render';
-import { enemyStats } from '../../Stats/Stats';
-import { combatHTMLReasons } from '../../types';
-import { Enemy, EnemyTypes } from '../Enemy';
+import { Player } from '../../../../types/player'
+import { format } from '../../../../Utilities/Format'
+import { updateElementById } from '../../../../Utilities/Render'
+import { enemyStats } from '../../Stats/Stats'
+import { combatHTMLReasons } from '../../types'
+import { Enemy, EnemyTypes } from '../Enemy'
 
 export class NullEnemy extends Enemy {
     enemyType:EnemyTypes = 'Null'
 
     constructor(stats: enemyStats, attackRate: number, player: Player) {
-        super(stats, attackRate, player);
+        super(stats, attackRate, player)
         this.variantSpecificHTML('Initialize')
     }
 
     async enemyAI(): Promise<void> {
-        await this.doNothing();
+        await this.doNothing()
     }
 
     variantSpecificHTML(reason: combatHTMLReasons): void {

@@ -39,6 +39,7 @@ module.exports = {
 		'newline-per-chained-call': ['error', { 'ignoreChainWithDepth': 3 }],
 		'no-trailing-spaces': 'error',
 		'no-whitespace-before-property': 'error',
+        '@typescript-eslint/semi': ['error', 'never'],
 
         'no-empty': 'off',
         'no-console': 'error',

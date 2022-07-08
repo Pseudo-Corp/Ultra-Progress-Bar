@@ -1,8 +1,8 @@
-import { Alert, Confirm } from '../../HTML/Popups';
-import { Player } from '../../types/player';
-import { updateStyleById } from '../../Utilities/Render';
-import { updateAllCoinUpgrades } from '../../Utilities/UpdateHTML';
-import { challengeReset } from '../Reset/Challenge';
+import { Alert, Confirm } from '../../HTML/Popups'
+import { Player } from '../../types/player'
+import { updateStyleById } from '../../Utilities/Render'
+import { updateAllCoinUpgrades } from '../../Utilities/UpdateHTML'
+import { challengeReset } from '../Reset/Challenge'
 import { Challenges } from './types'
 
 export const toggleChallenge = async (type: Challenges, player: Player) => {
@@ -12,7 +12,7 @@ export const toggleChallenge = async (type: Challenges, player: Player) => {
          Leave it using the rightmost icon if you want to start a new one.`)
     }
 
-    let confirmation;
+    let confirmation
     if (player.currentChallenge === 'None') {
         confirmation = await Confirm('Entering a challenge also resets your bar fragments. Continue?')
     } else {
@@ -24,10 +24,10 @@ export const toggleChallenge = async (type: Challenges, player: Player) => {
         if (player.barLevel < 5 && type !== 'None') {
             return Alert('I cannot do this action until you are at bar level 5.')
         }
-        if (type !== 'None') challengeReset(player);
+        if (type !== 'None') challengeReset(player)
 
         player.currentChallenge = type
-        updateAllCoinUpgrades(player);
+        updateAllCoinUpgrades(player)
 
         const colorToggle = [
             ['Basic Challenge', 'basic-challenge-icon'],

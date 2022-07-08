@@ -2,14 +2,14 @@
 
 // do NOT attach this to the player variable until the combat system is (mostly) implemented!
 
-import { Player } from '../../../types/player';
-import { format } from '../../../Utilities/Format';
-import { timer } from '../../../Utilities/HelperFunctions';
-import { updateElementById, updateStyleById } from '../../../Utilities/Render';
-import { spawnEnemy } from '../Enemies/SpawnEnemy';
-import { combatStats } from '../Stats/Stats';
-import { combatHTMLReasons } from '../types';
-import { Globals } from '../../Globals';
+import { Player } from '../../../types/player'
+import { format } from '../../../Utilities/Format'
+import { timer } from '../../../Utilities/HelperFunctions'
+import { updateElementById, updateStyleById } from '../../../Utilities/Render'
+import { spawnEnemy } from '../Enemies/SpawnEnemy'
+import { combatStats } from '../Stats/Stats'
+import { combatHTMLReasons } from '../types'
+import { Globals } from '../../Globals'
 
 export const baseFighterStats: combatStats = {
     HP: 150,
@@ -52,7 +52,7 @@ export class PlayerFighter {
         this.delay -= dt
 
         if (autoFight && this.delay < 0) {
-            await this.attack();
+            await this.attack()
         }
     }
 
@@ -66,28 +66,28 @@ export class PlayerFighter {
     }
 
     computeActualDamageReceived(baseAmount: number): number {
-        const armorReduce = this.computeArmorDamageReduction();
-        const defenseDivide = this.computeDefenseDamageDivisor();
+        const armorReduce = this.computeArmorDamageReduction()
+        const defenseDivide = this.computeDefenseDamageDivisor()
 
         return Math.max(0, (baseAmount - armorReduce / defenseDivide))
     }
 
 
     async takeDamage(baseAmount: number): Promise<void> {
-        if (this.currStats.HP === 0) return; // This is AWFUL, please fix this Future Platonic
+        if (this.currStats.HP === 0) return // This is AWFUL, please fix this Future Platonic
         const damageTaken = this.computeActualDamageReceived(baseAmount)
 
-        this.currStats.HP -= damageTaken;
-        this.currStats.HP = Math.max(0, this.currStats.HP);
+        this.currStats.HP -= damageTaken
+        this.currStats.HP = Math.max(0, this.currStats.HP)
         this.updateHTML('Damage')
 
         if (this.currStats.HP === 0) {
             // Reset Player Statistical
-            await timer(9000);
-            this.currStats = {...this.baseStats};
-            this.delay = this.attackRate;
-            this.updateHTML('Initialize');
-            spawnEnemy(this.player);
+            await timer(9000)
+            this.currStats = {...this.baseStats}
+            this.delay = this.attackRate
+            this.updateHTML('Initialize')
+            spawnEnemy(this.player)
         }
     }
 
@@ -105,31 +105,31 @@ export class PlayerFighter {
     }
 
     computeBaseDamageSent(): number {
-        const damageBase = this.computeDamageBase();
-        const strengthMod = this.computeStrengthModifier();
+        const damageBase = this.computeDamageBase()
+        const strengthMod = this.computeStrengthModifier()
         let critMultiplier = 1
-        const critRandom = Math.random();
+        const critRandom = Math.random()
         if (critRandom < this.currStats.CRITCHANCE) {
-            critMultiplier = this.computeCriticalDamage();
+            critMultiplier = this.computeCriticalDamage()
         }
         return damageBase * strengthMod * critMultiplier
     }
 
     async attack(): Promise<void> {
-        const testEnemy = Globals.getGlobalEnemy();
+        const testEnemy = Globals.getGlobalEnemy()
 
         if (this.delay > 0 || this.currStats.HP === 0 || testEnemy?.currStats.HP === 0) {
             return
         }
 
-        const damageSent = this.computeBaseDamageSent();
-        void testEnemy?.takeDamage(damageSent);
+        const damageSent = this.computeBaseDamageSent()
+        void testEnemy?.takeDamage(damageSent)
 
         this.currStats.HP += this.baseStats.HP / 60 + damageSent / 40
         this.currStats.HP = Math.min(this.currStats.HP, this.baseStats.HP)
         this.updateHTML('Damage')
 
-        this.delay = this.attackRate;
+        this.delay = this.attackRate
     }
 
     async enrage(): Promise<void> {
@@ -189,7 +189,7 @@ export class PlayerFighter {
                 { textContent: `${format(this.currStats.HP, 2)}/${format(this.baseStats.HP)}` }
             )
 
-            const HPWidth = this.computeHPBarWidth();
+            const HPWidth = this.computeHPBarWidth()
             updateStyleById(
                 'playerHPProgression',
                 { width: `${HPWidth}%`}
@@ -202,7 +202,7 @@ export class PlayerFighter {
                 { textContent: `${format(this.currStats.MP, 2)}/${format(this.baseStats.MP)}`}
             )
 
-            const MPWidth = this.computeMPBarWidth();
+            const MPWidth = this.computeMPBarWidth()
             updateStyleById(
                 'playerMPProgression',
                 { width: `${MPWidth}%`}
@@ -222,7 +222,7 @@ export let autoFight = false
 
 export const toggleAuto = () => {
 
-    autoFight = !autoFight;
+    autoFight = !autoFight
     updateElementById(
         'autoAttack',
         {textContent: `Auto Fight: ${autoFight}`}

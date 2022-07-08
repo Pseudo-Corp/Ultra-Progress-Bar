@@ -1,7 +1,7 @@
-import { Player } from '../../types/player';
-import { format } from '../../Utilities/Format';
-import { updateElementById } from '../../Utilities/Render';
-import { Challenges } from './types';
+import { Player } from '../../types/player'
+import { format } from '../../Utilities/Format'
+import { updateElementById } from '../../Utilities/Render'
+import { Challenges } from './types'
 
 export const challengeDetails = async (type: Challenges, player: Player) => {
     const name = (type === 'Basic Challenge') ? 'Basic Challenge' : `${type} Challenge`
@@ -37,7 +37,7 @@ export const challengeDetails = async (type: Challenges, player: Player) => {
                     textContent: 'WIP REWARD!'
                 }
             )
-            break;
+            break
         case 'No Refresh':
             updateElementById(
                 'challenge-description',
@@ -60,7 +60,7 @@ export const challengeDetails = async (type: Challenges, player: Player) => {
                     textContent: 'WIP REWARD!'
                 }
             )
-            break;
+            break
         case 'No Coin Upgrades':
             updateElementById(
                 'challenge-description',
@@ -83,7 +83,7 @@ export const challengeDetails = async (type: Challenges, player: Player) => {
                     textContent: 'WIP REWARD!'
                 }
             )
-            break;
+            break
         case 'Reduced Bar Fragments':
             updateElementById(
                 'challenge-description',
@@ -106,7 +106,7 @@ export const challengeDetails = async (type: Challenges, player: Player) => {
                     textContent: 'WIP REWARD!'
                 }
             )
-            break;
+            break
         case 'None':
             updateElementById(
                 'challenge-description',
@@ -127,7 +127,7 @@ export const challengeDetails = async (type: Challenges, player: Player) => {
                     textContent: ''
                 }
             )
-            break;
+            break
     }
 
 }

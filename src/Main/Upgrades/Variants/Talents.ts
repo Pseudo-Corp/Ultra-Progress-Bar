@@ -7,7 +7,7 @@ import { updateElementById, updateStyleById } from '../../../Utilities/Render'
 import { reset } from '../../Reset/Refresh'
 import { Upgrade } from '../Upgrades'
 
-export const isLevel20 = (player: Player) => player.barLevel >= 20;
+export const isLevel20 = (player: Player) => player.barLevel >= 20
 
 export type TalentHTMLType = 'Initialize' | 'GainEXP' | 'LevelUp' | 'PermLevelUp' | 'Time' | 'Level20' | 'Sacrifice'
 
@@ -23,10 +23,10 @@ export abstract class Talent extends Upgrade {
         investedFragments: number, permLevel: number,
         currEXP: number, player: Player) {
         super(level, cost, player)
-        this.investedFragments = investedFragments;
-        this.permLevel = permLevel;
+        this.investedFragments = investedFragments
+        this.permLevel = permLevel
         this.currEXP = currEXP
-        this.currTNL = this.calculateTNL();
+        this.currTNL = this.calculateTNL()
     }
 
     calculateTNL(): number {
@@ -37,7 +37,7 @@ export abstract class Talent extends Upgrade {
                 baseCost *= 2
             }
         }
-        return baseCost;
+        return baseCost
     }
 
     setEXP(amount: number): void {
@@ -51,54 +51,54 @@ export abstract class Talent extends Upgrade {
      * is a lot safer than putting it in each of the talents (and easier to change later).
      */
     globalTalentEXPMultipliers(): number {
-        let globalMult = 1;
-        globalMult *= this.sacrificeBoost();
-        globalMult *= (1 + this.player.coinUpgrades.barAdoption.upgradeEffect());
+        let globalMult = 1
+        globalMult *= this.sacrificeBoost()
+        globalMult *= (1 + this.player.coinUpgrades.barAdoption.upgradeEffect())
         return globalMult
     }
 
     gainEXP(dt?: number): void {
-        if (!isLevel20(this.player)) return;
+        if (!isLevel20(this.player)) return
 
-        const amount = this.calculateEXPGain(dt);
+        const amount = this.calculateEXPGain(dt)
         this.currEXP += amount
         if (this.currEXP >= this.currTNL) {
-            this.levelUp();
+            this.levelUp()
         }
-        this.updateHTML('GainEXP');
+        this.updateHTML('GainEXP')
     }
 
     subEXP(amount: number): void {
-        if (!isLevel20(this.player)) return;
-        this.currEXP -= amount;
+        if (!isLevel20(this.player)) return
+        this.currEXP -= amount
     }
 
     levelUp(): void {
-        let counter = 0;
+        let counter = 0
         while (this.currEXP >= this.currTNL) {
-            if (counter >= 10) break;
-            this.level += 1;
-            this.subEXP(this.currTNL);
-            this.currTNL = this.calculateTNL();
-            counter++;
+            if (counter >= 10) break
+            this.level += 1
+            this.subEXP(this.currTNL)
+            this.currTNL = this.calculateTNL()
+            counter++
         }
-        this.updateHTML('LevelUp');
+        this.updateHTML('LevelUp')
     }
 
     computePermLevelGain(level: number): number {
         let levelsToGain = 0
-        levelsToGain += Math.sqrt(level);
+        levelsToGain += Math.sqrt(level)
         levelsToGain *= Math.min(4, Math.pow(this.player.refreshTime / 300, 2))
         levelsToGain = Math.min(level, levelsToGain)
         return Math.floor(levelsToGain)
     }
 
     convertToPerm(): void {
-        this.permLevel += this.computePermLevelGain(this.level);
-        this.level = 0;
-        this.setEXP(0);
-        this.currTNL = this.calculateTNL();
-        this.updateHTML('PermLevelUp');
+        this.permLevel += this.computePermLevelGain(this.level)
+        this.level = 0
+        this.setEXP(0)
+        this.currTNL = this.calculateTNL()
+        this.updateHTML('PermLevelUp')
     }
 
     getBarWidth(): number {
@@ -111,30 +111,30 @@ export abstract class Talent extends Upgrade {
 
     async sacrificeFragments (): Promise<void> {
         if (this.player.barFragments.amount < 1000) {
-            return void Alert('You cannot sacrifice your bar fragments until you have at least 1,000 of them.');
+            return void Alert('You cannot sacrifice your bar fragments until you have at least 1,000 of them.')
         } else if (this.player.barFragments.amount <= this.investedFragments) {
             return void Alert(
                 `This bar needs more fragments than you can invest. You need ${format(this.investedFragments)}.`
-            );
+            )
         } else {
             const confirmation = await Confirm(
                 `You will sacrifice ${format(this.player.barFragments.amount - this.investedFragments)} ` +
                 'Bar Fragments to increase EXP gain for this bar. Will you? ' +
                 '(automatically performs a refresh, setting your fragments to 0)'
-            );
+            )
 
             if (confirmation) {
                 this.investedFragments = this.player.barFragments.amount
-                this.player.refreshTime += minimumRefreshCounter;
-                void reset('Refresh', this.player);
-                this.player.barFragments.set(0);
+                this.player.refreshTime += minimumRefreshCounter
+                void reset('Refresh', this.player)
+                this.player.barFragments.set(0)
                 this.updateHTML('Sacrifice')
             }
         }
     }
 
     updateHTML(reason: TalentHTMLType): void {
-        if (this.idHTML === undefined) return;
+        if (this.idHTML === undefined) return
 
         if (reason === 'Initialize' || reason === 'GainEXP' || reason === 'LevelUp' || reason === 'PermLevelUp') {
             updateElementById(
@@ -212,8 +212,8 @@ export class TalentCriticalChance extends Talent {
     constructor(level: number, cost: number,
         investedFragments: number, permLevel: number,
         currEXP: number, player: Player) {
-        super(level, cost, investedFragments, permLevel, currEXP, player);
-        this.updateHTML('Initialize');
+        super(level, cost, investedFragments, permLevel, currEXP, player)
+        this.updateHTML('Initialize')
     }
 
     calculateEXPGain(dt: number): number {
@@ -222,12 +222,12 @@ export class TalentCriticalChance extends Talent {
         // Adjust EXP based on tick rate relative to base FPS of 24
         expGain *= (dt * 1000 / FPS)
         expGain *= (this.player.barLevel / 10 - 1) // Is 1 at level 20
-        expGain *= this.globalTalentEXPMultipliers();
+        expGain *= this.globalTalentEXPMultipliers()
         return expGain
     }
 
     talentEffect(): number {
-        if (!isLevel20(this.player)) return 0;
+        if (!isLevel20(this.player)) return 0
 
         return 0.0025 * (1 - Math.pow(Math.E, - this.level / 2500))
             + 0.0025 * Math.min(250, this.level) / 250
@@ -245,15 +245,15 @@ export class TalentProgressSpeed extends Talent {
     constructor(level: number, cost: number,
         investedFragments: number, permLevel: number,
         currEXP: number, player: Player) {
-        super(level, cost, investedFragments, permLevel, currEXP, player);
-        this.updateHTML('Initialize');
+        super(level, cost, investedFragments, permLevel, currEXP, player)
+        this.updateHTML('Initialize')
     }
 
     calculateEXPGain(dt: number): number {
         // Based on PPS (progress per second)
         let expGain = Math.log10(1 + dt)
         expGain *= (this.player.barLevel / 10 - 1)
-        expGain *= this.globalTalentEXPMultipliers();
+        expGain *= this.globalTalentEXPMultipliers()
         return expGain
     }
 
@@ -274,15 +274,15 @@ export class TalentCoinGain extends Talent {
     constructor(level: number, cost: number,
         investedFragments: number, permLevel: number,
         currEXP: number, player: Player) {
-        super(level, cost, investedFragments, permLevel, currEXP, player);
-        this.updateHTML('Initialize');
+        super(level, cost, investedFragments, permLevel, currEXP, player)
+        this.updateHTML('Initialize')
     }
 
     calculateEXPGain(coin: number): number {
         // Based on coin gains
-        let expGain = 2 + Math.floor(Math.pow(coin, 2) / 100 + 4 * coin);
-        expGain *= this.globalTalentEXPMultipliers();
-        return expGain;
+        let expGain = 2 + Math.floor(Math.pow(coin, 2) / 100 + 4 * coin)
+        expGain *= this.globalTalentEXPMultipliers()
+        return expGain
     }
 
     talentEffect(): number {

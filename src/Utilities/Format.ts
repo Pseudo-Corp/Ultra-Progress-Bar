@@ -5,7 +5,7 @@
  * @returns a string of the number formatted to specific conditions.
  */
 export const format = (n: number, accuracy = 0): string => {
-    if (n < 0) return '-' + format(-n, accuracy);
+    if (n < 0) return '-' + format(-n, accuracy)
 
     if (n >= 1e6) {
         // Get the power!
@@ -15,33 +15,33 @@ export const format = (n: number, accuracy = 0): string => {
         return format(n, 2) + 'e' + format(power)
     }
 
-    const truncatedNumber = Math.floor(n);
-    const decimalValue = n - truncatedNumber;
+    const truncatedNumber = Math.floor(n)
+    const decimalValue = n - truncatedNumber
 
-    const stringedInteger = truncatedNumber.toLocaleString();
+    const stringedInteger = truncatedNumber.toLocaleString()
 
-    const decimalPoint = accuracy > 0 && n !== 0;
+    const decimalPoint = accuracy > 0 && n !== 0
 
-    let returnDecimalRaw = Math.pow(10, accuracy) * decimalValue;
+    let returnDecimalRaw = Math.pow(10, accuracy) * decimalValue
 
     // Fix Float Point Error!
-    const tolerance = 1e-6;
+    const tolerance = 1e-6
     if (Math.ceil(returnDecimalRaw) - returnDecimalRaw < tolerance) {
-        returnDecimalRaw = Math.ceil(returnDecimalRaw);
+        returnDecimalRaw = Math.ceil(returnDecimalRaw)
     }
     // End of Fix Float Point Error!
 
     let returnDecimalValue = decimalPoint
         ? Math.floor(returnDecimalRaw).toString()
-        : '';
+        : ''
 
     if (returnDecimalValue !== '') {
         while (returnDecimalValue.length < accuracy) {
-            returnDecimalValue = '0' + returnDecimalValue;
+            returnDecimalValue = '0' + returnDecimalValue
         }
 
-        returnDecimalValue = '.' + returnDecimalValue;
+        returnDecimalValue = '.' + returnDecimalValue
     }
 
-    return stringedInteger + returnDecimalValue;
-};
+    return stringedInteger + returnDecimalValue
+}

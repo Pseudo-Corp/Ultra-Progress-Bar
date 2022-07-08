@@ -1,13 +1,13 @@
-import { Player } from '../../../types/player';
-import { enemyStats } from '../Stats/Stats';
-import { AggressiveEnemy } from './Variants/Aggressive';
-import { BossEnemy } from './Variants/Boss';
-import { DefenseiveEnemy } from './Variants/Defensive';
-import { HealerEnemy } from './Variants/Healer';
-import { IdleEnemy } from './Variants/Idle';
-import { NullEnemy } from './Variants/Null';
-import { RandomEnemy } from './Variants/Random';
-import { Globals } from '../../Globals';
+import { Player } from '../../../types/player'
+import { enemyStats } from '../Stats/Stats'
+import { AggressiveEnemy } from './Variants/Aggressive'
+import { BossEnemy } from './Variants/Boss'
+import { DefenseiveEnemy } from './Variants/Defensive'
+import { HealerEnemy } from './Variants/Healer'
+import { IdleEnemy } from './Variants/Idle'
+import { NullEnemy } from './Variants/Null'
+import { RandomEnemy } from './Variants/Random'
+import { Globals } from '../../Globals'
 
 export const testNullStats: enemyStats = {
     HP: 1,
@@ -106,10 +106,10 @@ export const spawnEnemy = (player: Player, nullified = false) => {
     if (nullified) {
         return Globals.setGlobalEnemy(
             new NullEnemy(testNullStats, 5000, player)
-        );
+        )
     }
 
-    const RNG = Math.random();
+    const RNG = Math.random()
 
     if (RNG <= 0.05) {
         Globals.setGlobalEnemy(new IdleEnemy(testIdleStats, 0.666, player))
