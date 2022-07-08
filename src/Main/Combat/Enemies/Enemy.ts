@@ -1,13 +1,14 @@
+import { Player } from '../../../types/player'
 import { format } from '../../../Utilities/Format'
 import { timer } from '../../../Utilities/HelperFunctions'
 import { updateElementById, updateStyleById } from '../../../Utilities/Render'
-import { testFighter } from '../Player/Fighter'
-import { combatStats } from '../Stats/Stats'
+import { incrementMainBarEXP } from '../../ProgressBar/Properties'
+import { enemyStats } from '../Stats/Stats'
 import { combatHTMLReasons } from '../types'
 import { spawnEnemy } from './SpawnEnemy'
 
 
-export type EnemyTypes = 'Idle' | 'Random' | 'Aggressive' | 'Healer' | 'Defensive' | 'BOSS'
+export type EnemyTypes = 'Idle' | 'Random' | 'Aggressive' | 'Healer' | 'Defensive' | 'BOSS' | 'Null'
 /*
 March 11, 2022 Draft
 
@@ -20,23 +21,26 @@ Enemies should inherit, as the following stats:
     ARMOR (abbreviate)
     CRIT CHANCE
     CRIT DAMAGE
+    Reward
 
 This file will define the main enemy class, and then the variants will detail specific AI instances of the enemies.
 */
 export abstract class Enemy {
-    baseStats: combatStats
-    currStats: combatStats
+    baseStats: enemyStats
+    currStats: enemyStats
     attackRate: number
     delay: number
     level: number
+    player: Player
     abstract enemyType: EnemyTypes
 
-    constructor(stats: combatStats, attackRate: number) {
+    constructor(stats: enemyStats, attackRate: number, player: Player) {
         this.baseStats = {...stats}
         this.currStats = {...stats}
+        this.player = player
         this.attackRate = attackRate
         this.delay = this.attackRate
-        this.level = this.computeGeneratedLevel();
+        this.level = this.computeGeneratedLevel()
 
         this.updateHTML('Initialize')
     }
@@ -45,7 +49,7 @@ export abstract class Enemy {
         if (await this.checkMoveUse()) {
             this.delay -= dt
             if (this.delay < 0) {
-                this.makeMove();
+                this.makeMove()
                 this.delay = this.attackRate
             }
         }
@@ -74,14 +78,18 @@ export abstract class Enemy {
     }
 
     computeActualDamageReceived(baseAmount: number): number {
-        const armorReduce = this.computeArmorDamageReduction();
-        const defenseDivide = this.computeDefenseDamageDivisor();
+        const armorReduce = this.computeArmorDamageReduction()
+        const defenseDivide = this.computeDefenseDamageDivisor()
+
+        if (this.baseStats.INVINCIBLE) {
+            return 0
+        }
 
         return Math.max(0, (baseAmount - armorReduce / defenseDivide))
     }
 
     async takeDamage(baseAmount: number): Promise<void> {
-        if (this.currStats.HP === 0) return;
+        if (this.currStats.HP === 0) return
         const damageTaken = this.computeActualDamageReceived(baseAmount)
 
         this.currStats.HP -= damageTaken
@@ -90,8 +98,9 @@ export abstract class Enemy {
 
         if (this.currStats.HP === 0) {
             // Spawn a new enemy after 1 second
-            await timer(1000);
-            spawnEnemy();
+            incrementMainBarEXP(this.baseStats.REWARD, this.player, this.baseStats.CRITICAL)
+            await timer(4000)
+            spawnEnemy(this.player)
         }
     }
 
@@ -109,12 +118,12 @@ export abstract class Enemy {
     }
 
     computeBaseDamageSent(): number {
-        const damageBase = this.computeDamageBase();
-        const strengthMod = this.computeStrengthModifier();
+        const damageBase = this.computeDamageBase()
+        const strengthMod = this.computeStrengthModifier()
         let critMultiplier = 1
-        const critRandom = Math.random();
+        const critRandom = Math.random()
         if (critRandom < this.currStats.CRITCHANCE) {
-            critMultiplier = this.computeCriticalDamage();
+            critMultiplier = this.computeCriticalDamage()
         }
         return damageBase * strengthMod * critMultiplier
     }
@@ -128,7 +137,7 @@ export abstract class Enemy {
     }
 
     makeMove(): void {
-        this.enemyAI();
+        this.enemyAI()
     }
 
     updateHTML(reason: combatHTMLReasons): void {
@@ -165,7 +174,7 @@ export abstract class Enemy {
                 { textContent: `${format(this.currStats.HP, 2)}/${format(this.baseStats.HP)}` }
             )
 
-            const HPWidth = this.computeHPBarWidth();
+            const HPWidth = this.computeHPBarWidth()
             updateStyleById(
                 'enemyHPProgression',
                 { width: `${HPWidth}%`}
@@ -178,7 +187,7 @@ export abstract class Enemy {
                 { textContent: `${format(this.currStats.MP, 2)}/${format(this.baseStats.MP)}`}
             )
 
-            const MPWidth = this.computeMPBarWidth();
+            const MPWidth = this.computeMPBarWidth()
             updateStyleById(
                 'enemyMPProgression',
                 { width: `${MPWidth}%`}
@@ -190,17 +199,17 @@ export abstract class Enemy {
         updateElementById(
             'enemyMove',
             { textContent: `${format(attacks)}Hit` }
-        );
+        )
         for (let i = 0; i < attacks; i++) {
-            void this.attack(true);
+            void this.attack(true)
             if (!await this.checkMoveUse()) break
-            await timer(this.attackRate / Math.min(4, (1 + attacks)) * 1000);
+            await timer(this.attackRate / Math.min(4, (1 + attacks)) * 1000)
         }
     }
 
     async attack(multiHit = false): Promise<void> {
-        const damageSent = this.computeBaseDamageSent();
-        void testFighter.takeDamage(damageSent);
+        const damageSent = this.computeBaseDamageSent()
+        void this.player.fighter.takeDamage(damageSent)
 
         if (!multiHit) {
             updateElementById(
@@ -224,19 +233,15 @@ export abstract class Enemy {
             'enemyMove',
             { textContent: 'Heal' }
         )
-        this.updateHTML('Damage');
+        this.updateHTML('Damage')
     }
 
     async checkMoveUse(): Promise<boolean> {
-        return (testFighter.currStats.HP > 0 && this.currStats.HP > 0)
+        return (this.player.fighter.currStats.HP > 0 && this.currStats.HP > 0)
     }
 
     abstract variantSpecificHTML(reason: combatHTMLReasons): void
 
     abstract enemyAI(): void
-
-
-
-
 
 }

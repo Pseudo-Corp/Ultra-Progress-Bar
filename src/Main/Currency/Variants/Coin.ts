@@ -1,13 +1,14 @@
-import { Player } from '../../../types/player';
-import { format } from '../../../Utilities/Format';
-import { updateElementById } from '../../../Utilities/Render';
+import { Player } from '../../../types/player'
+import { format } from '../../../Utilities/Format'
+import { updateElementById } from '../../../Utilities/Render'
 import { Currency } from '../Currency'
 
 export class Coins extends Currency {
     public totalCoins: number
-    constructor(amount: number, player: Player) {
+    constructor(amount: number, player: Player, totalCoins: number) {
         super(amount, player)
-        this.totalCoins = 0
+        this.totalCoins = totalCoins
+        this.updateHTML()
     }
 
     updateHTML(): void {
@@ -16,7 +17,13 @@ export class Coins extends Currency {
             {
                 textContent: format(this.amount)
             }
-        );
+        )
+        updateElementById(
+            'gold-total-amount',
+            {
+                textContent: format(this.totalCoins)
+            }
+        )
     }
 
     updateOnGain(amount: number): void {
@@ -24,5 +31,9 @@ export class Coins extends Currency {
             this.player.talents.coinGain.gainEXP(amount)
         }
         this.totalCoins += amount
+    }
+
+    public override valueOf () {
+        return { amount: this.amount, totalCoins: this.totalCoins }
     }
 }

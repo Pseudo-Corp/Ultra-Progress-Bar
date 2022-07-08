@@ -1,13 +1,13 @@
-import { loadGame, player } from '../Game';
-import { Alert } from '../HTML/Popups';
-import { generateEventHandlers } from '../Utilities/Eventlisteners';
-import { onRefresh } from '../Utilities/UpdateHTML';
+import { loadGame, player } from '../Game'
+import { Alert } from '../HTML/Popups'
+import { generateEventHandlers } from '../Utilities/Eventlisteners'
+import { onRefresh } from '../Utilities/UpdateHTML'
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 window.addEventListener('load', async () => {
-    generateEventHandlers(player);
-    await loadGame();
-    onRefresh(player);
+    generateEventHandlers(player)
+    await loadGame()
+    onRefresh(player)
 
     // All versions of Chrome and Firefox supported by the game have this API,
     // but not all versions of Edge and Safari do.
@@ -23,19 +23,19 @@ window.addEventListener('load', async () => {
         typeof navigator.storage?.persisted === 'function'
         /* eslint-enable @typescript-eslint/no-unnecessary-condition */
     ) {
-        const persistent = await navigator.storage.persisted();
+        const persistent = await navigator.storage.persisted()
 
         if (!persistent) {
-            const isPersistentNow = await navigator.storage.persist();
+            const isPersistentNow = await navigator.storage.persist().catch(() => false)
 
             if (isPersistentNow) {
                 void Alert(
                     'Data on this page is now persistent! If you do not know what this means, you can safely ignore it.'
-                );
+                )
             }
         } else {
             // eslint-disable-next-line no-console
-            console.log(`Storage is persistent! (persistent = ${persistent})`);
+            console.log(`Storage is persistent! (persistent = ${persistent})`)
         }
     }
-});
+})

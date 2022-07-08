@@ -1,4 +1,4 @@
-import { Player } from '../../types/player';
+import { Player } from '../../types/player'
 
 export type Currencies = 'Coins'
 
@@ -7,33 +7,33 @@ export abstract class Currency {
         public amount = 0,
         public player: Player
     ) {
-        this.amount = amount;
-        this.updateHTML();
+        this.amount = amount
+        this.updateHTML()
     }
 
     spend(amount: number):void {
         if (this.amount >= amount) {
-            this.amount -= amount;
-            this.updateHTML();
+            this.amount -= amount
+            this.updateHTML()
         }
     }
 
     gain(amount: number):void {
-        this.amount += amount;
-        this.updateHTML();
-        this.updateOnGain(amount);
+        this.amount += amount
+        this.updateOnGain(amount)
+        this.updateHTML()
     }
 
     set(amount: number):void {
-        this.amount = amount;
-        this.updateHTML();
+        this.amount = amount
+        this.updateHTML()
     }
 
     public valueOf () {
-        return { amount: this.amount };
+        return { amount: this.amount }
     }
 
-    abstract updateOnGain(amount: number): void;
-    abstract updateHTML(): void;
+    abstract updateOnGain(amount: number): void
+    abstract updateHTML(): void
 
 }

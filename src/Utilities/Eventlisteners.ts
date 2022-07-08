@@ -1,15 +1,15 @@
-import { resetGame, tock } from '../Game';
-import { reset } from '../Main/Reset/Refresh';
-import { Player } from '../types/player';
-import { hideStuff } from './UpdateHTML';
-import { getElementById } from './Render';
-import { testFighter, toggleAuto } from '../Main/Combat/Player/Fighter';
-import { challengeDetails } from '../Main/Challenges/details';
-import { toggleChallenge } from '../Main/Challenges/toggles';
+import { resetGame, tock } from '../Game'
+import { reset } from '../Main/Reset/Refresh'
+import { Player } from '../types/player'
+import { hideStuff } from './UpdateHTML'
+import { getElementById } from './Render'
+import { toggleAuto } from '../Main/Combat/Player/Fighter'
+import { challengeDetails } from '../Main/Challenges/details'
+import { toggleChallenge } from '../Main/Challenges/toggles'
 
 export const generateEventHandlers = (player: Player) => {
-    getElementById('main-tab-nav').addEventListener('click', () => hideStuff('Main'));
-    getElementById('upgrade-tab-nav').addEventListener('click', () => hideStuff('Upgrades'));
+    getElementById('main-tab-nav').addEventListener('click', () => hideStuff('Main'))
+    getElementById('upgrade-tab-nav').addEventListener('click', () => hideStuff('Upgrades'))
     getElementById('talent-tab-nav').addEventListener('click', () => hideStuff('Talents'))
     getElementById('dueling-tab-nav').addEventListener('click', () => hideStuff('Dueling'))
     getElementById('challenge-tab-nav').addEventListener('click', () => hideStuff('Challenges'))
@@ -18,11 +18,11 @@ export const generateEventHandlers = (player: Player) => {
     getElementById('buy-coin-bar-speed').addEventListener(
         'click',
         (event) => player.coinUpgrades.barSpeed.purchaseLevels(1, event)
-    );
+    )
     getElementById('buy-coin-bar-momentum').addEventListener(
         'click',
         (event) => player.coinUpgrades.barMomentum.purchaseLevels(1, event)
-    );
+    )
     getElementById('buy-coin-bar-reverberation').addEventListener(
         'click',
         (event) => player.coinUpgrades.barReverberation.purchaseLevels(1, event)
@@ -51,39 +51,39 @@ export const generateEventHandlers = (player: Player) => {
         'click',
         (event) => player.coinUpgrades.barResonance.purchaseLevels(1, event)
     )
-    getElementById('buy-reset').addEventListener('click', () => void reset('Refresh', player));
-    getElementById('reset-game').addEventListener('click', () => void resetGame());
+    getElementById('buy-reset').addEventListener('click', () => void reset('Refresh', player))
+    getElementById('reset-game').addEventListener('click', () => void resetGame())
     getElementById('simulate-time').addEventListener('click', () => void tock(3600))
 
     getElementById('talentCriticalChanceSacrifice').addEventListener(
         'click',
         () => void player.talents.barCriticalChance.sacrificeFragments()
-    );
+    )
 
     getElementById('talentProgressSpeedSacrifice').addEventListener(
         'click',
         () => void player.talents.barSpeed.sacrificeFragments()
-    );
+    )
 
     getElementById('talentCoinGainSacrifice').addEventListener(
         'click',
         () => void player.talents.coinGain.sacrificeFragments()
-    );
+    )
 
     getElementById('basicAttack').addEventListener(
         'click',
-        () => void testFighter.attack()
-    );
+        () => void player.fighter.attack()
+    )
 
     getElementById('autoAttack').addEventListener(
         'click',
         () => void toggleAuto()
-    );
+    )
 
     getElementById('enrageSkill').addEventListener(
         'click',
-        () => void testFighter.enrage()
-    );
+        () => void player.fighter.enrage()
+    )
 
     getElementById('basic-challenge-icon').addEventListener(
         'mouseover',
@@ -108,22 +108,22 @@ export const generateEventHandlers = (player: Player) => {
 
     getElementById('basic-challenge-icon').addEventListener(
         'click',
-        () => void toggleChallenge('Basic Challenge')
+        () => void toggleChallenge('Basic Challenge', player)
     )
     getElementById('no-refresh-challenge-icon').addEventListener(
         'click',
-        () => void toggleChallenge('No Refresh')
+        () => void toggleChallenge('No Refresh', player)
     )
     getElementById('no-coin-upgrade-challenge-icon').addEventListener(
         'click',
-        () => void toggleChallenge('No Coin Upgrades')
+        () => void toggleChallenge('No Coin Upgrades', player)
     )
     getElementById('reduced-fragments-challenge-icon').addEventListener(
         'click',
-        () => void toggleChallenge('Reduced Bar Fragments')
+        () => void toggleChallenge('Reduced Bar Fragments', player)
     )
     getElementById('none-challenge-icon').addEventListener(
         'click',
-        () => void toggleChallenge('None')
+        () => void toggleChallenge('None', player)
     )
 }

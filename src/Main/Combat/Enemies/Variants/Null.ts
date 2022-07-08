@@ -5,8 +5,8 @@ import { enemyStats } from '../../Stats/Stats'
 import { combatHTMLReasons } from '../../types'
 import { Enemy, EnemyTypes } from '../Enemy'
 
-export class HealerEnemy extends Enemy {
-    enemyType:EnemyTypes = 'Healer'
+export class NullEnemy extends Enemy {
+    enemyType:EnemyTypes = 'Null'
 
     constructor(stats: enemyStats, attackRate: number, player: Player) {
         super(stats, attackRate, player)
@@ -14,28 +14,15 @@ export class HealerEnemy extends Enemy {
     }
 
     async enemyAI(): Promise<void> {
-        const RNG = Math.random()
-
-        if ((RNG < 0.333 || (RNG < 0.5 && this.currStats.HP / this.baseStats.HP < 0.25)) && this.currStats.MP >= 2) {
-            await this.heal()
-            this.currStats.MP -= 2
-            this.updateHTML('Ability')
-        } else if (RNG < 0.375 && this.currStats.MP >= 1) {
-            this.currStats.MP -= 1
-            this.updateHTML('Ability')
-            await this.multiAttack(2)
-        } else {
-            await this.attack()
-        }
+        await this.doNothing()
     }
 
     variantSpecificHTML(reason: combatHTMLReasons): void {
         if (reason === 'Initialize') {
             updateElementById(
                 'enemyName',
-                { textContent: `${this.enemyType} Training Dummy Lv${format(this.level)}` }
+                { textContent: `${this.enemyType} Dummy Lv${format(this.level)}` }
             )
         }
     }
-
 }

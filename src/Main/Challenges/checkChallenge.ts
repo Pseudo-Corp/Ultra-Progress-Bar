@@ -1,5 +1,5 @@
-import { Player } from '../../types/player';
-import { Challenges } from './types';
+import { Player } from '../../types/player'
+import { Challenges } from './types'
 
 export const checkChallenge = (type: Challenges, player: Player) => {
     switch (type) {

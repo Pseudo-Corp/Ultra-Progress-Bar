@@ -1,6 +1,7 @@
-import { Challenges } from '../Main/Challenges/types';
-import type { Coins } from '../Main/Currency/Variants/Coin';
-import type { ProgressFragment } from '../Main/Currency/Variants/ProgressFragment';
+import { Challenges } from '../Main/Challenges/types'
+import { PlayerFighter } from '../Main/Combat/Player/Fighter'
+import type { Coins } from '../Main/Currency/Variants/Coin'
+import type { ProgressFragment } from '../Main/Currency/Variants/ProgressFragment'
 import type {
     CoinBarSpeed,
     CoinBarMomentum,
@@ -11,8 +12,8 @@ import type {
     CoinBarEmpowerment,
     CoinBarReinforcement,
     CoinBarResonance
-} from '../Main/Upgrades/Variants/Coin';
-import type { TalentCoinGain, TalentCriticalChance, TalentProgressSpeed } from '../Main/Upgrades/Variants/Talents';
+} from '../Main/Upgrades/Variants/Coin'
+import type { TalentCoinGain, TalentCriticalChance, TalentProgressSpeed } from '../Main/Upgrades/Variants/Talents'
 
 export interface Player {
     firstPlayed: Date,
@@ -51,4 +52,5 @@ export interface Player {
         noCoinUpgrades: number
         reducedFragments: number
     }
+    fighter: PlayerFighter
 }

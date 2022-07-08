@@ -1,19 +1,19 @@
-import { Player } from '../../types/player';
-import { format } from '../../Utilities/Format';
-import { updateElementById, updateStyleById } from '../../Utilities/Render';
-import { onCriticalHit, unlockStuff } from '../../Utilities/UpdateHTML';
-import { getElementById } from '../../Utilities/Render';
-import { checkChallenge } from '../Challenges/checkChallenge';
-import { Challenges } from '../Challenges/types';
-import { toggleChallenge } from '../Challenges/toggles';
-import { Alert } from '../../HTML/Popups';
+import { Player } from '../../types/player'
+import { format } from '../../Utilities/Format'
+import { updateElementById, updateStyleById } from '../../Utilities/Render'
+import { onCriticalHit, unlockStuff } from '../../Utilities/UpdateHTML'
+import { getElementById } from '../../Utilities/Render'
+import { checkChallenge } from '../Challenges/checkChallenge'
+import { Challenges } from '../Challenges/types'
+import { toggleChallenge } from '../Challenges/toggles'
+import { Alert } from '../../HTML/Popups'
 
 /**
  * Basic Bar Stats
  */
-const baseEXPReq = 10;
-let currentPerSec = 0;
-let previousPerSec = 0;
+const baseEXPReq = 10
+let currentPerSec = 0
+let previousPerSec = 0
 
 export const computeMainBarTNL = (player: Player) => {
     let TNL = 0
@@ -25,13 +25,13 @@ export const computeMainBarTNL = (player: Player) => {
     TNL *= Math.max(1, 1 + (player.barLevel - 20) / 10)
     // Multiplicative Component (Bumps at 40, 100, 200)
     if (player.barLevel > 40) {
-        TNL *= Math.pow(2, 1/10 * (player.barLevel - 40));
+        TNL *= Math.pow(2, 1/10 * (player.barLevel - 40))
     }
     if (player.barLevel > 100) {
-        TNL *= Math.pow(2, 1/10 * (player.barLevel - 100));
+        TNL *= Math.pow(2, 1/10 * (player.barLevel - 100))
     }
     if (player.barLevel > 200) {
-        TNL *= Math.pow(2, 1/10 * (player.barLevel - 200));
+        TNL *= Math.pow(2, 1/10 * (player.barLevel - 200))
     }
 
     // BOSS
@@ -60,41 +60,42 @@ export const computeBarArmor = (player: Player) => {
 }
 
 export const computeArmorMultiplier = (player: Player) => {
-    const armor = computeBarArmor(player);
+    const armor = computeBarArmor(player)
     return Math.max(1, armor * (1 - player.barEXP / player.barTNL))
 }
 
-export const incrementMainBarEXP = (delta: number, player: Player) => {
+export const incrementMainBarEXP = (delta: number, player: Player, forceCrit = false) => {
     if (delta === undefined || delta === null) {
         return
     }
     let baseAmountPerSecond = 1
-    baseAmountPerSecond += player.coinUpgrades.barSpeed.upgradeEffect();
-    baseAmountPerSecond *= player.barFragments.unspentBonus();
+    baseAmountPerSecond += player.coinUpgrades.barSpeed.upgradeEffect()
+    baseAmountPerSecond *= player.barFragments.unspentBonus()
     baseAmountPerSecond *= Math.pow(
         1 + player.coinUpgrades.barMomentum.upgradeEffect(),
         Math.sqrt(100 * Math.min(1, player.barEXP / player.barTNL))
-    );
-    baseAmountPerSecond /= computeArmorMultiplier(player);
-    baseAmountPerSecond *= player.talents.barSpeed.talentEffect();
-    baseAmountPerSecond *= Math.pow(1 + player.coinUpgrades.barEmpowerment.upgradeEffect(), player.barLevel);
+    )
+    baseAmountPerSecond /= computeArmorMultiplier(player)
+    baseAmountPerSecond *= player.talents.barSpeed.talentEffect()
+    baseAmountPerSecond *= Math.pow(1 + player.coinUpgrades.barEmpowerment.upgradeEffect(), player.barLevel)
 
-    const criticalRoll = Math.random();
+    const criticalRoll = (forceCrit) ? -1 : Math.random()
+
     if (criticalRoll < getCritTickChance(player)) {
         let superCrit = false
-        baseAmountPerSecond *= player.coinUpgrades.barVibration.upgradeEffect();
-        player.talents.barCriticalChance.gainEXP(delta);
-        player.criticalHits += 1;
-        player.criticalHitsThisRefresh += 1;
+        baseAmountPerSecond *= player.coinUpgrades.barVibration.upgradeEffect()
+        player.talents.barCriticalChance.gainEXP(delta)
+        player.criticalHits += 1
+        player.criticalHitsThisRefresh += 1
 
-        const superCriticalRoll = Math.random();
+        const superCriticalRoll = Math.random()
         if (superCriticalRoll < player.coinUpgrades.barResonance.upgradeEffect()) {
-            baseAmountPerSecond *= 3;
-            player.coins.gain(Math.floor(player.barLevel / 5) + 3);
-            superCrit = true;
+            baseAmountPerSecond *= 3
+            player.coins.gain(Math.floor(player.barLevel / 5) + 3)
+            superCrit = true
         }
 
-        onCriticalHit(player, superCrit);
+        onCriticalHit(player, superCrit)
     }
 
     const actualAmount = baseAmountPerSecond * delta
@@ -104,7 +105,7 @@ export const incrementMainBarEXP = (delta: number, player: Player) => {
     updateElementById(
         'perSecCurr',
         { textContent: `+${format(currentPerSec,2)} this sec` }
-    );
+    )
 }
 
 /**
@@ -122,7 +123,7 @@ export const updateMainBar = (width: number) => {
     updateStyleById(
         'progression',
         { width: `${width}%` }
-    );
+    )
 }
 
 export const backgroundColorCreation = (player: Player) => {
@@ -134,56 +135,56 @@ export const backgroundColorCreation = (player: Player) => {
 
     // "BOSS"
     if (player.barLevel % 5 === 0) {
-        if (player.barLevel >= 320) return '#FF0000';
+        if (player.barLevel >= 320) return '#FF0000'
 
-        const R = (128 + 4 * Math.floor(player.barLevel / 10)).toString(16).padStart(2, '0');
-        return `#${R}0000`;
+        const R = (128 + 4 * Math.floor(player.barLevel / 10)).toString(16).padStart(2, '0')
+        return `#${R}0000`
     }
 
-    if (player.barLevel >= 128) return '#FFFFFF';
+    if (player.barLevel >= 128) return '#FFFFFF'
 
-    const R = (128 + player.barLevel).toString(16).padStart(2, '0');
-    const G = (2 * player.barLevel).toString(16).padStart(2, '0');
-    const B = (128 + player.barLevel).toString(16).padStart(2, '0');
+    const R = (128 + player.barLevel).toString(16).padStart(2, '0')
+    const G = (2 * player.barLevel).toString(16).padStart(2, '0')
+    const B = (128 + player.barLevel).toString(16).padStart(2, '0')
 
-    return `#${R}${G}${B}`;
+    return `#${R}${G}${B}`
 }
 
 export const levelUpBar = (player: Player) => {
-    player.coins.gain(player.coinValueCache);
-    player.coinValueCache = computeMainBarCoinWorth(player);
+    player.coins.gain(player.coinValueCache)
+    player.coinValueCache = computeMainBarCoinWorth(player)
     player.barEXP -= player.barTNL
-    player.barLevel += 1;
+    player.barLevel += 1
 
     if (player.barLevel > player.highestBarLevel) {
         player.highestBarLevel = player.barLevel
-        unlockStuff(player);
+        unlockStuff(player)
     }
 
-    const barColor = backgroundColorCreation(player);
+    const barColor = backgroundColorCreation(player)
     updateStyleById(
         'progression',
         { backgroundColor: barColor }
-    );
+    )
 
     player.barTNL = computeMainBarTNL(player)
 
     // Adjust barEXP to prevent overleveling / snowball effect on levels
-    player.barEXP /= 10;
-    player.barEXP = Math.min(player.barEXP, Math.floor(player.barTNL / 10));
+    player.barEXP /= 10
+    player.barEXP = Math.min(player.barEXP, Math.floor(player.barTNL / 10))
 
-    const width = getBarWidth(player.barEXP, player.barTNL);
-    updateMainBar(width);
+    const width = getBarWidth(player.barEXP, player.barTNL)
+    updateMainBar(width)
 
     updateElementById(
         'coinWorth',
         { textContent: `Worth ${format(player.coinValueCache)} coins` }
-    );
-    player.barFragments.updateHTML();
+    )
+    player.barFragments.updateHTML()
 
     if (player.barLevel === 20) {
-        player.talents.barCriticalChance.updateHTML('Level20');
-        player.talents.barSpeed.updateHTML('Level20');
+        player.talents.barCriticalChance.updateHTML('Level20')
+        player.talents.barSpeed.updateHTML('Level20')
     }
 
     if (player.currentChallenge !== 'None') {
@@ -200,7 +201,7 @@ export const levelUpBar = (player: Player) => {
             const dictKey = conversion[name]
             player.completedChallenges[dictKey] += 1
 
-            void toggleChallenge('None')
+            void toggleChallenge('None', player)
             return Alert(`Congratulations! You have completed 
             ${name} #${player.completedChallenges[dictKey]}! 
             Ant God is satisfied.`)
@@ -212,72 +213,79 @@ export const updateMainBarInformation = (player: Player) => {
     updateElementById(
         'level',
         { textContent: `Level: ${player.barLevel}` }
-    );
+    )
     updateElementById(
         'exp',
         { textContent: `EXP: ${format(player.barEXP)}/${format(player.barTNL)}` }
-    );
+    )
 }
 
 export const updateDPS = (player: Player) => {
-    previousPerSec = currentPerSec;
-    currentPerSec = 0;
+    previousPerSec = currentPerSec
+    currentPerSec = 0
     updateElementById(
         'perSecPrev',
         { textContent: `+${format(previousPerSec,2)} prev sec` }
-    );
+    )
 
     player.talents.barCriticalChance.updateHTML('Time')
-    player.talents.barSpeed.gainEXP(previousPerSec);
+    player.talents.barSpeed.gainEXP(previousPerSec)
     player.talents.barSpeed.updateHTML('Time')
     player.talents.coinGain.updateHTML('Time')
 
 }
 
 export const computeMainBarCoinWorth = (player: Player) => {
-    let baseWorth = 0;
+    let baseWorth = 0
 
     const nextLevel = 1 + player.barLevel
-    // Highest level bonus
-    if (nextLevel > player.highestBarLevel) {
-        baseWorth += 3;
-    }
 
     // Every 5th bar
     if (nextLevel % 5 === 0) {
-        baseWorth += Math.floor(nextLevel / 5) + 3;
+        baseWorth += Math.floor(nextLevel / 5) + 3
 
-        if (Math.random() < 0.5 && nextLevel > 25) {
-            baseWorth = 0;
+        if (Math.random() < (0.5 - 0.02 * player.completedChallenges.basicChallenge) && nextLevel > 25) {
+            baseWorth = 0
         }
     }
 
     // Every 10th bar, adding to the previous
     if (nextLevel % 10 === 0) {
-        baseWorth += Math.floor(nextLevel / 2);
+        baseWorth += Math.floor(nextLevel / 2)
     }
 
     if (nextLevel % 50 === 0) {
-        baseWorth += Math.floor(nextLevel / 2);
+        baseWorth += Math.floor(nextLevel / 2)
     }
 
     if (nextLevel % 100 === 0) {
-        baseWorth += Math.floor(nextLevel);
+        baseWorth += Math.floor(nextLevel)
     }
 
     if (baseWorth > 100) {
         baseWorth = 10 * Math.pow(baseWorth, 1/2)
     }
-    baseWorth *= (1 + player.talents.coinGain.talentEffect());
+
+    if (nextLevel > player.highestBarLevel) {
+        baseWorth += 3
+    }
+
+    if (nextLevel >= 101 && player.completedChallenges.basicChallenge > 0) {
+        baseWorth += 1
+    }
+
+    baseWorth *= (1 + player.talents.coinGain.talentEffect())
+    baseWorth *= (1 + player.completedChallenges.basicChallenge / 100)
+    baseWorth *= (player.completedChallenges.basicChallenge === 25) ? 1.15 : 1
 
     const RNGCoin = baseWorth - Math.floor(baseWorth)
     if (Math.random() < RNGCoin) {
         baseWorth += 1
     }
 
-    baseWorth = Math.floor(baseWorth);
+    baseWorth = Math.floor(baseWorth)
 
-    const coinHTML = getElementById('coinWorth');
+    const coinHTML = getElementById('coinWorth')
     coinHTML.style.color = (baseWorth > 0) ? 'gold' : 'grey'
 
 
@@ -286,5 +294,5 @@ export const computeMainBarCoinWorth = (player: Player) => {
 
 export const getCritTickChance = (player: Player) => {
     return player.coinUpgrades.barReverberation.upgradeEffect() +
-            player.talents.barCriticalChance.talentEffect();
+            player.talents.barCriticalChance.talentEffect()
 }
