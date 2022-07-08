@@ -99,7 +99,7 @@ export abstract class Enemy {
         if (this.currStats.HP === 0) {
             // Spawn a new enemy after 1 second
             incrementMainBarEXP(this.baseStats.REWARD, this.player, this.baseStats.CRITICAL)
-            await timer(1000);
+            await timer(4000);
             spawnEnemy(this.player);
         }
     }

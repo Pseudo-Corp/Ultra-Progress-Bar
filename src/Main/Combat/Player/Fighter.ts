@@ -83,7 +83,7 @@ export class PlayerFighter {
 
         if (this.currStats.HP === 0) {
             // Reset Player Statistical
-            await timer(1000);
+            await timer(9000);
             this.currStats = {...this.baseStats};
             this.delay = this.attackRate;
             this.updateHTML('Initialize');
