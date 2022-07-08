@@ -1,8 +1,7 @@
 import { setProperty } from 'dot-prop';
 import localforage from 'localforage';
 import { Alert, Confirm } from './HTML/Popups';
-import { spawnEnemy, testEnemy } from './Main/Combat/Enemies/SpawnEnemy';
-import { testFighter } from './Main/Combat/Player/Fighter';
+import { testEnemy } from './Main/Combat/Enemies/SpawnEnemy';
 import {
     backgroundColorCreation,
     computeMainBarTNL,
@@ -73,7 +72,8 @@ export const saveGame = async (player: Player) => {
             barSpeed: player.talents.barSpeed.valueOf(),
             coinGain: player.talents.coinGain.valueOf()
         },
-        barFragments: player.barFragments.valueOf()
+        barFragments: player.barFragments.valueOf(),
+        fighter: player.fighter.valueof()
     };
 
     const save = btoa(JSON.stringify(saveObject));
@@ -111,7 +111,8 @@ const toAdapt = new Map<string,(data: Partial<Player>, player: Player) => unknow
     ['talents.barCriticalChance', Transform.transformTalentBarCriticalChance],
     ['talents.barSpeed', Transform.transformBarSpeedTalent],
     ['talents.coinGain', Transform.transformTalentCoinGain],
-    ['barFragments', Transform.transformBarFragments]
+    ['barFragments', Transform.transformBarFragments],
+    ['fighter', Transform.transformPlayerFigher]
 ]);
 
 /**
@@ -230,8 +231,6 @@ export const loadGame = async () => {
     interval(fightUpdate, 1000/FPS);
     interval(updateDPS, 1000, player);
     interval(saveGame, saveRate, player);
-
-    spawnEnemy();
 }
 
 export const resetGame = async () => {
@@ -270,8 +269,11 @@ export const fightUpdate = async () => {
     const delta = now - lastFightUpdate;
 
     lastFightUpdate += delta
-    void testEnemy.generateAttacks(delta/1000);
-    void testFighter.decreaseDelay(delta/1000);
+
+    if (testEnemy) {
+        void testEnemy.generateAttacks(delta/1000);
+    }
+    void player.fighter.decreaseDelay(delta/1000);
 }
 
 /**

@@ -23,10 +23,18 @@ export class ProgressFragment extends Currency {
 
         let baseAmount = 100 * Math.pow(1.07, -5);
         baseAmount *= Math.pow(1.07, level);
-        baseAmount *= Math.pow(3, Math.floor(level / 100));
+        baseAmount *= Math.pow(3, Math.floor(level / (100 - this.player.completedChallenges.noRefresh)));
 
         baseAmount *= (1 + this.player.criticalHitsThisRefresh * this.player.coinUpgrades.barAgitation.upgradeEffect())
         baseAmount *= (1 + this.player.coinUpgrades.barReinforcement.upgradeEffect() * this.player.barLevel);
+
+        if (this.player.completedChallenges.noRefresh > 0) {
+            baseAmount *= Math.pow(1.03, Math.floor(level / 10))
+        }
+
+        if (this.player.completedChallenges.noRefresh === 25) {
+            baseAmount *= 3
+        }
 
         if (this.player.currentChallenge === 'Reduced Bar Fragments') {
             baseAmount = Math.pow(baseAmount, 1/3)

@@ -1,4 +1,5 @@
 import { Challenges } from '../Main/Challenges/types';
+import { PlayerFighter } from '../Main/Combat/Player/Fighter';
 import type { Coins } from '../Main/Currency/Variants/Coin';
 import type { ProgressFragment } from '../Main/Currency/Variants/ProgressFragment';
 import type {
@@ -51,4 +52,5 @@ export interface Player {
         noCoinUpgrades: number
         reducedFragments: number
     }
+    fighter: PlayerFighter
 }

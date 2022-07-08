@@ -8,3 +8,9 @@ export interface combatStats {
     CRITCHANCE: number
     CRITDAMAGE: number
 }
+
+export interface enemyStats extends combatStats {
+    REWARD: number
+    CRITICAL: boolean
+    INVINCIBLE?: boolean
+}

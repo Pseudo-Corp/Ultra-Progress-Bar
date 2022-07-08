@@ -2,6 +2,7 @@
 
 // do NOT attach this to the player variable until the combat system is (mostly) implemented!
 
+import { Player } from '../../../types/player';
 import { format } from '../../../Utilities/Format';
 import { timer } from '../../../Utilities/HelperFunctions';
 import { updateElementById, updateStyleById } from '../../../Utilities/Render';
@@ -9,7 +10,7 @@ import { spawnEnemy, testEnemy } from '../Enemies/SpawnEnemy';
 import { combatStats } from '../Stats/Stats';
 import { combatHTMLReasons } from '../types';
 
-const testFighterStats:combatStats = {
+export const baseFighterStats: combatStats = {
     HP: 150,
     MP: 25,
     ATK: 15,
@@ -20,19 +21,30 @@ const testFighterStats:combatStats = {
     CRITDAMAGE: 100
 }
 
+export const baseAttackRate = 0.666
+
 export class PlayerFighter {
     baseStats: combatStats
     currStats: combatStats
     attackRate: number
     delay: number
+    player: Player
 
-    constructor(stats: combatStats, attackRate: number) {
+    constructor(stats: combatStats, attackRate: number, player: Player) {
         this.baseStats = {...stats}
         this.currStats = {...stats}
         this.attackRate = attackRate
         this.delay = attackRate
+        this.player = player
 
         this.updateHTML('Initialize')
+        spawnEnemy(this.player, true)
+        void this.spawnInitialEnemy()
+    }
+
+    async spawnInitialEnemy(): Promise<void> {
+        await timer(5000)
+        spawnEnemy(this.player)
     }
 
     async decreaseDelay(dt: number): Promise<void> {
@@ -74,7 +86,7 @@ export class PlayerFighter {
             this.currStats = {...this.baseStats};
             this.delay = this.attackRate;
             this.updateHTML('Initialize');
-            spawnEnemy();
+            spawnEnemy(this.player);
         }
     }
 
@@ -103,12 +115,16 @@ export class PlayerFighter {
     }
 
     async attack(): Promise<void> {
-        if (this.delay > 0 || this.currStats.HP === 0) {
+        if (this.delay > 0 || this.currStats.HP === 0 || testEnemy.currStats.HP === 0) {
             return
         }
 
         const damageSent = this.computeBaseDamageSent();
         void testEnemy.takeDamage(damageSent);
+
+        this.currStats.HP += this.baseStats.HP / 60 + damageSent / 40
+        this.currStats.HP = Math.min(this.currStats.HP, this.baseStats.HP)
+        this.updateHTML('Damage')
 
         this.delay = this.attackRate;
     }
@@ -191,9 +207,14 @@ export class PlayerFighter {
         }
     }
 
+    public valueof () {
+        return {
+            baseStats: this.baseStats,
+            attackRate: this.attackRate
+        }
+    }
 }
 
-export const testFighter = new PlayerFighter(testFighterStats, 0.666)
 export let autoFight = false
 
 export const toggleAuto = () => {

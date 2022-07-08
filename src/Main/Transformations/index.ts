@@ -14,3 +14,5 @@ export { transform as transformResonance } from './CoinUpgrades/BarResonance'
 export { transform as transformTalentBarCriticalChance } from './Talents/BarCriticalChance';
 export { transform as transformBarSpeedTalent } from './Talents/BarSpeed';
 export { transform as transformTalentCoinGain } from './Talents/CoinGain';
+
+export { transform as transformPlayerFigher } from './Combat/Fighter';

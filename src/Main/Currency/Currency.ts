@@ -20,8 +20,8 @@ export abstract class Currency {
 
     gain(amount: number):void {
         this.amount += amount;
-        this.updateHTML();
         this.updateOnGain(amount);
+        this.updateHTML();
     }
 
     set(amount: number):void {

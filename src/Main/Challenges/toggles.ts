@@ -1,11 +1,11 @@
-import { player } from '../../Game'
 import { Alert, Confirm } from '../../HTML/Popups';
+import { Player } from '../../types/player';
 import { updateStyleById } from '../../Utilities/Render';
 import { updateAllCoinUpgrades } from '../../Utilities/UpdateHTML';
 import { challengeReset } from '../Reset/Challenge';
 import { Challenges } from './types'
 
-export const toggleChallenge = async (type: Challenges) => {
+export const toggleChallenge = async (type: Challenges, player: Player) => {
 
     if (player.currentChallenge !== 'None' && type !== 'None') {
         return Alert(`You are already in a challenge!
@@ -24,7 +24,7 @@ export const toggleChallenge = async (type: Challenges) => {
         if (player.barLevel < 5 && type !== 'None') {
             return Alert('I cannot do this action until you are at bar level 5.')
         }
-        if (type !== 'None') challengeReset();
+        if (type !== 'None') challengeReset(player);
 
         player.currentChallenge = type
         updateAllCoinUpgrades(player);

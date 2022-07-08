@@ -9,6 +9,7 @@ export const transform = (data: Partial<Player>, player: Player) => {
 
     return new Coins(
         value?.amount ?? 0,
-        player
+        player,
+        value?.totalCoins ?? 0
     );
 }

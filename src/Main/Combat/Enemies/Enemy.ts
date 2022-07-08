@@ -1,13 +1,14 @@
+import { Player } from '../../../types/player'
 import { format } from '../../../Utilities/Format'
 import { timer } from '../../../Utilities/HelperFunctions'
 import { updateElementById, updateStyleById } from '../../../Utilities/Render'
-import { testFighter } from '../Player/Fighter'
-import { combatStats } from '../Stats/Stats'
+import { incrementMainBarEXP } from '../../ProgressBar/Properties'
+import { enemyStats } from '../Stats/Stats'
 import { combatHTMLReasons } from '../types'
 import { spawnEnemy } from './SpawnEnemy'
 
 
-export type EnemyTypes = 'Idle' | 'Random' | 'Aggressive' | 'Healer' | 'Defensive' | 'BOSS'
+export type EnemyTypes = 'Idle' | 'Random' | 'Aggressive' | 'Healer' | 'Defensive' | 'BOSS' | 'Null'
 /*
 March 11, 2022 Draft
 
@@ -20,20 +21,23 @@ Enemies should inherit, as the following stats:
     ARMOR (abbreviate)
     CRIT CHANCE
     CRIT DAMAGE
+    Reward
 
 This file will define the main enemy class, and then the variants will detail specific AI instances of the enemies.
 */
 export abstract class Enemy {
-    baseStats: combatStats
-    currStats: combatStats
+    baseStats: enemyStats
+    currStats: enemyStats
     attackRate: number
     delay: number
     level: number
+    player: Player
     abstract enemyType: EnemyTypes
 
-    constructor(stats: combatStats, attackRate: number) {
+    constructor(stats: enemyStats, attackRate: number, player: Player) {
         this.baseStats = {...stats}
         this.currStats = {...stats}
+        this.player = player
         this.attackRate = attackRate
         this.delay = this.attackRate
         this.level = this.computeGeneratedLevel();
@@ -77,6 +81,10 @@ export abstract class Enemy {
         const armorReduce = this.computeArmorDamageReduction();
         const defenseDivide = this.computeDefenseDamageDivisor();
 
+        if (this.baseStats.INVINCIBLE) {
+            return 0
+        }
+
         return Math.max(0, (baseAmount - armorReduce / defenseDivide))
     }
 
@@ -90,8 +98,9 @@ export abstract class Enemy {
 
         if (this.currStats.HP === 0) {
             // Spawn a new enemy after 1 second
+            incrementMainBarEXP(this.baseStats.REWARD, this.player, this.baseStats.CRITICAL)
             await timer(1000);
-            spawnEnemy();
+            spawnEnemy(this.player);
         }
     }
 
@@ -200,7 +209,7 @@ export abstract class Enemy {
 
     async attack(multiHit = false): Promise<void> {
         const damageSent = this.computeBaseDamageSent();
-        void testFighter.takeDamage(damageSent);
+        void this.player.fighter.takeDamage(damageSent);
 
         if (!multiHit) {
             updateElementById(
@@ -228,15 +237,11 @@ export abstract class Enemy {
     }
 
     async checkMoveUse(): Promise<boolean> {
-        return (testFighter.currStats.HP > 0 && this.currStats.HP > 0)
+        return (this.player.fighter.currStats.HP > 0 && this.currStats.HP > 0)
     }
 
     abstract variantSpecificHTML(reason: combatHTMLReasons): void
 
     abstract enemyAI(): void
-
-
-
-
 
 }

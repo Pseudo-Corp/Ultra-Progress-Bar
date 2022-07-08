@@ -3,7 +3,7 @@ import { reset } from '../Main/Reset/Refresh';
 import { Player } from '../types/player';
 import { hideStuff } from './UpdateHTML';
 import { getElementById } from './Render';
-import { testFighter, toggleAuto } from '../Main/Combat/Player/Fighter';
+import { toggleAuto } from '../Main/Combat/Player/Fighter';
 import { challengeDetails } from '../Main/Challenges/details';
 import { toggleChallenge } from '../Main/Challenges/toggles';
 
@@ -72,7 +72,7 @@ export const generateEventHandlers = (player: Player) => {
 
     getElementById('basicAttack').addEventListener(
         'click',
-        () => void testFighter.attack()
+        () => void player.fighter.attack()
     );
 
     getElementById('autoAttack').addEventListener(
@@ -82,7 +82,7 @@ export const generateEventHandlers = (player: Player) => {
 
     getElementById('enrageSkill').addEventListener(
         'click',
-        () => void testFighter.enrage()
+        () => void player.fighter.enrage()
     );
 
     getElementById('basic-challenge-icon').addEventListener(
@@ -108,22 +108,22 @@ export const generateEventHandlers = (player: Player) => {
 
     getElementById('basic-challenge-icon').addEventListener(
         'click',
-        () => void toggleChallenge('Basic Challenge')
+        () => void toggleChallenge('Basic Challenge', player)
     )
     getElementById('no-refresh-challenge-icon').addEventListener(
         'click',
-        () => void toggleChallenge('No Refresh')
+        () => void toggleChallenge('No Refresh', player)
     )
     getElementById('no-coin-upgrade-challenge-icon').addEventListener(
         'click',
-        () => void toggleChallenge('No Coin Upgrades')
+        () => void toggleChallenge('No Coin Upgrades', player)
     )
     getElementById('reduced-fragments-challenge-icon').addEventListener(
         'click',
-        () => void toggleChallenge('Reduced Bar Fragments')
+        () => void toggleChallenge('Reduced Bar Fragments', player)
     )
     getElementById('none-challenge-icon').addEventListener(
         'click',
-        () => void toggleChallenge('None')
+        () => void toggleChallenge('None', player)
     )
 }

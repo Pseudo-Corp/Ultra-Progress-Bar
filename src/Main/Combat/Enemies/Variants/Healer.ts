@@ -1,14 +1,15 @@
+import { Player } from '../../../../types/player';
 import { format } from '../../../../Utilities/Format';
 import { updateElementById } from '../../../../Utilities/Render';
-import { combatStats } from '../../Stats/Stats';
+import { enemyStats } from '../../Stats/Stats';
 import { combatHTMLReasons } from '../../types';
 import { Enemy, EnemyTypes } from '../Enemy';
 
 export class HealerEnemy extends Enemy {
     enemyType:EnemyTypes = 'Healer'
 
-    constructor(stats: combatStats, attackRate: number) {
-        super(stats, attackRate);
+    constructor(stats: enemyStats, attackRate: number, player: Player) {
+        super(stats, attackRate, player);
         this.variantSpecificHTML('Initialize')
     }
 

@@ -1,13 +1,29 @@
-import { combatStats } from '../Stats/Stats';
+import { Player } from '../../../types/player';
+import { enemyStats } from '../Stats/Stats';
 import { Enemy } from './Enemy';
 import { AggressiveEnemy } from './Variants/Aggressive';
 import { BossEnemy } from './Variants/Boss';
 import { DefenseiveEnemy } from './Variants/Defensive';
 import { HealerEnemy } from './Variants/Healer';
 import { IdleEnemy } from './Variants/Idle';
+import { NullEnemy } from './Variants/Null';
 import { RandomEnemy } from './Variants/Random';
 
-export const testAggressiveStats: combatStats = {
+export const testNullStats: enemyStats = {
+    HP: 1,
+    MP: 1,
+    ATK: 1,
+    STR: 1,
+    DEF: 1,
+    ARMOR: 1,
+    CRITCHANCE: 1,
+    CRITDAMAGE: 1,
+    REWARD: 0,
+    CRITICAL: false,
+    INVINCIBLE: true
+}
+
+export const testAggressiveStats: enemyStats = {
     HP: 50,
     MP: 25,
     ATK: 2,
@@ -15,10 +31,13 @@ export const testAggressiveStats: combatStats = {
     DEF: 0,
     ARMOR: 0,
     CRITCHANCE: 5,
-    CRITDAMAGE: 144
+    CRITDAMAGE: 144,
+    REWARD: 0.5,
+    CRITICAL: true
+
 }
 
-export const testBossStats: combatStats = {
+export const testBossStats: enemyStats = {
     HP: 130,
     MP: 30,
     ATK: 1,
@@ -26,10 +45,12 @@ export const testBossStats: combatStats = {
     DEF: 1,
     ARMOR: 1,
     CRITCHANCE: 25,
-    CRITDAMAGE: 150
+    CRITDAMAGE: 150,
+    REWARD: 2,
+    CRITICAL: true
 }
 
-export const testDefensiveStats: combatStats = {
+export const testDefensiveStats: enemyStats = {
     HP: 90,
     MP: 12,
     ATK: 1,
@@ -37,10 +58,12 @@ export const testDefensiveStats: combatStats = {
     DEF: 30,
     ARMOR: 1,
     CRITCHANCE: 5,
-    CRITDAMAGE: 125
+    CRITDAMAGE: 125,
+    REWARD: 0.5,
+    CRITICAL: true
 }
 
-export const testHealerStats: combatStats = {
+export const testHealerStats: enemyStats = {
     HP: 60,
     MP: 24,
     ATK: 1,
@@ -48,10 +71,12 @@ export const testHealerStats: combatStats = {
     DEF: 10,
     ARMOR: 0,
     CRITCHANCE: 0,
-    CRITDAMAGE: 100
+    CRITDAMAGE: 100,
+    REWARD: 0.5,
+    CRITICAL: true
 }
 
-export const testIdleStats: combatStats = {
+export const testIdleStats: enemyStats = {
     HP: 200,
     MP: 0,
     ATK: 0,
@@ -59,10 +84,12 @@ export const testIdleStats: combatStats = {
     DEF: 0,
     ARMOR: 0,
     CRITCHANCE: 0,
-    CRITDAMAGE: 100
+    CRITDAMAGE: 100,
+    REWARD: 0.25,
+    CRITICAL: false
 }
 
-export const testRandomStats: combatStats = {
+export const testRandomStats: enemyStats = {
     HP: 50,
     MP: 25,
     ATK: 1,
@@ -70,25 +97,33 @@ export const testRandomStats: combatStats = {
     DEF: 1,
     ARMOR: 1,
     CRITCHANCE: 30,
-    CRITDAMAGE: 125
+    CRITDAMAGE: 125,
+    REWARD: 0.5,
+    CRITICAL: true
 }
 
 export let testEnemy: Enemy
 
-export const spawnEnemy = () => {
+export const spawnEnemy = (player: Player, nullified = false) => {
+
+    if (nullified) {
+        testEnemy = new NullEnemy(testNullStats, 5000, player)
+        return
+    }
+
     const RNG = Math.random();
 
     if (RNG <= 0.05) {
-        testEnemy = new IdleEnemy(testIdleStats, 0.666)
+        testEnemy = new IdleEnemy(testIdleStats, 0.666, player)
     } else if (RNG <= 0.6) {
-        testEnemy = new AggressiveEnemy(testAggressiveStats, 0.5)
+        testEnemy = new AggressiveEnemy(testAggressiveStats, 0.5, player)
     } else if (RNG <= 0.625) {
-        testEnemy = new DefenseiveEnemy(testDefensiveStats, 0.66)
+        testEnemy = new DefenseiveEnemy(testDefensiveStats, 0.66, player)
     } else if (RNG <= 0.65) {
-        testEnemy = new HealerEnemy(testHealerStats, 0.66)
+        testEnemy = new HealerEnemy(testHealerStats, 0.66, player)
     } else if (RNG <= 0.7) {
-        testEnemy = new RandomEnemy(testRandomStats, 0.66)
+        testEnemy = new RandomEnemy(testRandomStats, 0.66, player)
     } else {
-        testEnemy = new BossEnemy(testBossStats, 1)
+        testEnemy = new BossEnemy(testBossStats, 1, player)
     }
 }

@@ -64,7 +64,7 @@ export const computeArmorMultiplier = (player: Player) => {
     return Math.max(1, armor * (1 - player.barEXP / player.barTNL))
 }
 
-export const incrementMainBarEXP = (delta: number, player: Player) => {
+export const incrementMainBarEXP = (delta: number, player: Player, forceCrit = false) => {
     if (delta === undefined || delta === null) {
         return
     }
@@ -79,7 +79,8 @@ export const incrementMainBarEXP = (delta: number, player: Player) => {
     baseAmountPerSecond *= player.talents.barSpeed.talentEffect();
     baseAmountPerSecond *= Math.pow(1 + player.coinUpgrades.barEmpowerment.upgradeEffect(), player.barLevel);
 
-    const criticalRoll = Math.random();
+    const criticalRoll = (forceCrit) ? -1 : Math.random();
+
     if (criticalRoll < getCritTickChance(player)) {
         let superCrit = false
         baseAmountPerSecond *= player.coinUpgrades.barVibration.upgradeEffect();
@@ -200,7 +201,7 @@ export const levelUpBar = (player: Player) => {
             const dictKey = conversion[name]
             player.completedChallenges[dictKey] += 1
 
-            void toggleChallenge('None')
+            void toggleChallenge('None', player)
             return Alert(`Congratulations! You have completed 
             ${name} #${player.completedChallenges[dictKey]}! 
             Ant God is satisfied.`)
@@ -238,16 +239,12 @@ export const computeMainBarCoinWorth = (player: Player) => {
     let baseWorth = 0;
 
     const nextLevel = 1 + player.barLevel
-    // Highest level bonus
-    if (nextLevel > player.highestBarLevel) {
-        baseWorth += 3;
-    }
 
     // Every 5th bar
     if (nextLevel % 5 === 0) {
         baseWorth += Math.floor(nextLevel / 5) + 3;
 
-        if (Math.random() < 0.5 && nextLevel > 25) {
+        if (Math.random() < (0.5 - 0.02 * player.completedChallenges.basicChallenge) && nextLevel > 25) {
             baseWorth = 0;
         }
     }
@@ -268,7 +265,18 @@ export const computeMainBarCoinWorth = (player: Player) => {
     if (baseWorth > 100) {
         baseWorth = 10 * Math.pow(baseWorth, 1/2)
     }
+
+    if (nextLevel > player.highestBarLevel) {
+        baseWorth += 3;
+    }
+
+    if (nextLevel >= 101 && player.completedChallenges.basicChallenge > 0) {
+        baseWorth += 1
+    }
+
     baseWorth *= (1 + player.talents.coinGain.talentEffect());
+    baseWorth *= (1 + player.completedChallenges.basicChallenge / 100);
+    baseWorth *= (player.completedChallenges.basicChallenge === 25) ? 1.15 : 1;
 
     const RNGCoin = baseWorth - Math.floor(baseWorth)
     if (Math.random() < RNGCoin) {

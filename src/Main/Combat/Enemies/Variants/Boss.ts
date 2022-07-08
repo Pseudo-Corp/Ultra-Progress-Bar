@@ -1,6 +1,7 @@
+import { Player } from '../../../../types/player';
 import { format } from '../../../../Utilities/Format';
 import { updateElementById } from '../../../../Utilities/Render';
-import { combatStats } from '../../Stats/Stats';
+import { enemyStats } from '../../Stats/Stats';
 import { combatHTMLReasons } from '../../types';
 import { Enemy, EnemyTypes } from '../Enemy';
 
@@ -10,8 +11,8 @@ export class BossEnemy extends Enemy {
     usedEmpowerment: boolean
     firstAttack: boolean
 
-    constructor(stats: combatStats, attackRate: number) {
-        super(stats, attackRate);
+    constructor(stats: enemyStats, attackRate: number, player: Player) {
+        super(stats, attackRate, player);
         this.firstAttack = true;
         this.usedRage = false;
         this.usedEmpowerment = false;
