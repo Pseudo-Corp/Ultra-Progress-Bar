@@ -20,25 +20,40 @@ export const updateElement = <
 }
 
 export const updateElementById = <R extends keyof HTMLElement>(
-    id: string,
+    id: string | HTMLElement,
     keys: Record<R, HTMLElement[R]>
 ): boolean => {
     if (document.visibilityState === 'hidden') return false
 
-    return updateElement(
-        getElementById(id),
-        keys
-    )
+    if (typeof id === 'string') {
+        return updateElement(
+            getElementById(id),
+            keys
+        )
+    } else {
+        return updateElement(
+            id,
+            keys
+        )
+    }
+
 }
 
 export const updateStyleById = <R extends keyof CSSStyleDeclaration>(
-    id: string,
+    id: string | HTMLElement,
     keys: Record<R, CSSStyleDeclaration[R]>
 ): boolean => {
     if (document.visibilityState === 'hidden') return false
 
-    return updateElement(
-        getElementById(id).style,
-        keys
-    )
+    if (typeof id === 'string') {
+        return updateElement(
+            getElementById(id).style,
+            keys
+        )
+    } else {
+        return updateElement(
+            id.style,
+            keys
+        )
+    }
 }

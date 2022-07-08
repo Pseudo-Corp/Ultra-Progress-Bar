@@ -201,7 +201,7 @@ export const levelUpBar = (player: Player) => {
             const dictKey = conversion[name]
             player.completedChallenges[dictKey] += 1
 
-            void toggleChallenge('None', player)
+            void toggleChallenge('None', player, true)
             return Alert(`Congratulations! You have completed 
             ${name} #${player.completedChallenges[dictKey]}! 
             Ant God is satisfied.`)

@@ -5,7 +5,27 @@ import { updateAllCoinUpgrades } from '../../Utilities/UpdateHTML'
 import { challengeReset } from '../Reset/Challenge'
 import { Challenges } from './types'
 
-export const toggleChallenge = async (type: Challenges, player: Player) => {
+export const toggleChallenge = async (type: Challenges, player: Player, exit = false) => {
+    const colorToggle = [
+        ['Basic Challenge', 'basic-challenge-icon'],
+        ['No Refresh','no-refresh-challenge-icon'],
+        ['No Coin Upgrades','no-coin-upgrade-challenge-icon'],
+        ['Reduced Bar Fragments','reduced-fragments-challenge-icon']
+    ]
+
+    if (exit) {
+        player.currentChallenge = 'None'
+        for (const item of colorToggle) {
+            updateStyleById(
+                item[1],
+                {
+                    backgroundColor: (type !== item[0]) ? 'transparent' : 'lightgoldenrodyellow'
+                }
+            )
+        }
+        updateAllCoinUpgrades(player)
+        return
+    }
 
     if (player.currentChallenge !== 'None' && type !== 'None') {
         return Alert(`You are already in a challenge!
@@ -16,7 +36,7 @@ export const toggleChallenge = async (type: Challenges, player: Player) => {
     if (player.currentChallenge === 'None') {
         confirmation = await Confirm('Entering a challenge also resets your bar fragments. Continue?')
     } else {
-        confirmation = await Confirm(`Would you like to exit ${type}?`)
+        confirmation = await Confirm(`Would you like to exit ${player.currentChallenge}?`)
     }
 
     if (confirmation) {
@@ -29,29 +49,13 @@ export const toggleChallenge = async (type: Challenges, player: Player) => {
         player.currentChallenge = type
         updateAllCoinUpgrades(player)
 
-        const colorToggle = [
-            ['Basic Challenge', 'basic-challenge-icon'],
-            ['No Refresh','no-refresh-challenge-icon'],
-            ['No Coin Upgrades','no-coin-upgrade-challenge-icon'],
-            ['Reduced Bar Fragments','reduced-fragments-challenge-icon']
-        ]
-
         for (const item of colorToggle) {
-            if (type !== item[0]) {
-                updateStyleById(
-                    item[1],
-                    {
-                        backgroundColor: 'transparent'
-                    }
-                )
-            } else {
-                updateStyleById(
-                    item[1],
-                    {
-                        backgroundColor: 'lightgoldenrodyellow'
-                    }
-                )
-            }
+            updateStyleById(
+                item[1],
+                {
+                    backgroundColor: (type !== item[0]) ? 'transparent' : 'lightgoldenrodyellow'
+                }
+            )
         }
     } else {
         return Alert('Alright, enjoy your business.')

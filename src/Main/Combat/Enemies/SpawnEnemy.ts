@@ -32,7 +32,7 @@ export const testAggressiveStats: enemyStats = {
     ARMOR: 0,
     CRITCHANCE: 5,
     CRITDAMAGE: 144,
-    REWARD: 0.5,
+    REWARD: 0.1,
     CRITICAL: true
 
 }
@@ -46,7 +46,7 @@ export const testBossStats: enemyStats = {
     ARMOR: 1,
     CRITCHANCE: 25,
     CRITDAMAGE: 150,
-    REWARD: 2,
+    REWARD: 0.4,
     CRITICAL: true
 }
 
@@ -59,7 +59,7 @@ export const testDefensiveStats: enemyStats = {
     ARMOR: 1,
     CRITCHANCE: 5,
     CRITDAMAGE: 125,
-    REWARD: 0.5,
+    REWARD: 0.1,
     CRITICAL: true
 }
 
@@ -72,7 +72,7 @@ export const testHealerStats: enemyStats = {
     ARMOR: 0,
     CRITCHANCE: 0,
     CRITDAMAGE: 100,
-    REWARD: 0.5,
+    REWARD: 0.1,
     CRITICAL: true
 }
 
@@ -85,7 +85,7 @@ export const testIdleStats: enemyStats = {
     ARMOR: 0,
     CRITCHANCE: 0,
     CRITDAMAGE: 100,
-    REWARD: 0.25,
+    REWARD: 1,
     CRITICAL: false
 }
 

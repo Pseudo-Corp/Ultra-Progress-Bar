@@ -34,7 +34,10 @@ export const challengeDetails = async (type: Challenges, player: Player) => {
             updateElementById(
                 'challenge-reward',
                 {
-                    textContent: 'WIP REWARD!'
+                    textContent: `First Completion: +1 Base Coin Worth to all levels above 100! \r\n
+                    Each Completion: +1% Coins, +2% Chance for levels
+                     ending in 5 to be worth more coins. \r\n
+                    Final Completion: Another +15% Coins!`
                 }
             )
             break
@@ -57,7 +60,10 @@ export const challengeDetails = async (type: Challenges, player: Player) => {
             updateElementById(
                 'challenge-reward',
                 {
-                    textContent: 'WIP REWARD!'
+                    textContent: `First Completion: +3% Bar Fragments every 10 Bar Levels!
+                            Each Completion: Reduce the threshold 
+                            for 3x fragments by 1 level (from 100)
+                            Final Completion: 3x Bar Fragments!`
                 }
             )
             break
@@ -80,7 +86,7 @@ export const challengeDetails = async (type: Challenges, player: Player) => {
             updateElementById(
                 'challenge-reward',
                 {
-                    textContent: 'WIP REWARD!'
+                    textContent: 'WIP REWARD! I doubt this is possible, anyway...'
                 }
             )
             break
@@ -103,7 +109,7 @@ export const challengeDetails = async (type: Challenges, player: Player) => {
             updateElementById(
                 'challenge-reward',
                 {
-                    textContent: 'WIP REWARD!'
+                    textContent: 'WIP! I doubt this is possible, anyway...'
                 }
             )
             break

@@ -12,6 +12,15 @@ export class Coins extends Currency {
     }
 
     updateHTML(): void {
+        const coinCounters = document.getElementsByClassName('coinCountDisplay') as HTMLCollectionOf<HTMLElement>
+        for (let i = 0; i < coinCounters.length; i++) {
+            updateElementById(
+                coinCounters[i],
+                {
+                    textContent: format(this.amount)
+                }
+            )
+        }
         updateElementById(
             'gold-amount',
             {
