@@ -1,5 +1,5 @@
 export const getElementById = (id: string): HTMLElement =>
-    document.getElementById(id) as HTMLElement;
+    document.getElementById(id) as HTMLElement
 
 export const updateElement = <
     T extends HTMLElement | CSSStyleDeclaration,
@@ -8,37 +8,37 @@ export const updateElement = <
         element: T,
         keys: Record<R, T[R]>
     ): boolean => {
-    if (document.visibilityState === 'hidden') return false;
+    if (document.visibilityState === 'hidden') return false
 
-    const entries = Object.entries(keys) as [R, T[R]][];
+    const entries = Object.entries(keys) as [R, T[R]][]
 
     for (const [prop, key] of entries) {
-        element[prop] = key;
+        element[prop] = key
     }
 
-    return true;
+    return true
 }
 
 export const updateElementById = <R extends keyof HTMLElement>(
     id: string,
     keys: Record<R, HTMLElement[R]>
 ): boolean => {
-    if (document.visibilityState === 'hidden') return false;
+    if (document.visibilityState === 'hidden') return false
 
     return updateElement(
         getElementById(id),
         keys
-    );
+    )
 }
 
 export const updateStyleById = <R extends keyof CSSStyleDeclaration>(
     id: string,
     keys: Record<R, CSSStyleDeclaration[R]>
 ): boolean => {
-    if (document.visibilityState === 'hidden') return false;
+    if (document.visibilityState === 'hidden') return false
 
     return updateElement(
         getElementById(id).style,
         keys
-    );
+    )
 }

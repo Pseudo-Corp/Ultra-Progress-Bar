@@ -1,6 +1,6 @@
-import { backgroundColorCreation } from '../Main/ProgressBar/Properties';
-import { Player } from '../types/player';
-import { format } from './Format';
+import { backgroundColorCreation } from '../Main/ProgressBar/Properties'
+import { Player } from '../types/player'
+import { format } from './Format'
 import { updateElementById, updateStyleById } from './Render'
 
 export type Tabs = 'Main' | 'Upgrades' | 'Talents' | 'Dueling' | 'Challenges'
@@ -13,15 +13,15 @@ export const hideStuff = (tab: Tabs) => {
     updateStyleById(
         'mainTab',
         { display: 'none' }
-    );
+    )
     updateStyleById(
         'upgradeTab',
         { display: 'none' }
-    );
+    )
     updateStyleById(
         'talentsTab',
         { display: 'none' }
-    );
+    )
     updateStyleById(
         'duelingTab',
         { display: 'none' }
@@ -35,17 +35,17 @@ export const hideStuff = (tab: Tabs) => {
         updateStyleById(
             'mainTab',
             { display: 'block' }
-        );
+        )
     } else if (tab === 'Upgrades') {
         updateStyleById(
             'upgradeTab',
             { display: 'block' }
-        );
+        )
     } else if (tab === 'Talents') {
         updateStyleById(
             'talentsTab',
             { display: 'block' }
-        );
+        )
     } else if (tab === 'Dueling') {
         updateStyleById(
             'duelingTab',
@@ -99,20 +99,20 @@ export const onCriticalHit = (player: Player, superCrit: boolean) => {
         updateStyleById(
             'progression',
             { backgroundColor: 'gold'}
-        );
+        )
     } else {
         updateStyleById(
             'progression',
             { backgroundColor: 'turquoise'}
-        );
+        )
     }
 
     setTimeout(() => {
         updateStyleById(
             'progression',
             {backgroundColor: backgroundColorCreation(player)}
-        );
-    }, 500);
+        )
+    }, 500)
 
     updateElementById(
         'refresh-crit-counter',
@@ -124,7 +124,7 @@ export const onCriticalHit = (player: Player, superCrit: boolean) => {
         { textContent: format(100 * player.criticalHitsThisRefresh *
             player.coinUpgrades.barAgitation.upgradeEffect(), 2) }
     )
-    player.barFragments.updateHTML();
+    player.barFragments.updateHTML()
 
 }
 
@@ -132,19 +132,19 @@ export const onRefresh = (player: Player) => {
     updateStyleById(
         'progression',
         { backgroundColor: 'cyan' }
-    );
+    )
 
     setTimeout(() => {
         updateStyleById(
             'progression',
             {backgroundColor: backgroundColorCreation(player)}
-        );
-    }, 1000);
+        )
+    }, 1000)
 
     updateElementById(
         'coinWorth',
         { textContent: `Worth ${format(player.coinValueCache)} coins` }
-    );
+    )
 
     if (player.coinValueCache > 0) {
         updateStyleById(
@@ -161,12 +161,12 @@ export const onRefresh = (player: Player) => {
     updateElementById(
         'refresh-crit-counter',
         { textContent: format(player.criticalHitsThisRefresh) }
-    );
+    )
 
     updateElementById(
         'refresh-counter',
         { textContent: format(player.refreshCount)}
-    );
+    )
 }
 
 export const updateAllCoinUpgrades = (player: Player) => {

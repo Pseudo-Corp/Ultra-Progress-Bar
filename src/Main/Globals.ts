@@ -1,13 +1,13 @@
-import type { Enemy } from './Combat/Enemies/Enemy';
+import type { Enemy } from './Combat/Enemies/Enemy'
 
 export class Globals {
-    static testEnemy: Enemy;
+    static testEnemy: Enemy
 
     public static setGlobalEnemy (newEnemy: Enemy): void {
-        Globals.testEnemy = newEnemy;
+        Globals.testEnemy = newEnemy
     }
 
     public static getGlobalEnemy (): Enemy | undefined {
-        return Globals.testEnemy;
+        return Globals.testEnemy
     }
 }
