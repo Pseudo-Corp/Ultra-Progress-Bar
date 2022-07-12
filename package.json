@@ -2,7 +2,8 @@
   "name": "ultimateprogressbar",
   "version": "v0.0.1-beta.9",
   "description": "indev game idea",
-  "main": "./dist/bundle.js",
+  "browserslist": "> 0.5%, last 2 versions, not dead",
+  "source": "index.html",
   "eslintConfig": {
     "env": {
       "browser": true,
@@ -12,10 +13,12 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.12.0",
     "husky": "^7.0.4",
+    "parcel": "^2.6.2",
     "stylelint-config-standard": "^25.0.0",
     "typescript": "^4.5.5"
   },
   "dependencies": {
+    "@swc/helpers": "^0.4.3",
     "dot-prop": "^7.2.0",
     "localforage": "^1.10.0"
   },
@@ -24,12 +27,12 @@
     "lint:fix": "npm run lint -- --fix",
     "csslint": "npx stylelint styles.css",
     "csslint:fix": "npx stylelint styles.css --fix",
-    "build:esbuild": "npx esbuild src/index.ts --bundle --minify --sourcemap --target=\"chrome58,firefox57,safari11,edge29\" --outfile=\"./dist/out.js\"",
-    "watch:esbuild": "npx esbuild src/index.ts --bundle --minify --sourcemap --target=\"chrome58,firefox57,safari11,edge29\" --outfile=\"./dist/out.js\" --watch",
     "check:tsc": "npx -p typescript tsc",
     "watch:tsc": "npx -p typescript tsc --watch",
     "prepare": "husky install",
-    "dependency-test": "npx madge --circular --exclude .d.ts --extensions ts ./src"
+    "dependency-test": "npx madge --circular --exclude .d.ts --extensions ts ./src",
+    "build:dev": "npx parcel index.html",
+    "build:prod": "npx parcel build index.html"
   },
   "repository": {
     "type": "git",
@@ -44,5 +47,11 @@
   ],
   "author": "Kevin Bunn",
   "license": "MIT",
-  "homepage": "https://github.com/Pseudo-Corp/Ultra-Progress-Bar#readme"
+  "homepage": "https://github.com/Pseudo-Corp/Ultra-Progress-Bar#readme",
+  "contributors": [
+    {
+      "name": "Khafra",
+      "url": "https://github.com/KhafraDev"
+    }
+  ]
 }
