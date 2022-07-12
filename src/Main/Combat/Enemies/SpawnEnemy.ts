@@ -10,6 +10,7 @@ import { RandomEnemy } from './Variants/Random'
 import { Globals } from '../../Globals'
 
 export const testNullStats: enemyStats = {
+    ENEMYTYPE: 'Null',
     HP: 1,
     MP: 1,
     ATK: 1,
@@ -24,6 +25,7 @@ export const testNullStats: enemyStats = {
 }
 
 export const testAggressiveStats: enemyStats = {
+    ENEMYTYPE: 'Aggressive',
     HP: 50,
     MP: 25,
     ATK: 2,
@@ -38,6 +40,7 @@ export const testAggressiveStats: enemyStats = {
 }
 
 export const testBossStats: enemyStats = {
+    ENEMYTYPE: 'BOSS',
     HP: 130,
     MP: 30,
     ATK: 1,
@@ -51,6 +54,7 @@ export const testBossStats: enemyStats = {
 }
 
 export const testDefensiveStats: enemyStats = {
+    ENEMYTYPE: 'Defensive',
     HP: 90,
     MP: 12,
     ATK: 1,
@@ -64,6 +68,7 @@ export const testDefensiveStats: enemyStats = {
 }
 
 export const testHealerStats: enemyStats = {
+    ENEMYTYPE: 'Healer',
     HP: 60,
     MP: 24,
     ATK: 1,
@@ -77,6 +82,7 @@ export const testHealerStats: enemyStats = {
 }
 
 export const testIdleStats: enemyStats = {
+    ENEMYTYPE: 'Idle',
     HP: 200,
     MP: 0,
     ATK: 0,
@@ -90,6 +96,7 @@ export const testIdleStats: enemyStats = {
 }
 
 export const testRandomStats: enemyStats = {
+    ENEMYTYPE: 'Random',
     HP: 50,
     MP: 25,
     ATK: 1,

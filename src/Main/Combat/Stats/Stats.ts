@@ -1,3 +1,5 @@
+import { EnemyTypes } from '../Enemies/Enemy'
+
 export interface combatStats {
     HP: number
     MP: number
@@ -10,6 +12,7 @@ export interface combatStats {
 }
 
 export interface enemyStats extends combatStats {
+    ENEMYTYPE: EnemyTypes
     REWARD: number
     CRITICAL: boolean
     INVINCIBLE?: boolean
