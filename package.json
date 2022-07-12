@@ -32,7 +32,7 @@
     "prepare": "husky install",
     "dependency-test": "npx madge --circular --exclude .d.ts --extensions ts ./src",
     "build:dev": "npx parcel index.html",
-    "build:prod": "npx parcel build index.html"
+    "build:prod": "npx parcel build --public-url Work-In-Progress index.html"
   },
   "repository": {
     "type": "git",
