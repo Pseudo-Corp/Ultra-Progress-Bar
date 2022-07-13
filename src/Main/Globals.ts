@@ -1,13 +1,13 @@
-import type { Enemy } from './Combat/Enemies/Enemy'
+import { ZoneHandler } from './Combat/Zones/ZoneHandler'
 
 export class Globals {
-    static testEnemy: Enemy
+    static zoneHandler: ZoneHandler
 
-    public static setGlobalEnemy (newEnemy: Enemy): void {
-        Globals.testEnemy = newEnemy
+    public static setGlobalZoneHandler (zoneHandler: ZoneHandler): void {
+        Globals.zoneHandler = zoneHandler
     }
 
-    public static getGlobalEnemy (): Enemy | undefined {
-        return Globals.testEnemy
+    public static getGlobalZoneHandler (): ZoneHandler | undefined {
+        return Globals.zoneHandler
     }
 }

@@ -1,5 +1,4 @@
-import { Zone } from '../ZoneHandler'
-
+import { Zone } from '../Zone'
 
 export class CaveZone extends Zone {
 

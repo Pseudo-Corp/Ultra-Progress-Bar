@@ -1,13 +1,4 @@
-import { Player } from '../../../types/player'
 import { enemyStats } from '../Stats/Stats'
-import { AggressiveEnemy } from './Variants/Aggressive'
-import { BossEnemy } from './Variants/Boss'
-import { DefenseiveEnemy } from './Variants/Defensive'
-import { HealerEnemy } from './Variants/Healer'
-import { IdleEnemy } from './Variants/Idle'
-import { NullEnemy } from './Variants/Null'
-import { RandomEnemy } from './Variants/Random'
-import { Globals } from '../../Globals'
 
 export const testNullStats: enemyStats = {
     ENEMYTYPE: 'Null',
@@ -107,28 +98,4 @@ export const testRandomStats: enemyStats = {
     CRITDAMAGE: 125,
     REWARD: 0.5,
     CRITICAL: true
-}
-
-export const spawnEnemy = (player: Player, nullified = false) => {
-    if (nullified) {
-        return Globals.setGlobalEnemy(
-            new NullEnemy(testNullStats, 5000, player)
-        )
-    }
-
-    const RNG = Math.random()
-
-    if (RNG <= 0.05) {
-        Globals.setGlobalEnemy(new IdleEnemy(testIdleStats, 0.666, player))
-    } else if (RNG <= 0.6) {
-        Globals.setGlobalEnemy(new AggressiveEnemy(testAggressiveStats, 0.5, player))
-    } else if (RNG <= 0.625) {
-        Globals.setGlobalEnemy(new DefenseiveEnemy(testDefensiveStats, 0.66, player))
-    } else if (RNG <= 0.65) {
-        Globals.setGlobalEnemy(new HealerEnemy(testHealerStats, 0.66, player))
-    } else if (RNG <= 0.7) {
-        Globals.setGlobalEnemy(new RandomEnemy(testRandomStats, 0.66, player))
-    } else {
-        Globals.setGlobalEnemy(new BossEnemy(testBossStats, 1, player))
-    }
 }

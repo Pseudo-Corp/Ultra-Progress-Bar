@@ -71,7 +71,7 @@ export const unlockStuff = (player: Player) => {
         [20, 'talent-tab-nav'],
         [30, 'coin-reverberation'],
         [40, 'coin-vibration'],
-        [50, 'dueling-tab-nav'],
+        //        [1, 'dueling-tab-nav'],
         [75, 'coin-adoption'],
         [0, 'challenge-tab-nav'],
         [150, 'coin-resonance'],

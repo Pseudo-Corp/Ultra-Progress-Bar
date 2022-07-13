@@ -18,6 +18,7 @@ import { format } from './Utilities/Format'
 import { updateElementById, updateStyleById } from './Utilities/Render'
 import { hideStuff, unlockStuff } from './Utilities/UpdateHTML'
 import { Globals } from './Main/Globals'
+import { ZoneHandler } from './Main/Combat/Zones/ZoneHandler'
 
 /**
  * This is the player variable, which is used throughout the game!
@@ -231,6 +232,8 @@ export const loadGame = async () => {
     interval(fightUpdate, 1000/FPS)
     interval(updateDPS, 1000, player)
     interval(saveGame, saveRate, player)
+
+    Globals.setGlobalZoneHandler(new ZoneHandler(player))
 }
 
 export const resetGame = async () => {
@@ -270,7 +273,7 @@ export const fightUpdate = async () => {
 
     lastFightUpdate += delta
 
-    void Globals.getGlobalEnemy()?.generateAttacks(delta/1000)
+    void Globals.getGlobalZoneHandler()?.generateAttacks(delta/1000)
     void player.fighter.decreaseDelay(delta/1000)
 }
 

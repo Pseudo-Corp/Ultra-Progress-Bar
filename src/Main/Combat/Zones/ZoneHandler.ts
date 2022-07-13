@@ -1,4 +1,6 @@
-import { timer } from '../../../Utilities/HelperFunctions'
+import { Player } from '../../../types/player'
+import { updateElementById } from '../../../Utilities/Render'
+import { Zone } from './Zone'
 import { CaveZone } from './ZoneData/Cave'
 import { ForestZone } from './ZoneData/Forest'
 import { MeadowZone } from './ZoneData/Meadow'
@@ -11,11 +13,12 @@ export const zoneOrder: Zones[] = ['Safety Zone', 'The Meadow', 'The Forest', 'T
 export class ZoneHandler {
     public zoneIndex: number
     private zone: Zone
-    constructor () {
-        this.zone = this.createNewZone('Safety Zone')
+    private player: Player
+    constructor (player: Player) {
+        this.zone = this.createNewZone('Safety Zone') // initiates initial spawn as well
         this.zoneIndex = 0
-
-        this.zoneSpawn() // Remove once implemented
+        this.player = player
+        this.updateHTML()
     }
 
     public switchZone(opposite = false) {
@@ -34,40 +37,47 @@ export class ZoneHandler {
     public createNewZone(zone: Zones): Zone {
         switch (zone) {
             case 'Safety Zone':
-                return new SafetyZone()
+                return new SafetyZone(this.player, 1000)
 
             case 'The Meadow':
-                return new MeadowZone()
+                return new MeadowZone(this.player, 5000)
 
             case 'The Forest':
-                return new ForestZone()
+                return new ForestZone(this.player, 4900)
 
             case 'The Underbrushes':
-                return new UnderbrushZone()
+                return new UnderbrushZone(this.player, 4800)
 
             case 'The Cave':
-                return new CaveZone()
+                return new CaveZone(this.player, 4700)
 
             default:
-                return new SafetyZone()
+                return new SafetyZone(this.player, 1000)
         }
     }
 
-    private zoneSpawn() {
-        void this.zone.spawnInitialEnemy() // This will be replaced with the spawning of an actual enemy
-    }
-}
-
-export class Zone {
-
-    constructor(/*private enemyDistribution: (x: number) => boolean, */) {
-        /* this.enemyDistribution = enemyDistribution */
-        void this.spawnInitialEnemy()
+    public async takeDamage(baseAmount: number): Promise<void> {
+        void this.zone.takeDamage(baseAmount)
     }
 
-    public async spawnInitialEnemy() {
-        await timer(5000)
-        // Implement Mechanics here
+    public updateHTML() {
+        updateElementById(
+            'zone-name',
+            {
+                textContent: zoneOrder[this.zoneIndex]
+            }
+        )
     }
+
+    get checkMoveUse() {
+        return this.zone.checkMoveUse
+    }
+    get generateAttacks() {
+        return this.zone.generateAttacks
+    }
+    get currStats() {
+        return this.zone.currStats
+    }
+
 
 }

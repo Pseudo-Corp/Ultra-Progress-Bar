@@ -4,9 +4,7 @@
 
 import { Player } from '../../../types/player'
 import { format } from '../../../Utilities/Format'
-import { timer } from '../../../Utilities/HelperFunctions'
 import { updateElementById, updateStyleById } from '../../../Utilities/Render'
-import { spawnEnemy } from '../Enemies/SpawnEnemy'
 import { combatStats } from '../Stats/Stats'
 import { combatHTMLReasons } from '../types'
 import { Globals } from '../../Globals'
@@ -39,13 +37,6 @@ export class PlayerFighter {
         this.player = player
 
         this.updateHTML('Initialize')
-        spawnEnemy(this.player, true)
-        void this.spawnInitialEnemy()
-    }
-
-    async spawnInitialEnemy(): Promise<void> {
-        await timer(5000)
-        spawnEnemy(this.player)
     }
 
     async decreaseDelay(dt: number): Promise<void> {
@@ -83,11 +74,11 @@ export class PlayerFighter {
 
         if (this.currStats.HP === 0) {
             // Reset Player Statistical
-            await timer(9000)
+
             this.currStats = {...this.baseStats}
             this.delay = this.attackRate
             this.updateHTML('Initialize')
-            spawnEnemy(this.player)
+
         }
     }
 
@@ -116,14 +107,14 @@ export class PlayerFighter {
     }
 
     async attack(): Promise<void> {
-        const testEnemy = Globals.getGlobalEnemy()
+        const enemy = Globals.getGlobalZoneHandler()
 
-        if (this.delay > 0 || this.currStats.HP === 0 || testEnemy?.currStats.HP === 0) {
+        if (this.delay > 0 || this.currStats.HP === 0 || enemy?.currStats.HP === 0) {
             return
         }
 
         const damageSent = this.computeBaseDamageSent()
-        void testEnemy?.takeDamage(damageSent)
+        void enemy?.takeDamage(damageSent)
 
         this.currStats.HP += this.baseStats.HP / 60 + damageSent / 40
         this.currStats.HP = Math.min(this.currStats.HP, this.baseStats.HP)

@@ -5,7 +5,6 @@ import { updateElementById, updateStyleById } from '../../../Utilities/Render'
 import { incrementMainBarEXP } from '../../ProgressBar/Properties'
 import { enemyStats } from '../Stats/Stats'
 import { combatHTMLReasons } from '../types'
-import { spawnEnemy } from './SpawnEnemy'
 
 
 export type EnemyTypes = 'Idle' | 'Random' | 'Aggressive' | 'Healer' | 'Defensive' | 'BOSS' | 'Null'
@@ -97,11 +96,12 @@ export abstract class Enemy {
         this.updateHTML('Damage')
 
         if (this.currStats.HP === 0) {
-            // Spawn a new enemy after 1 second
             incrementMainBarEXP(this.baseStats.REWARD, this.player, this.baseStats.CRITICAL)
-            await timer(4000)
-            spawnEnemy(this.player)
         }
+    }
+
+    public isEnemyDead(): boolean {
+        return this.currStats.HP <= 0
     }
 
     computeStrengthModifier(): number {
