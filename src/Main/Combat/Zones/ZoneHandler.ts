@@ -1,24 +1,21 @@
 import { timer } from '../../../Utilities/HelperFunctions'
-import { CaveZone } from './ZoneData/Cave'
-import { ForestZone } from './ZoneData/Forest'
-import { MeadowZone } from './ZoneData/Meadow'
-import { SafetyZone } from './ZoneData/Safety'
-import { UnderbrushZone } from './ZoneData/Underbrushes'
 
 export type Zones = 'Safety Zone' | 'The Meadow' | 'The Forest' | 'The Underbrushes' | 'The Cave'
 export const zoneOrder: Zones[] = ['Safety Zone', 'The Meadow', 'The Forest', 'The Underbrushes', 'The Cave']
 
+const zoneCache = new Map<string, typeof Zone>()
+
 export class ZoneHandler {
     public zoneIndex: number
-    private zone: Zone
+    private zone: Zone | null = null
+
     constructor () {
-        this.zone = this.createNewZone('Safety Zone')
         this.zoneIndex = 0
 
         this.zoneSpawn() // Remove once implemented
     }
 
-    public switchZone(opposite = false) {
+    public async switchZone (opposite = false) {
         const zoneTracker = this.zoneIndex
         if (opposite) {
             this.zoneIndex = Math.max(0, this.zoneIndex - 1)
@@ -27,39 +24,53 @@ export class ZoneHandler {
         }
 
         if (this.zoneIndex !== zoneTracker) { // Reduce unnecessary switches
-            this.zone = this.createNewZone(zoneOrder[this.zoneIndex])
+            this.zone = await this.createNewZone(zoneOrder[this.zoneIndex])
         }
     }
 
-    public createNewZone(zone: Zones): Zone {
-        switch (zone) {
-            case 'Safety Zone':
-                return new SafetyZone()
+    public async createNewZone (zone: Zones) {
+        const ctor = await this.fetch(zone)
+        return new ctor()
+    }
 
-            case 'The Meadow':
-                return new MeadowZone()
+    async fetch (zoneFileName: Zones): Promise<typeof Zone> {
+        const zoneCached = zoneCache.get(zoneFileName)
 
-            case 'The Forest':
-                return new ForestZone()
-
-            case 'The Underbrushes':
-                return new UnderbrushZone()
-
-            case 'The Cave':
-                return new CaveZone()
-
-            default:
-                return new SafetyZone()
+        if (zoneCached) {
+            return zoneCached
         }
+
+        let zoneImport: typeof Zone
+
+        switch (zoneFileName) {
+            default:
+            case 'Safety Zone':
+                zoneImport = (await import('./ZoneData/Safety')).SafetyZone
+                break
+            case 'The Meadow':
+                zoneImport = (await import('./ZoneData/Meadow')).MeadowZone
+                break
+            case 'The Forest':
+                zoneImport = (await import('./ZoneData/Forest')).ForestZone
+                break
+            case 'The Cave':
+                zoneImport = (await import('./ZoneData/Cave')).CaveZone
+                break
+            case 'The Underbrushes':
+                zoneImport = (await import('./ZoneData/Underbrush')).UnderbrushZone
+                break
+        }
+
+        zoneCache.set(zoneFileName, zoneImport)
+        return zoneImport
     }
 
     private zoneSpawn() {
-        void this.zone.spawnInitialEnemy() // This will be replaced with the spawning of an actual enemy
+        void this.zone?.spawnInitialEnemy() // This will be replaced with the spawning of an actual enemy
     }
 }
 
 export class Zone {
-
     constructor(/*private enemyDistribution: (x: number) => boolean, */) {
         /* this.enemyDistribution = enemyDistribution */
         void this.spawnInitialEnemy()
@@ -69,5 +80,4 @@ export class Zone {
         await timer(5000)
         // Implement Mechanics here
     }
-
 }
