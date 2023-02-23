@@ -349,4 +349,4 @@ export const tock = (delta: number) => {
 /*
 * Miscellaneous Game Variables
 */
-export const minimumRefreshCounter = 60
+export const minimumRefreshCounter = 180

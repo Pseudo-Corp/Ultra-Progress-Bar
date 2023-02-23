@@ -11,57 +11,14 @@ import { Alert } from '../../HTML/Popups'
 /**
  * Basic Bar Stats
  */
-const baseEXPReq = 10
+const baseEXPReq = 5
 let currentPerSec = 0
 let previousPerSec = 0
 
 export const computeMainBarTNL = (player: Player) => {
-    let TNL = 0
-    // Additive Component
-    TNL += baseEXPReq * Math.pow(player.barLevel + 1, 2)
-    // Nerf until level 20.
-    TNL *= Math.min(1, (player.barLevel + 20) / 40)
-    // Buff after level 20.
-    TNL *= Math.max(1, 1 + (player.barLevel - 20) / 10)
-    // Multiplicative Component (Bumps at 40, 100, 200)
-    if (player.barLevel > 40) {
-        TNL *= Math.pow(2, 1/10 * (player.barLevel - 40))
-    }
-    if (player.barLevel > 100) {
-        TNL *= Math.pow(2, 1/10 * (player.barLevel - 100))
-    }
-    if (player.barLevel > 200) {
-        TNL *= Math.pow(2, 1/10 * (player.barLevel - 200))
-    }
-
-    // BOSS
-    if (player.barLevel % 5 === 0) {
-        TNL *= Math.max(1, (1/2 * player.barLevel / 10))
-    }
-
-    return TNL
-}
-
-export const computeBarArmor = (player: Player) => {
-    // Armor is a value in [0, 1]
-    // 1 indicates no progress, 0 indicates full progress.
-
-    let baseArmor = 0
-
-    if (player.barLevel >= 10) {
-        baseArmor += (1 - Math.pow(Math.E, -player.barLevel / 200))
-    }
-
-    if (baseArmor >= 0.9999) {
-        return 10000
-    }
-
-    return 1 / (1 - baseArmor)
-}
-
-export const computeArmorMultiplier = (player: Player) => {
-    const armor = computeBarArmor(player)
-    return Math.max(1, armor * (1 - player.barEXP / player.barTNL))
+    const squareMultiplier = Math.pow(player.barLevel + 1, 2)
+    const exponentialMultiplier = Math.pow(1.5, player.barLevel + 1) / 10
+    return baseEXPReq * Math.max(squareMultiplier, exponentialMultiplier)
 }
 
 export const incrementMainBarEXP = (delta: number, player: Player, forceCrit = false) => {
@@ -75,7 +32,7 @@ export const incrementMainBarEXP = (delta: number, player: Player, forceCrit = f
         1 + player.coinUpgrades.barMomentum.upgradeEffect(),
         Math.sqrt(100 * Math.min(1, player.barEXP / player.barTNL))
     )
-    baseAmountPerSecond /= computeArmorMultiplier(player)
+
     baseAmountPerSecond *= player.talents.barSpeed.talentEffect()
     baseAmountPerSecond *= Math.pow(1 + player.coinUpgrades.barEmpowerment.upgradeEffect(), player.barLevel)
 
@@ -240,30 +197,17 @@ export const computeMainBarCoinWorth = (player: Player) => {
 
     const nextLevel = 1 + player.barLevel
 
-    // Every 5th bar
-    if (nextLevel % 5 === 0) {
-        baseWorth += Math.floor(nextLevel / 5) + 3
-
-        if (Math.random() < (0.5 - 0.02 * player.completedChallenges.basicChallenge) && nextLevel > 25) {
-            baseWorth = 0
-        }
+    // Every level: 33.3% chance to be worth coins
+    if (Math.random() < 1/3 && nextLevel >= 10) {
+        baseWorth += Math.floor(nextLevel / 10) + 1
     }
 
-    // Every 10th bar, adding to the previous
-    if (nextLevel % 10 === 0) {
-        baseWorth += Math.floor(nextLevel / 2)
+    if (nextLevel === 5) {
+        baseWorth += 3
     }
 
-    if (nextLevel % 50 === 0) {
-        baseWorth += Math.floor(nextLevel / 2)
-    }
-
-    if (nextLevel % 100 === 0) {
-        baseWorth += Math.floor(nextLevel)
-    }
-
-    if (baseWorth > 100) {
-        baseWorth = 10 * Math.pow(baseWorth, 1/2)
+    if (nextLevel === 10) {
+        baseWorth += 5
     }
 
     if (nextLevel > player.highestBarLevel) {
@@ -277,6 +221,10 @@ export const computeMainBarCoinWorth = (player: Player) => {
     baseWorth *= (1 + player.talents.coinGain.talentEffect())
     baseWorth *= (1 + player.completedChallenges.basicChallenge / 100)
     baseWorth *= (player.completedChallenges.basicChallenge === 25) ? 1.15 : 1
+
+    if (baseWorth > 100) {
+        baseWorth = 10 * Math.pow(baseWorth, 1/2)
+    }
 
     const RNGCoin = baseWorth - Math.floor(baseWorth)
     if (Math.random() < RNGCoin) {
